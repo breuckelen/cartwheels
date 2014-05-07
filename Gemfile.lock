@@ -38,6 +38,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
+    email_validator (1.4.0)
+      activemodel
     erubis (2.7.0)
     execjs (2.0.2)
     haml (4.0.5)
@@ -124,6 +126,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 4.0.0)
+  email_validator
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
