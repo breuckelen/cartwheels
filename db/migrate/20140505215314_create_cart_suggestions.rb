@@ -6,9 +6,9 @@ class CreateCartSuggestions < ActiveRecord::Migration
         t.string :borough
         t.integer :permit_number
         t.integer :zip_code
-        t.integer :lat, precision: 8, scale: 5
-        t.integer :lon, precision: 8, scale: 5
-        t.boolean :approved
+        t.float :lat, precision: 8, scale: 5
+        t.float :lon, precision: 8, scale: 5
+        t.boolean :approved, :default => false
         t.timestamps
     end
   end
