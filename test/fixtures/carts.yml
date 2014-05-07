@@ -1,0 +1,32 @@
+halal:
+    id: 1
+    name: "Rafiqi's"
+    city: New York
+    borough: Manhattan
+    owner_secret: 3477813457
+    permit_number: 60752
+    zip_code: 10282
+    lat: 43.88924
+    lon: 170.95467
+
+coffee:
+    id: 2
+    name: "Joe's Joe"
+    city: New York
+    borough: Brooklyn
+    owner_secret: 6465346789
+    permit_number: 12345
+    zip_code: 11217
+    lat: 44.88924
+    lon: 171.95467
+
+truck:
+    id: 3
+    name: "Hipster Truck"
+    city: New York
+    borough: Queens
+    owner_secret: 9178766543
+    permit_number: 54321
+    zip_code: 11201
+    lat: 46.88924
+    lon: 169.95467

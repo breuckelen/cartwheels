@@ -1,0 +1,8 @@
+adHalal:
+    id: 1
+    cart_id: 1
+    ad_type_id: 1
+    title: "Ad for Rafiqi's!"
+    description: "You should buy food from here."
+    start_date: 2014-05-14
+    end_date: 2014-09-14

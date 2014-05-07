@@ -1,0 +1,20 @@
+ben:
+    id: 1
+    email: attal.benjamin@gmail.com
+    username: breuckelen
+    password: guest
+    zip_code: 10282
+
+jack:
+    id: 2
+    email: cahnja@gmail.com
+    username: cahnja
+    password: guest
+    zip_code: 10282
+
+justin:
+    id: 3
+    email: jduda77@gmail.com
+    username: jduda73685
+    password: guest
+    zip_code: 10282

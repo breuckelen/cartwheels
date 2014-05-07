@@ -1,0 +1,6 @@
+premium:
+    id: 1
+    title: "Premium ad plan"
+    description: "Ad plan that lasts for a month."
+    duration: 30
+    price: 10.00

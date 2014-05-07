@@ -1,0 +1,9 @@
+korean:
+    id: 1
+    name: "Gangnam Style"
+    city: New York
+    borough: Manhattan
+    permit_number: 101112
+    zip_code: 10282
+    lat: 39.88924
+    lon: 180.95467
