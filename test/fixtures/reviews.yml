@@ -1,11 +1,11 @@
-review01:
+halalReview:
     id: 1
     text: This place is pretty good.
     rating: 4
     cart_id: 1
     user_id: 1
 
-review02:
+coffeeReview:
     id: 2
     text: Bland coffee.
     rating: 2
