@@ -5,8 +5,11 @@ class CreateMenuSuggestions < ActiveRecord::Migration
         t.string :image_url
         t.float :price, precision: 6, scale: 2
         t.integer :menu_id
-        t.boolean :approved, :default => false
+        t.boolean :approved, default: false
+
         t.timestamps
     end
+
+    add_index :menu_suggestions, :menu_id
   end
 end

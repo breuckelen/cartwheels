@@ -1,7 +1,14 @@
 class Owner < ActiveRecord::Base
+    # Associations
     has_and_belongs_to_many :carts
 
-    validates :email, :email_confirmation, :password, :password_confirmation, :carts, presence: true
-    validates :email, :password, confirmation: true
-    validates :email, uniqueness: true, email: true
+    # Encryption
+    attr_encrypted :email, :key => SECRET_KEY, :attribute => 'email_encrypted'
+    attr_encrypted :password, :key => SECRET_KEY, :attribute => 'password_encrypted'
+
+    # Validations
+    validates :email, :email_encrypted, :password, :password_encrypted,
+        presence: true
+    validates :email, email: true
+    validates :email_encrypted, uniqueness: true
 end

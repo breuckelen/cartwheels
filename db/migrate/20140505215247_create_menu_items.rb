@@ -5,7 +5,10 @@ class CreateMenuItems < ActiveRecord::Migration
         t.string :image_url
         t.float :price, precision: 6, scale: 2
         t.integer :menu_id
+
         t.timestamps
     end
+
+    add_index :menu_items, :menu_id
   end
 end
