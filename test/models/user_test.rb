@@ -3,34 +3,31 @@ require File.expand_path('../../test_helper', __FILE__)
 class UserTest < ActiveSupport::TestCase
     fixtures :users
 
-    test "email, username, password, and zip_code may not be nil for a user" do
+    test "email, username, password, zip_code should be present" do
         user = users(:ben)
-        user.email = nil
-        user.username = nil
-        user.password = nil
-        user.zip_code = nil
-
-        assert user.invalid?
-        assert_equal "can't be blank", user.errors[:email][0]
-        assert_equal "can't be blank", user.errors[:username][0]
-        assert_equal "can't be blank", user.errors[:password][0]
-        assert_equal "can't be blank", user.errors[:zip_code][0]
+        presence_test(user, :email)
+        presence_test(user, :email_encrypted)
+        presence_test(user, :password)
+        presence_test(user, :password_encrypted)
+        presence_test(user, :username)
+        presence_test(user, :zip_code)
     end
 
-    test "a valid email must be provided" do
-        user = users(:ben)
+    test "email should be valid" do
+        user = User.new(email: "test@example.com", password: "guest", username: "hello", zip_code: 11217)
+        user.save
         email_valid_test(user)
     end
 
-    test "username and password must be confirmed" do
-        user = users(:ben)
-
-        assert user.invalid?
-        assert_equal "can't be blank", user.errors[:email_confirmation][0]
-        assert_equal "can't be blank", user.errors[:password_confirmation][0]
+    test "email_encrypted should be unique" do
+        user = User.new(email: "test@example.com", password: "guest", username: "hello", zip_code: 11217)
+        user.save
+        user = User.new(email: "test@example.com", password: "guest", username: "hello", zip_code: 11217)
+        user.invalid?
+        assert_equal "has already been taken", user.errors[:email_encrypted][0]
     end
 
-    test "zip_code must be a number, and exactly 5 digits long" do
+    test "zip_code should be a number and five digits long" do
         user = users(:ben)
         zip_code_test(user)
     end

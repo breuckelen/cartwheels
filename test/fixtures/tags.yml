@@ -1,0 +1,9 @@
+halalTag:
+  id: 1
+  text: halal
+  count: 1
+
+coffeeTag:
+  id: 2
+  text: coffee
+  count: 1

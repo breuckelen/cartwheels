@@ -1,15 +1,18 @@
 require File.expand_path('../../test_helper', __FILE__)
+
 class ReviewTest < ActiveSupport::TestCase
     fixtures :reviews
 
-    test "text and rating may not be nil for a user" do
-        rev = reviews(:review01)
+    test "text, rating should be present" do
+        rev = reviews(:halalReview)
         presence_test(rev, :text)
         presence_test(rev, :rating)
+        presence_test(rev, :cart)
+        presence_test(rev, :user)
     end
 
-    test "rating must be a valid number" do
-        rev = reviews(:review01)
+    test "rating should be a number" do
+        rev = reviews(:halalReview)
         numericality_test(rev, :rating)
     end
 end

@@ -2,19 +2,16 @@ chickenOverRice:
     id: 1
     menu_id: 1
     description: Chicken over rice
-    image_url: 'chicken.jpg'
     price: 5.00
 
 lambOverRice:
     id: 2
     menu_id: 1
     description: Lamb over rice
-    image_url: 'lamb.jpg'
     price: 5.00
 
 falafel:
     id: 3
     menu_id: 1
     description: A falafel
-    image_url: 'falafel.jpg'
     price: 4.00
