@@ -3,7 +3,7 @@ require File.expand_path('../../test_helper', __FILE__)
 class MenuSuggestionTest < ActiveSupport::TestCase
     fixtures :menu_suggestions
 
-    test "description, price should be present" do
+    test "description price should be present" do
         item = menu_suggestions(:coffee)
         presence_test(item, :description)
         presence_test(item, :price)

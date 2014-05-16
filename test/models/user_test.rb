@@ -3,7 +3,7 @@ require File.expand_path('../../test_helper', __FILE__)
 class UserTest < ActiveSupport::TestCase
     fixtures :users
 
-    test "email, username, password, zip_code should be present" do
+    test "email username password zip_code should be present" do
         user = users(:ben)
         presence_test(user, :email)
         presence_test(user, :email_encrypted)

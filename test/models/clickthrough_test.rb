@@ -3,7 +3,7 @@ require 'test_helper'
 class ClickthroughTest < ActiveSupport::TestCase
     fixtures :clickthroughs
 
-    test "count, user, cart should be present" do
+    test "count user cart should be present" do
         click = clickthroughs(:halalClick)
         presence_test(click, :count)
         presence_test(click, :user)

@@ -3,7 +3,7 @@ require File.expand_path('../../test_helper', __FILE__)
 class OwnerTest < ActiveSupport::TestCase
     fixtures :owners
 
-    test "email, email_encrypted, password, password_encrypted should be present" do
+    test "email email_encrypted password password_encrypted should be present" do
         owner = owners(:echen)
         presence_test(owner, :email)
         presence_test(owner, :email_encrypted)

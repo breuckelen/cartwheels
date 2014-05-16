@@ -1,7 +1,7 @@
 class UserCartRelationTest < ActiveSupport::TestCase
     fixtures :user_cart_relations
 
-    test "relation_type, user, cart should be present" do
+    test "relation_type user cart should be present" do
         rel = user_cart_relations(:benFavoriteHalal)
         presence_test(rel, :relation_type)
         presence_test(rel, :user)

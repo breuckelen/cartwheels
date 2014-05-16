@@ -3,7 +3,7 @@ require 'test_helper'
 class TagTest < ActiveSupport::TestCase
     fixtures :tags
 
-    test "text, count should be present" do
+    test "text count should be present" do
         tag = tags(:halalTag)
         presence_test(tag, :text)
         presence_test(tag, :count)
