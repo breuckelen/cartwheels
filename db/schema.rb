@@ -230,15 +230,24 @@ ActiveRecord::Schema.define(version: 20140509143436) do
   add_index "user_cart_relations", ["user_id"], name: "index_user_cart_relations_on_user_id"
 
   create_table "users", force: true do |t|
-    t.string   "email_encrypted"
-    t.string   "username"
-    t.string   "password_encrypted"
-    t.integer  "zip_code"
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "name",                   default: ""
+    t.integer  "zip_code",               default: -1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users", ["created_at", "username"], name: "index_users_on_created_at_and_username"
-  add_index "users", ["created_at", "zip_code"], name: "index_users_on_created_at_and_zip_code"
+  add_index "users", ["created_at", "zip_code"], name: "index_users_on_created_at_and_zip_code", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

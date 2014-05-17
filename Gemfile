@@ -20,7 +20,7 @@ gem 'bootstrap-sass'
 
 gem 'email_validator'
 
-gem 'attr_encrypted'
+gem 'devise'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

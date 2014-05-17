@@ -8,5 +8,8 @@
   = csrf_meta_tags
 
 %body
+  %p.notice= notice
+  %p.alert= alert
+
   #mainContent{:class => "#{controller.controller_name}"}
     = yield
