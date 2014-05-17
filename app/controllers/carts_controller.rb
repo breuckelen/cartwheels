@@ -1,4 +1,4 @@
-class CartController < ApplicationController
+class CartsController < ApplicationController
     # GET /carts/:id
     def show
        # @cart = Cart.find(params[:id])
