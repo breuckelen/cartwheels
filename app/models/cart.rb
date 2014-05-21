@@ -1,7 +1,8 @@
 class Cart < ActiveRecord::Base
+    # Relations
     has_one :menu
     has_many :ads
-    has_many :menu_suggestions
+    has_many :menu_ghosts
     has_many :reviews
     has_many :clickthroughs
     has_many :photos, as: :target
@@ -11,6 +12,7 @@ class Cart < ActiveRecord::Base
     has_many :tags, through: :cart_tag_relations
     has_and_belongs_to_many :owners
 
+    # Validations
     validates :name, :city, :borough, :permit_number, :zip_code, :owner_secret,
         :lat, :lon, presence: true
     validates :permit_number, :zip_code, :owner_secret, :lat, :lon,
