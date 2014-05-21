@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20140509143436) do
   add_index "ads", ["ad_type_id"], name: "index_ads_on_ad_type_id"
   add_index "ads", ["cart_id"], name: "index_ads_on_cart_id"
 
-  create_table "cart_suggestions", force: true do |t|
+  create_table "cart_ghosts", force: true do |t|
     t.string   "name"
     t.string   "city"
     t.string   "borough"
@@ -47,20 +47,20 @@ ActiveRecord::Schema.define(version: 20140509143436) do
     t.datetime "updated_at"
   end
 
-  add_index "cart_suggestions", ["created_at", "borough"], name: "index_cart_suggestions_on_created_at_and_borough"
-  add_index "cart_suggestions", ["created_at", "city"], name: "index_cart_suggestions_on_created_at_and_city"
-  add_index "cart_suggestions", ["created_at", "name"], name: "index_cart_suggestions_on_created_at_and_name"
-  add_index "cart_suggestions", ["created_at", "permit_number"], name: "index_cart_suggestions_on_created_at_and_permit_number"
-  add_index "cart_suggestions", ["created_at", "zip_code"], name: "index_cart_suggestions_on_created_at_and_zip_code"
-  add_index "cart_suggestions", ["permit_number"], name: "index_cart_suggestions_on_permit_number"
+  add_index "cart_ghosts", ["created_at", "borough"], name: "index_cart_ghosts_on_created_at_and_borough"
+  add_index "cart_ghosts", ["created_at", "city"], name: "index_cart_ghosts_on_created_at_and_city"
+  add_index "cart_ghosts", ["created_at", "name"], name: "index_cart_ghosts_on_created_at_and_name"
+  add_index "cart_ghosts", ["created_at", "permit_number"], name: "index_cart_ghosts_on_created_at_and_permit_number"
+  add_index "cart_ghosts", ["created_at", "zip_code"], name: "index_cart_ghosts_on_created_at_and_zip_code"
+  add_index "cart_ghosts", ["permit_number"], name: "index_cart_ghosts_on_permit_number"
 
-  create_table "cart_suggestions_users", force: true do |t|
-    t.integer "cart_suggestion_id"
+  create_table "cart_ghosts_users", force: true do |t|
+    t.integer "cart_ghost_id"
     t.integer "user_id"
   end
 
-  add_index "cart_suggestions_users", ["cart_suggestion_id"], name: "index_cart_suggestions_users_on_cart_suggestion_id"
-  add_index "cart_suggestions_users", ["user_id"], name: "index_cart_suggestions_users_on_user_id"
+  add_index "cart_ghosts_users", ["cart_ghost_id"], name: "index_cart_ghosts_users_on_cart_ghost_id"
+  add_index "cart_ghosts_users", ["user_id"], name: "index_cart_ghosts_users_on_user_id"
 
   create_table "cart_tag_relations", force: true do |t|
     t.integer  "cart_id"
@@ -112,6 +112,26 @@ ActiveRecord::Schema.define(version: 20140509143436) do
   add_index "clickthroughs", ["cart_id"], name: "index_clickthroughs_on_cart_id"
   add_index "clickthroughs", ["user_id"], name: "index_clickthroughs_on_user_id"
 
+  create_table "menu_ghosts", force: true do |t|
+    t.text     "description"
+    t.string   "image_url"
+    t.float    "price"
+    t.integer  "menu_id"
+    t.boolean  "approved",    default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "menu_ghosts", ["menu_id"], name: "index_menu_ghosts_on_menu_id"
+
+  create_table "menu_ghosts_users", force: true do |t|
+    t.integer "menu_ghost_id"
+    t.integer "user_id"
+  end
+
+  add_index "menu_ghosts_users", ["menu_ghost_id"], name: "index_menu_ghosts_users_on_menu_ghost_id"
+  add_index "menu_ghosts_users", ["user_id"], name: "index_menu_ghosts_users_on_user_id"
+
   create_table "menu_items", force: true do |t|
     t.text     "description"
     t.string   "image_url"
@@ -123,26 +143,6 @@ ActiveRecord::Schema.define(version: 20140509143436) do
 
   add_index "menu_items", ["menu_id"], name: "index_menu_items_on_menu_id"
 
-  create_table "menu_suggestions", force: true do |t|
-    t.text     "description"
-    t.string   "image_url"
-    t.float    "price"
-    t.integer  "menu_id"
-    t.boolean  "approved",    default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "menu_suggestions", ["menu_id"], name: "index_menu_suggestions_on_menu_id"
-
-  create_table "menu_suggestions_users", force: true do |t|
-    t.integer "menu_suggestion_id"
-    t.integer "user_id"
-  end
-
-  add_index "menu_suggestions_users", ["menu_suggestion_id"], name: "index_menu_suggestions_users_on_menu_suggestion_id"
-  add_index "menu_suggestions_users", ["user_id"], name: "index_menu_suggestions_users_on_user_id"
-
   create_table "menus", force: true do |t|
     t.integer  "cart_id"
     t.datetime "created_at"
@@ -152,11 +152,23 @@ ActiveRecord::Schema.define(version: 20140509143436) do
   add_index "menus", ["cart_id"], name: "index_menus_on_cart_id"
 
   create_table "owners", force: true do |t|
-    t.string   "email_encrypted"
-    t.string   "password_encrypted"
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "name",                   default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "owners", ["email"], name: "index_owners_on_email", unique: true
+  add_index "owners", ["reset_password_token"], name: "index_owners_on_reset_password_token", unique: true
 
   create_table "photos", force: true do |t|
     t.string   "image_url"
