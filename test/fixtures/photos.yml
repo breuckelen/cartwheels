@@ -1,0 +1,11 @@
+one:
+  image_url: 'chicken.jpg'
+  target_id: 1
+  target_type: Cart
+  author_id: 1
+
+two:
+  image_url: 'lamb.jpg'
+  target_id: 2
+  target_type: Cart
+  author_id: 2
