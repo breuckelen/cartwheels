@@ -31,7 +31,7 @@ class CreateUsers < ActiveRecord::Migration
             # t.datetime :locked_at
 
             t.string :name, :default => ''
-            t.integer :zip_code, :default => -1
+            t.integer :zip_code, :default => 99999
 
             t.timestamps
         end

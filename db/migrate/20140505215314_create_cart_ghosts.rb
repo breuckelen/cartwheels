@@ -8,7 +8,6 @@ class CreateCartGhosts < ActiveRecord::Migration
         t.integer :zip_code
         t.float :lat, precision: 8, scale: 5
         t.float :lon, precision: 8, scale: 5
-        t.boolean :approved, :default => false
 
         t.timestamps
     end

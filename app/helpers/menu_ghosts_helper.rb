@@ -1,0 +1,2 @@
+module MenuGhostsHelper
+end

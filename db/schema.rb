@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140509143436) do
+ActiveRecord::Schema.define(version: 20140523224552) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -33,6 +33,23 @@ ActiveRecord::Schema.define(version: 20140509143436) do
 
   add_index "ads", ["ad_type_id"], name: "index_ads_on_ad_type_id"
   add_index "ads", ["cart_id"], name: "index_ads_on_cart_id"
+
+  create_table "badges", force: true do |t|
+    t.string "title", default: ""
+  end
+
+  create_table "badges_users", force: true do |t|
+    t.integer "badge_id"
+    t.integer "user_id"
+  end
+
+  create_table "cart_category_relations", force: true do |t|
+    t.integer  "cart_id"
+    t.string   "cart_type"
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "cart_ghosts", force: true do |t|
     t.string   "name"
@@ -100,6 +117,13 @@ ActiveRecord::Schema.define(version: 20140509143436) do
 
   add_index "carts_owners", ["cart_id"], name: "index_carts_owners_on_cart_id"
   add_index "carts_owners", ["owner_id"], name: "index_carts_owners_on_owner_id"
+
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.integer  "count",      default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "clickthroughs", force: true do |t|
     t.integer  "count",      default: 0
@@ -172,6 +196,7 @@ ActiveRecord::Schema.define(version: 20140509143436) do
 
   create_table "photos", force: true do |t|
     t.string   "image_url"
+    t.text     "caption"
     t.integer  "target_id"
     t.string   "target_type"
     t.integer  "author_id"
@@ -242,18 +267,19 @@ ActiveRecord::Schema.define(version: 20140509143436) do
   add_index "user_cart_relations", ["user_id"], name: "index_user_cart_relations_on_user_id"
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "name",                   default: ""
-    t.integer  "zip_code",               default: -1
+    t.integer  "zip_code",               default: 99999
+    t.integer  "points",                 default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

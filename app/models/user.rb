@@ -8,9 +8,10 @@ class User < ActiveRecord::Base
     has_many :carts, :through => :user_cart_relations
     has_and_belongs_to_many :cart_ghosts
     has_and_belongs_to_many :menu_ghosts
+    has_and_belongs_to_many :badges
 
     # Validations
-    validates :email, :password, :zip_code, presence: true
+    validates :email, :password, :zip_code, :points, presence: true
     validates :password, confirmation: true
     validates :email, email: true, uniqueness: true
     validates :zip_code, numericality: true, format: {:with => /\A\d{5}\Z/}
@@ -19,6 +20,12 @@ class User < ActiveRecord::Base
     devise :database_authenticatable, :registerable, :recoverable,
         :rememberable, :trackable, :validatable
 
-    # Other
-    attr_accessor :email, :password, :password_confirmation
+    # Function to grant a user more priveleges
+    def promote(level)
+    end
+
+    # Get carts based on others that this user has followed, reviewed, and
+    # clicked on
+    def suggested_carts
+    end
 end

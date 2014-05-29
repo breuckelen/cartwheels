@@ -4,6 +4,6 @@ class Tag < ActiveRecord::Base
     has_many :carts, :through => :cart_tag_relations
 
     # Validations
-    validates :text, :count, presence: true
+    validates :name, :count, presence: true
     validates :count, numericality: true
 end
