@@ -8,8 +8,12 @@ Rails.application.routes.draw do
         resources :reviews, only: [:index, :new, :create]
     end
 
+    concern :tags do
+        resources :tags, path: "tags", only: [:index, :new, :create]
+    end
+
     concern :categories do
-        resources :tags, path: "categories", only: [:index, :new, :create]
+        resources :categories, path: "categories", only: [:index, :new, :create]
     end
 
     # Collection routes
@@ -18,7 +22,7 @@ Rails.application.routes.draw do
     resources :users, concerns: [:photos, :reviews]
     get "/account", to: "users#show", as: :account
 
-    resources :carts, concerns: [:photos, :reviews, :categories] do
+    resources :carts, concerns: [:photos, :reviews, :tags, :categories] do
         member do
             resource :menu, only: [:show, :edit, :update, :destroy] do
                 resource :menu_ghosts, path: "ghost_items", shallow: true
@@ -29,7 +33,7 @@ Rails.application.routes.draw do
         end
     end
 
-    resources :cart_ghosts, concerns: [:photos, :categories]
+    resources :cart_ghosts, concerns: [:photos, :tags, :categories]
 
     resources :owners do
         resources :carts, shallow: true
@@ -41,8 +45,16 @@ Rails.application.routes.draw do
 
     resources :reviews, only: [:show, :edit, :update, :destroy]
 
-    resources :categories do
-        get "carts", to: "tags#index"
+    resources :tags, only: [:edit, :update, :destroy] do
+        member do
+            get "carts", to: "tags#carts"
+        end
+    end
+
+    resources :categories, only: [:edit, :update, :destroy] do
+        member do
+            get "carts", to: "categories#carts"
+        end
     end
 
     # Search
