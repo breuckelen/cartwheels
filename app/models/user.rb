@@ -20,6 +20,15 @@ class User < ActiveRecord::Base
     devise :database_authenticatable, :registerable, :recoverable,
         :rememberable, :trackable, :validatable
 
+    # Accessible attributes
+    attr_accessor :roles_mask, :roles
+
+    # RoleModel
+    include RoleModel
+
+    roles_attribute :roles_mask
+    roles :admin, :manager
+
     # Function to grant a user more priveleges
     def promote(level)
     end
