@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
     devise :database_authenticatable, :registerable, :recoverable,
         :rememberable, :trackable, :validatable
 
+    devise :omniauthable, :omniauth_providers => [:facebook, :google]
+
     # Accessible attributes
     attr_accessor :roles_mask, :roles
 
@@ -36,5 +38,22 @@ class User < ActiveRecord::Base
     # Get carts based on others that this user has followed, reviewed, and
     # clicked on
     def suggested_carts
+    end
+
+    def self.find_for_facebook_oauth(auth)
+    end
+
+    def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
+        data = access_token.info
+        user = User.where(:email => data["email"]).first
+
+        unless user
+            user = User.create(
+               email: data["email"],
+               password: Devise.friendly_token[0,20],
+               zip_code: 11217
+            )
+        end
+        user
     end
 end

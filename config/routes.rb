@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :authentications
-
     # Concerns
     concern :photos do
         resources :photos, only: [:index, :new, :create]
@@ -19,7 +17,23 @@ Rails.application.routes.draw do
     end
 
     # Collection routes
-    devise_for :users
+    devise_for :users, controllers: {
+        :omniauth_callbacks => 'users/omniauth_callbacks'
+    }
+
+    devise_scope :user do
+        match "/users/auth/:provider",
+            constraints: { provider: /google_oauth2|facebook/ },
+            to: "users/omniauth_callbacks#passthru",
+            as: :omniauth_authorize,
+            via: [:get, :post]
+        match "/users/auth/:action/callback",
+            constraints: { action: /google_oauth2|facebook/ },
+            to: "users/omniauth_callbacks",
+            as: :omniauth_callback,
+            via: [:get, :post]
+    end
+
 
     resources :users, concerns: [:photos, :reviews]
     get "/account", to: "users#show", as: :account
