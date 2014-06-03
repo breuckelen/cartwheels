@@ -21,6 +21,9 @@ Rails.application.routes.draw do
         :omniauth_callbacks => 'users/omniauth_callbacks'
     }
 
+    # Quickfix: change authorize and callback route so that the providers
+    # and actions fields can match the desired patterns.
+    # NOTE: Some other files dependent on these routes had to be tweaked.
     devise_scope :user do
         match "/users/auth/:provider",
             constraints: { provider: /google_oauth2|facebook/ },
@@ -50,6 +53,8 @@ Rails.application.routes.draw do
     end
 
     resources :cart_ghosts, concerns: [:photos, :tags, :categories]
+
+    devise_for :owners
 
     resources :owners do
         resources :carts, shallow: true

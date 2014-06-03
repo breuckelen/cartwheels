@@ -30,8 +30,8 @@ class CreateUsers < ActiveRecord::Migration
             # t.string   :unlock_token # Only if unlock strategy is :email or :both
             # t.datetime :locked_at
 
-            t.string :name, :default => ''
-            t.integer :zip_code, :default => 99999
+            t.string :name, :null => true
+            t.integer :zip_code
 
             t.timestamps
         end
