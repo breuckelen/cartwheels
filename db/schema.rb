@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 20140523224552) do
     t.integer  "zip_code"
     t.float    "lat"
     t.float    "lon"
-    t.boolean  "approved",      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -249,13 +248,13 @@ ActiveRecord::Schema.define(version: 20140523224552) do
   add_index "search_tokens", ["term"], name: "index_search_tokens_on_term"
 
   create_table "tags", force: true do |t|
-    t.string   "text"
+    t.string   "name"
     t.integer  "count",      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "tags", ["text"], name: "index_tags_on_text"
+  add_index "tags", ["name"], name: "index_tags_on_name"
 
   create_table "user_cart_relations", force: true do |t|
     t.integer "relation_type"
@@ -279,12 +278,11 @@ ActiveRecord::Schema.define(version: 20140523224552) do
     t.string   "last_sign_in_ip"
     t.string   "name",                   default: ""
     t.integer  "zip_code",               default: 99999
-    t.integer  "points",                 default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users", ["created_at", "zip_code"], name: "index_users_on_created_at_and_zip_code", unique: true
+  add_index "users", ["created_at", "zip_code"], name: "index_users_on_created_at_and_zip_code"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 

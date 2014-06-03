@@ -1,9 +1,21 @@
 class UsersController < ApplicationController
     def show
-        @user = User.find(params[:id])
+        if params.has_key? :id
+            begin
+                @user = User.find(params[:id])
+            rescue
+                return redirect_to :home, :notice => "This user does not exist."
+            end
+        else
+            @user = current_user
+
+            unless @user != nil
+                return redirect_to :home, :notice => "You are not logged in."
+            end
+        end
 
         unless @user == current_user
-            redirect_to :back, :alert => "Access denied."
+            return redirect_to :home, :notice => "Access denied."
         end
     end
 
@@ -20,7 +32,7 @@ class UsersController < ApplicationController
     end
 
     # action for editing subscriptions
-    def edit_subs
+    def edit_subscriptions
         # redirect unless correct user
         # html:
         # allow for deletion of subscriptions

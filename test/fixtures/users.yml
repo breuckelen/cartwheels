@@ -1,20 +1,17 @@
 ben:
     id: 1
-    email_encrypted: "lw42BLNEKKHGNXdfOcQ+GFs3DaEQ7mlOeO/BY684Jgw=\n"
-    username: breuckelen
-    password_encrypted: "AhakWsM8KCvA0wBcd3hKrQ==\n"
+    email: attal.benjamin@gmail.com
+    encrypted_password: <%= User.new.send(:password_digest, 'bagattal') %>
     zip_code: 10282
 
 jack:
     id: 2
-    email_encrypted: "sAqTmf0jsZdHmk/vyLO8l0VjzEJwOvvVLMmHIqeS308=\n"
-    username: cahnja
-    password_encrypted: "AhakWsM8KCvA0wBcd3hKrQ==\n"
+    email: cahnja@gmail.com
+    encrypted_password: <%= User.new.send(:password_digest, 'bagattal') %>
     zip_code: 10282
 
 justin:
     id: 3
-    email_encrypted: "2GU5FdHLv5gzzJ94pPHwWpWY6szpCr9o+j3fh7DT6zY=\n"
-    username: jduda73685
-    password_encrypted: "AhakWsM8KCvA0wBcd3hKrQ==\n"
+    email: jduda77@gmail.com
+    encrypted_password: <%= User.new.send(:password_digest, 'bagattal') %>
     zip_code: 10282

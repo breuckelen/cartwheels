@@ -11,9 +11,9 @@ class User < ActiveRecord::Base
     has_and_belongs_to_many :badges
 
     # Validations
-    validates :email, :password, :zip_code, :points, presence: true
+    validates :email, :password, :zip_code, presence: true
     validates :password, confirmation: true
-    validates :email, email: true, uniqueness: true
+    validates :email, email: true
     validates :zip_code, numericality: true, format: {:with => /\A\d{5}\Z/}
 
     # Devise
