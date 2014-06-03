@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140523224552) do
+ActiveRecord::Schema.define(version: 20140603022756) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 20140523224552) do
 
   add_index "ads", ["ad_type_id"], name: "index_ads_on_ad_type_id"
   add_index "ads", ["cart_id"], name: "index_ads_on_cart_id"
+
+  create_table "authentications", force: true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "index"
+    t.string   "create"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "badges", force: true do |t|
     t.string "title", default: ""

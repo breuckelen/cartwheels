@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :authentications
+
     # Concerns
     concern :photos do
         resources :photos, only: [:index, :new, :create]
