@@ -4,6 +4,7 @@ class CreateCarts < ActiveRecord::Migration
         t.string :name
         t.string :city
         t.string :borough
+        t.integer :upload_id
         t.integer :owner_secret, precision: 10
         t.integer :permit_number
         t.integer :zip_code

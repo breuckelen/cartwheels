@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :uploads
+
     # Concerns
     concern :photos do
         resources :photos, only: [:index, :new, :create]
@@ -74,6 +76,8 @@ Rails.application.routes.draw do
             get "carts", to: "categories#carts"
         end
     end
+
+    resources :uploads
 
     # Search
     get "/search", to: "search#index", as: :search

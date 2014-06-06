@@ -1,0 +1,42 @@
+= form_for @upload do |f|
+  - if @upload.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@upload.errors.count, "error")} prohibited this upload from being saved:"
+      %ul
+        - @upload.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.fields_for :cart do |c|
+    %div
+      = c.label :name
+      %br
+      = c.text_field :name
+
+    %div
+      = c.label :city
+      %br
+      = c.text_field :city
+
+    %div
+      = c.label :borough
+      %br
+      = c.text_field :borough
+
+    %div
+      = c.label :permit_number
+      %br
+      = c.text_field :permit_number
+
+    %div
+      = c.label :zip_code
+      %br
+      = c.text_field :zip_code
+
+    %div
+      = c.hidden_field :lat
+
+    %div
+      = c.hidden_field :lon
+
+  .actions
+    = f.submit 'Save'

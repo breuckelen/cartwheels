@@ -229,8 +229,6 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  CLIENT_KEY = '35775119515-7d5cl73gele709qsr5jbh220ko52u6g1.apps.googleusercontent.com'
-  CLIENT_SECRET = 'nYOE3-iMX4diPQGaEl9hk29U'
 
 
   # Fix for development mode
