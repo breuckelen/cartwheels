@@ -16,11 +16,22 @@ class Cart < ActiveRecord::Base
     has_and_belongs_to_many :owners
 
     # Validations
-    validates :name, :city, :borough, :permit_number, :zip_code, :lat, :lon,
+    validates :name, :city, :permit_number, :zip_code, :lat, :lon,
         presence: true
-    validates :permit_number, :zip_code, :owner_secret, :lat, :lon,
-        numericality: true
+    validates :permit_number, :zip_code, :lat, :lon, numericality: true
+    validates :permit_number, uniqueness: true
     validates :zip_code, format: {:with => /\A\d{5}\Z/}
+
+    # Reverse geocoding
+    reverse_geocoded_by :lat, :lon do |obj, results|
+        if geo = results.first
+            obj.city = geo.city
+            obj.zip_code = geo.postal_code
+        end
+    end
+
+    # Callbacks
+    before_validation :reverse_geocode
 
     # Get most popular carts (highest ratings, most clickthroughs)
     def self.trending

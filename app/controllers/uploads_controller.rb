@@ -1,5 +1,6 @@
 class UploadsController < ApplicationController
     before_action :set_upload, only: [:show, :edit, :update, :destroy]
+    before_filter :authenticate_user!
 
     # GET /uploads
     # GET /uploads.json
@@ -10,17 +11,19 @@ class UploadsController < ApplicationController
     # GET /uploads/new
     def new
         @upload = Upload.new
-        @upload.build_cart
+        @cart = @upload.build_cart
     end
 
     # GET /uploads/1/edit
     def edit
+        @cart = @upload.cart
     end
 
     # POST /uploads
     # POST /uploads.json
     def create
-        @upload = current_user.uploads.build(upload_params)
+        @upload = current_user.uploads.build
+        @cart = @upload.build_cart(upload_params[:cart_attributes])
 
         respond_to do |format|
             if @upload.save
@@ -28,7 +31,7 @@ class UploadsController < ApplicationController
                 format.json { render :show, status: :created, location: @upload }
             else
                 format.html { render :new }
-                format.json { render json: @upload.errors, status: :unprocessable_entity }
+                format.json { render json: @cart.errors, status: :unprocessable_entity }
             end
         end
     end
@@ -36,13 +39,15 @@ class UploadsController < ApplicationController
     # PATCH/PUT /uploads/1
     # PATCH/PUT /uploads/1.json
     def update
+        @cart = @upload.cart
+
         respond_to do |format|
-            if @upload.update(upload_params)
+            if @cart.update(upload_params[:cart_attributes])
                 format.html { redirect_to @upload, notice: 'Cart was successfully updated.' }
                 format.json { render :show, status: :ok, location: @upload }
             else
                 format.html { render :edit }
-                format.json { render json: @upload.errors, status: :unprocessable_entity }
+                format.json { render json: @cart.errors, status: :unprocessable_entity }
             end
         end
     end
@@ -65,7 +70,6 @@ class UploadsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def upload_params
-        params.require(:upload).permit(carts_attributes: [:name, :city,
-            :borough, :permit_number, :zip_code, :lat, :lon])
+        params.require(:upload).permit(cart_attributes: [:name, :permit_number, :lat, :lon])
     end
 end

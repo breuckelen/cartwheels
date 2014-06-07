@@ -11,5 +11,5 @@
   %p.notice= notice
   %p.alert= alert
 
-  #mainContent{:class => "#{controller.controller_name}"}
+  %div{:id => "#{controller.controller_name}-#{action_name}"}
     = yield

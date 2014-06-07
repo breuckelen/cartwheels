@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140606131457) do
+ActiveRecord::Schema.define(version: 20140607173248) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -92,22 +92,21 @@ ActiveRecord::Schema.define(version: 20140606131457) do
   create_table "carts", force: true do |t|
     t.string   "name"
     t.string   "city"
-    t.string   "borough"
     t.integer  "upload_id"
     t.integer  "owner_secret"
     t.integer  "permit_number"
     t.integer  "zip_code"
-    t.integer  "lat"
-    t.integer  "lon"
+    t.float    "lat"
+    t.float    "lon"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "carts", ["created_at", "borough"], name: "index_carts_on_created_at_and_borough"
   add_index "carts", ["created_at", "city"], name: "index_carts_on_created_at_and_city"
   add_index "carts", ["created_at", "name"], name: "index_carts_on_created_at_and_name"
   add_index "carts", ["created_at", "permit_number"], name: "index_carts_on_created_at_and_permit_number"
   add_index "carts", ["created_at", "zip_code"], name: "index_carts_on_created_at_and_zip_code"
+  add_index "carts", ["created_at"], name: "index_carts_on_created_at_and_borough"
   add_index "carts", ["permit_number"], name: "index_carts_on_permit_number"
 
   create_table "carts_owners", force: true do |t|
