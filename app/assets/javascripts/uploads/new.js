@@ -6,7 +6,7 @@ var lat, lng;
  * Call init funcitons once the page loads.
  */
 function init() {
-    controller = $('#uploads-new')
+    controller = $('#uploads-new');
     navigator.geolocation.getCurrentPosition(showSubmit);
 }
 
@@ -39,10 +39,12 @@ function getPositionSuccess(position) {
 /*
  * On page load.
  */
-$(function() {
+function ready() {
     //Init
     init();
 
     //Variables
     var watchId = navigator.geolocation.watchPosition(getPosition);
-});
+}
+
+$(document).ready(ready);

@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
     has_and_belongs_to_many :badges
 
     # Validations
-    validates :email, :password, :zip_code, presence: true
+    validates :email, :password, :zip_code, :roles_mask, presence: true
     validates :password, confirmation: true
     validates :email, email: true
     validates :zip_code, numericality: true, format: {:with => /\A\d{5}\Z/}
@@ -22,9 +22,6 @@ class User < ActiveRecord::Base
         :rememberable, :trackable, :validatable
 
     devise :omniauthable, :omniauth_providers => [:facebook, :google]
-
-    # Accessible attributes
-    attr_accessor :roles_mask, :roles
 
     # RoleModel
     include RoleModel

@@ -27,11 +27,14 @@ class UploadsController < ApplicationController
 
         respond_to do |format|
             if @upload.save
-                format.html { redirect_to @upload, notice: 'Cart was succesfully created.' }
-                format.json { render :show, status: :created, location: @upload }
+                format.html { redirect_to @upload,
+                    notice: 'Cart was succesfully created.' }
+                format.json { render :show, status: :created,
+                    location: @upload }
             else
                 format.html { render :new }
-                format.json { render json: @cart.errors, status: :unprocessable_entity }
+                format.json { render json: @cart.errors,
+                    status: :unprocessable_entity }
             end
         end
     end
@@ -43,11 +46,17 @@ class UploadsController < ApplicationController
 
         respond_to do |format|
             if @cart.update(upload_params[:cart_attributes])
-                format.html { redirect_to @upload, notice: 'Cart was successfully updated.' }
+                format.html {
+                    redirect_to @upload,
+                    notice: 'Cart was successfully updated.'
+                }
                 format.json { render :show, status: :ok, location: @upload }
             else
                 format.html { render :edit }
-                format.json { render json: @cart.errors, status: :unprocessable_entity }
+                format.json {
+                    render json: @cart.errors,
+                    status: :unprocessable_entity
+                }
             end
         end
     end
@@ -55,10 +64,22 @@ class UploadsController < ApplicationController
     # DELETE /uploads/1
     # DELETE /uploads/1.json
     def destroy
-        @upload.destroy
         respond_to do |format|
-            format.html { redirect_to uploads_url, notice: 'Cart was successfully destroyed.' }
-            format.json { head :no_content }
+            if current_user == @upload.user or current_user.has_role? :admin
+                @upload.destroy
+
+                format.html {
+                    redirect_to uploads_url,
+                    notice: 'Cart was successfully destroyed.'
+                }
+                format.json { head :no_content }
+            else
+                format.html {
+                    redirect_to uploads_url,
+                    notice: 'You do not have permission to perform this action.'
+                }
+                format.json { head :no_content }
+            end
         end
     end
 
@@ -70,6 +91,8 @@ class UploadsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def upload_params
-        params.require(:upload).permit(cart_attributes: [:name, :permit_number, :lat, :lon])
+        params.require(:upload).permit(
+            cart_attributes: [:name, :permit_number, :lat, :lon]
+        )
     end
 end
