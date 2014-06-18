@@ -1,0 +1,33 @@
+/* Stylesheet for the application */
+@import variables
+@import mixins
+@import home
+@import carts
+@import reviews
+@import menus
+@import search
+@import users
+@import uploads
+
+html
+    height: 100%
+    position: relative
+
+    body
+        height: 100%
+        width: 70%
+        margin: auto
+
+        .notice, .alert
+            font-size: 1.5em
+            color: red
+            text-align: center
+
+        >div
+            height: 100%
+
+        a
+            text-decoration: none
+
+            &:hover
+                color: orange

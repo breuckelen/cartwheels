@@ -1,56 +1,142 @@
 Rails.application.routes.draw do
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  resources :uploads
 
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+    # Concerns
+    concern :photos do
+        resources :photos, only: [:index, :new, :create]
+    end
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+    concern :reviews do
+        resources :reviews, only: [:index, :new, :create]
+    end
 
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+    concern :tags do
+        resources :tags, path: "tags", only: [:index, :new, :create]
+    end
 
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+    concern :categories do
+        resources :categories, path: "categories", only: [:index, :new, :create]
+    end
 
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+    # Collection routes
+    devise_for :users, controllers: {:registrations => "users/registrations"}
 
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
+    # Quickfix: devise omniauth routes do not support dynamic segments
+    devise_scope :user do
+        match "/users/auth/:provider",
+            constraints: { provider: /google_oauth2|facebook/ },
+            to: "users/omniauth_callbacks#passthru",
+            as: :omniauth_authorize,
+            via: [:get, :post]
+        match "/users/auth/:action/callback",
+            constraints: { action: /google_oauth2|facebook/ },
+            to: "users/omniauth_callbacks",
+            as: :omniauth_callback,
+            via: [:get, :post]
+    end
 
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
 
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
+    resources :users, concerns: [:photos, :reviews]
+    get "/account", to: "users#show", as: :account
 
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+    resources :carts, concerns: [:photos, :reviews, :tags, :categories] do
+        member do
+            resource :menu, only: [:show, :edit, :update, :destroy] do
+                resource :menu_ghosts, path: "ghost_items", shallow: true
+                resource :menu_items, path: "items", shallow: true
+            end
+
+            resources :ads, shallow: true
+        end
+    end
+
+    resources :cart_ghosts, concerns: [:photos, :tags, :categories]
+
+    devise_for :owners, controllers: {:registrations => "owners/registrations"}
+
+
+    resources :owners do
+        resources :carts, shallow: true
+    end
+
+    resources :ad_types
+
+    resources :photos, only: [:show, :edit, :update, :destroy]
+
+    resources :reviews, only: [:show, :edit, :update, :destroy]
+
+    resources :tags, only: [:edit, :update, :destroy] do
+        member do
+            get "carts", to: "tags#carts"
+        end
+    end
+
+    resources :categories, only: [:edit, :update, :destroy] do
+        member do
+            get "carts", to: "categories#carts"
+        end
+    end
+
+    resources :uploads
+
+    # Search
+    get "/search", to: "search#index", as: :search
+
+    # Root page
+    root to: "home#index", as: :home
+
+    # The priority is based upon order of creation: first created -> highest priority.
+    # See how all your routes lay out with "rake routes".
+
+    # You can have the root of your site routed with "root"
+    # root 'welcome#index'
+
+    # Example of regular route:
+    #   get 'products/:id' => 'catalog#view'
+
+    # Example of named route that can be invoked with purchase_url(id: product.id)
+    #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+
+    # Example resource route (maps HTTP verbs to controller actions automatically):
+    #   resources :products
+
+    # Example resource route with options:
+    #   resources :products do
+    #     member do
+    #       get 'short'
+    #       post 'toggle'
+    #     end
+    #
+    #     collection do
+    #       get 'sold'
+    #     end
+    #   end
+
+    # Example resource route with sub-resources:
+    #   resources :products do
+    #     resources :comments, :sales
+    #     resource :seller
+    #   end
+
+    # Example resource route with more complex sub-resources:
+    #   resources :products do
+    #     resources :comments
+    #     resources :sales do
+    #       get 'recent', on: :collection
+    #     end
+    #   end
+
+    # Example resource route with concerns:
+    #   concern :toggleable do
+    #     post 'toggle'
+    #   end
+    #   resources :posts, concerns: :toggleable
+    #   resources :photos, concerns: :toggleable
+
+    # Example resource route within a namespace:
+    #   namespace :admin do
+    #     # Directs /admin/products/* to Admin::ProductsController
+    #     # (app/controllers/admin/products_controller.rb)
+    #     resources :products
+    #   end
 end

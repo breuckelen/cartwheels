@@ -1,0 +1,9 @@
+one:
+    cart_id: 1
+    cart_type: Cart
+    tag_id: 1
+
+two:
+    cart_id: 2
+    cart_type: Cart
+    tag_id: 2

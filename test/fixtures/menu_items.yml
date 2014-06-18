@@ -1,0 +1,17 @@
+chickenOverRice:
+    id: 1
+    menu_id: 1
+    description: Chicken over rice
+    price: 5.00
+
+lambOverRice:
+    id: 2
+    menu_id: 1
+    description: Lamb over rice
+    price: 5.00
+
+falafel:
+    id: 3
+    menu_id: 1
+    description: A falafel
+    price: 4.00
