@@ -6,7 +6,7 @@ class Cart < ActiveRecord::Base
     has_many :menu_ghosts
     has_many :reviews
     has_many :clickthroughs
-    has_many :photos, as: :target
+    has_many :photos, as: :target, inverse_of: :target, dependent: :destroy
     has_many :user_cart_relations
     has_many :users, through: :user_cart_relations
     has_many :cart_tag_relations, as: :cart
@@ -23,15 +23,14 @@ class Cart < ActiveRecord::Base
     validates :zip_code, format: {:with => /\A\d{5}\Z/}
 
     # Reverse geocoding
+    before_validation :reverse_geocode
+
     reverse_geocoded_by :lat, :lon do |obj, results|
         if geo = results.first
             obj.city = geo.city
             obj.zip_code = geo.postal_code
         end
     end
-
-    # Callbacks
-    before_validation :reverse_geocode
 
     # Get most popular carts (highest ratings, most clickthroughs)
     def self.trending

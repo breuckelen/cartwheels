@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
     has_one :search_history
     has_many :reviews
     has_many :clickthroughs
-    has_many :photos, as: :author
+    has_many :photos
     has_many :user_cart_relations
     has_many :uploads
     has_many :carts, :through => :user_cart_relations

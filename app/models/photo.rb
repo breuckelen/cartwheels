@@ -1,10 +1,12 @@
 class Photo < ActiveRecord::Base
     # Relations
-    belongs_to :target, polymorphic: true
-    belongs_to :author, polymorphic: true
+    belongs_to :user
+    belongs_to :target, polymorphic: true, inverse_of: :photos
+    has_attached_file :image, styles: { :medium => "300x300>",
+        :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
+
 
     # Validations
-    validates :image_url, :target, :target_type, :author, :author_type,
-        presence: true
-    validates :image_url, format: {:with => /\w+\.(jpe?g|png|gif)/}
+    validates :target, :target_type, :user, presence: true
+    validates_attachment_content_type :image, :content_type => /\Aimage/
 end

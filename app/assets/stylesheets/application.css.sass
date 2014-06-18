@@ -1,6 +1,7 @@
 /* Stylesheet for the application */
 @import variables
 @import mixins
+@import home
 @import carts
 @import reviews
 @import menus
@@ -14,8 +15,19 @@ html
 
     body
         height: 100%
+        width: 70%
+        margin: auto
+
+        .notice, .alert
+            font-size: 1.5em
+            color: red
+            text-align: center
 
         >div
-            width: $contentWidth
             height: 100%
-            margin: auto
+
+        a
+            text-decoration: none
+
+            &:hover
+                color: orange

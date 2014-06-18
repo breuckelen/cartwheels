@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140607202448) do
+ActiveRecord::Schema.define(version: 20140617191845) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -194,17 +194,18 @@ ActiveRecord::Schema.define(version: 20140607202448) do
   add_index "owners", ["reset_password_token"], name: "index_owners_on_reset_password_token", unique: true
 
   create_table "photos", force: true do |t|
-    t.string   "image_url"
     t.text     "caption"
     t.integer  "target_id"
     t.string   "target_type"
-    t.integer  "author_id"
-    t.integer  "author_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
-  add_index "photos", ["author_id", "author_type"], name: "index_photos_on_author_id_and_author_type"
   add_index "photos", ["target_id", "target_type"], name: "index_photos_on_target_id_and_target_type"
 
   create_table "reviews", force: true do |t|

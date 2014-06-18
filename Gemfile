@@ -32,6 +32,9 @@ gem 'omniauth-google-oauth2'
 # Google maps + geolocation
 gem 'geocoder'
 
+# Images
+gem "paperclip", "~> 4.1"
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

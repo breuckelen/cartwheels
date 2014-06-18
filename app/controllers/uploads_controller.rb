@@ -25,6 +25,10 @@ class UploadsController < ApplicationController
         @upload = current_user.uploads.build
         @cart = @upload.build_cart(upload_params[:cart_attributes])
 
+        if image = upload_params[:image]
+            @cart.photos.build(user: current_user, image: image)
+        end
+
         respond_to do |format|
             if @upload.save
                 format.html { redirect_to @upload,
@@ -92,7 +96,7 @@ class UploadsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def upload_params
         params.require(:upload).permit(
-            cart_attributes: [:name, :permit_number, :lat, :lon]
+            :image, cart_attributes: [:name, :permit_number, :lat, :lon],
         )
     end
 end

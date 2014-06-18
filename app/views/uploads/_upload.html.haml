@@ -1,3 +1,11 @@
+%br
+%br
+%br
+
+.image
+  - if upload.cart.photos.last
+    = image_tag upload.cart.photos.last.image.url(:medium)
+
 .user_name
   %b Uploader:
   = upload.user.name
