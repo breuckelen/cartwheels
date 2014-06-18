@@ -28,4 +28,4 @@ production:
   pool: 5
   username: cartwheels
   password: 9Ca$#@368
-  host: localhost”
+  host: localhost
