@@ -1,23 +1,24 @@
 %br
 %br
-%br
 
-.image
-  - if upload.cart.photos.last
-    = image_tag upload.cart.photos.last.image.url(:medium)
+.item
+  .image
+    - if upload.cart.photos.last
+      - upload.cart.photos.each do |photo|
+        = image_tag photo.image.url(:medium)
 
-.user_name
-  %b Uploader:
-  = upload.user.name
+  .user_name
+    %b Uploader:
+    = upload.user.name
 
-.updated_at
-  %b Last Updated:
-  = upload.updated_at
+  .updated_at
+    %b Last Updated:
+    = upload.updated_at
 
-.cart_name
-  %b Cart name:
-  = upload.cart.name
+  .cart_name
+    %b Cart name:
+    = upload.cart.name
 
-.permit_number
-  %b Permit number:
-  = upload.cart.permit_number
+  .permit_number
+    %b Permit number:
+    = upload.cart.permit_number

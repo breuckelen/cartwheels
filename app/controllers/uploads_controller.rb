@@ -5,7 +5,8 @@ class UploadsController < ApplicationController
     # GET /uploads
     # GET /uploads.json
     def index
-        @uploads = Upload.all
+        # Get carts updated in the last day
+        @uploads = Upload.where(updated_at: (Time.now - 1.day)..Time.now)
     end
 
     # GET /uploads/new
@@ -31,7 +32,7 @@ class UploadsController < ApplicationController
 
         respond_to do |format|
             if @upload.save
-                format.html { redirect_to @upload,
+                format.html { redirect_to uploads_path,
                     notice: 'Cart was succesfully created.' }
                 format.json { render :show, status: :created,
                     location: @upload }
@@ -48,10 +49,14 @@ class UploadsController < ApplicationController
     def update
         @cart = @upload.cart
 
+        if image = upload_params[:image]
+            @cart.photos.build(user: current_user, image: image)
+        end
+
         respond_to do |format|
             if @cart.update(upload_params[:cart_attributes])
                 format.html {
-                    redirect_to @upload,
+                    redirect_to uploads_path,
                     notice: 'Cart was successfully updated.'
                 }
                 format.json { render :show, status: :ok, location: @upload }
