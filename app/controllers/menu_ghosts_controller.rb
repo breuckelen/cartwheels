@@ -40,7 +40,7 @@ class MenuGhostsController < ApplicationController
 
     # update menu ghosts remotely
     # ADD A ROUTE
-    def menu_ghosts_data
+    def data
         # update menu ghosts based on query
     end
 end

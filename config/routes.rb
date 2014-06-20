@@ -16,6 +16,10 @@ Rails.application.routes.draw do
         resources :categories, path: "categories", only: [:index, :new, :create]
     end
 
+    concern :data do
+        get :data, on: :collection
+    end
+
     # Collection routes
     devise_for :users, controllers: {:registrations => "users/registrations"}
 
@@ -34,10 +38,10 @@ Rails.application.routes.draw do
     end
 
 
-    resources :users, concerns: [:photos, :reviews]
+    resources :users, concerns: [:photos, :reviews, :data]
     get "/account", to: "users#show", as: :account
 
-    resources :carts, concerns: [:photos, :reviews, :tags, :categories] do
+    resources :carts, concerns: [:photos, :reviews, :tags, :categories, :data] do
         member do
             resource :menu, only: [:show, :edit, :update, :destroy] do
                 resource :menu_ghosts, path: "ghost_items", shallow: true
@@ -48,7 +52,7 @@ Rails.application.routes.draw do
         end
     end
 
-    resources :cart_ghosts, concerns: [:photos, :tags, :categories]
+    resources :cart_ghosts, concerns: [:photos, :tags, :categories, :data]
 
     devise_for :owners, controllers: {:registrations => "owners/registrations"}
 
@@ -61,7 +65,8 @@ Rails.application.routes.draw do
 
     resources :photos, only: [:show, :edit, :update, :destroy]
 
-    resources :reviews, only: [:show, :edit, :update, :destroy]
+    resources :reviews, only: [:show, :edit, :update, :destroy],
+        concerns: [:data]
 
     resources :tags, only: [:edit, :update, :destroy] do
         member do

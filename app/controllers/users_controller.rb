@@ -37,4 +37,7 @@ class UsersController < ApplicationController
         # html:
         # allow for deletion of subscriptions
     end
+
+    def data
+    end
 end

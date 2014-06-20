@@ -39,7 +39,7 @@ class CartGhostsController < ApplicationController
 
     # update carts ghosts remotely
     # ADD A ROUTE
-    def cart_ghosts_data
+    def data
         # update cart ghosts based on query
     end
 end
