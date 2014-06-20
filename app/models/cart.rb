@@ -43,13 +43,16 @@ class Cart < ActiveRecord::Base
 
     def self.search(text_query, location_query)
         if text_query.blank? and location_query.blank?
-            all
+            order("created_at DESC")
         elsif text_query.blank?
-            within(1, origin: location_query)
+            within(1, origin: location_query).order("created_at DESC")
+        elsif location_query.blank?
+            tq = "%#{text_query}%"
+            where("name like ?", tq).order("created_at DESC")
         else
             tq = "%#{text_query}%"
-            within(1, origin: location_query).order("created_at DESC")
-                .where("name like ?", tq)
+            within(1, origin: location_query).where("name like ?", tq)
+                .order("created_at DESC")
         end
     end
 
