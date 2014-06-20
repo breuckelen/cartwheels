@@ -32,6 +32,27 @@ class Cart < ActiveRecord::Base
         end
     end
 
+    # For geospatial searches
+    acts_as_mappable :lat_column_name => :lat,
+        :lng_column_name => :lon
+
+    def as_json(options={})
+        options[:except] ||= [:upload_id, :owner_secret]
+        super(options)
+    end
+
+    def self.search(text_query, location_query)
+        if text_query.blank? and location_query.blank?
+            all
+        elsif text_query.blank?
+            within(1, origin: location_query)
+        else
+            tq = "%#{text_query}%"
+            within(1, origin: location_query).order("created_at DESC")
+                .where("name like ?", tq)
+        end
+    end
+
     # Get most popular carts (highest ratings, most clickthroughs)
     def self.trending
     end

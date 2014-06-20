@@ -29,6 +29,7 @@ gem 'omniauth-google-oauth2'
 
 # Google maps + geolocation
 gem 'geocoder'
+gem 'geokit-rails'
 
 # Images
 gem "paperclip", "~> 4.1"

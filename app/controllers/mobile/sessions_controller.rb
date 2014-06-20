@@ -3,7 +3,7 @@ class Mobile::SessionsController < Devise::SessionsController
         :if => Proc.new { |c| c.request.format == 'application/json' }
     skip_before_filter :authenticate_basic_http,
         :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_filter :authenticate_user_from_token!, only: [:destroy]
+    before_filter :authenticate_user_from_token, only: [:destroy]
 
     respond_to :json
 
