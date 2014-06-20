@@ -50,7 +50,8 @@ class CartsController < ApplicationController
 
     def data
         if user_signed_in?
-            @carts = Cart.limit(params["limit"].to_i).offset(params["offset"].to_i)
+            @carts = Cart.search(params["tq"], params["lq"])
+                .limit(params["limit"].to_i).offset(params["offset"].to_i)
 
             render :status => 200,
                 :json => {

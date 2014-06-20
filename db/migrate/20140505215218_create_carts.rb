@@ -16,9 +16,5 @@ class CreateCarts < ActiveRecord::Migration
 
     add_index :carts, :permit_number
     add_index :carts, [:created_at, :name]
-    add_index :carts, [:created_at, :city]
-    add_index :carts, [:created_at, :borough]
-    add_index :carts, [:created_at, :permit_number]
-    add_index :carts, [:created_at, :zip_code]
   end
 end
