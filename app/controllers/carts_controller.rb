@@ -1,5 +1,9 @@
 class CartsController < ApplicationController
-    skip_before_filter :authenticate_basic_http, only: [:data]
+    skip_before_filter :authenticate_basic_http, only: [:data],
+        :if => Proc.new { |c| c.request.format == 'application/json' }
+
+    before_filter :authenticate_user_from_token, only: [:data],
+        :if => Proc.new { |c| c.request.format == 'application/json' }
 
     # show cart owners
     def index
@@ -43,10 +47,26 @@ class CartsController < ApplicationController
     end
 
     respond_to :json
+
     def data
-        @carts = Cart.all
-        render :status => 200,
-            :json => { :success => true,
-                :data => @carts }
+        if user_signed_in?
+            @carts = Cart.limit(params["limit"].to_i).offset(params["offset"].to_i)
+
+            render :status => 200,
+                :json => {
+                    :success => true,
+                    :data => @carts
+                }
+        else
+            data_failure
+        end
+    end
+
+    def data_failure
+        render :status => 401,
+            :json => {
+                :success => false,
+                :data => {}
+            }
     end
 end

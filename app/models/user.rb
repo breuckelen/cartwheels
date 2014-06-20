@@ -54,6 +54,11 @@ class User < ActiveRecord::Base
         end
     end
 
+    def to_json(options={})
+        options[:except] ||= [:upload_id, :owner_secret]
+        super(options)
+    end
+
     def self.find_for_facebook_oauth(auth)
     end
 

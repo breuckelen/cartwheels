@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
         end
     end
 
-    def authenticate_user_from_token!
+    def authenticate_user_from_token
         user_email = params[:email].presence
         user       = user_email && User.find_by_email(user_email)
 
@@ -25,5 +25,5 @@ class ApplicationController < ActionController::Base
     end
 
     private :authenticate_basic_http
-    private :authenticate_user_from_token!
+    private :authenticate_user_from_token
 end
