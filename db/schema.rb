@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617191845) do
+ActiveRecord::Schema.define(version: 20140619201057) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 20140617191845) do
     t.string   "provider"
     t.string   "uid"
     t.integer  "roles_mask",             default: 0
+    t.string   "authentication_token"
   end
 
   add_index "users", ["created_at", "zip_code"], name: "index_users_on_created_at_and_zip_code"

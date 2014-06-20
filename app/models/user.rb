@@ -29,6 +29,9 @@ class User < ActiveRecord::Base
     roles_attribute :roles_mask
     roles :admin, :manager
 
+    # Hooks
+    before_save :ensure_authentication_token
+
     # Function to grant a user more priveleges
     def promote(level)
     end
@@ -36,6 +39,19 @@ class User < ActiveRecord::Base
     # Get carts based on others that this user has followed, reviewed, and
     # clicked on
     def suggested_carts
+    end
+
+    def ensure_authentication_token
+        if authentication_token.blank?
+            self.authentication_token = generate_authentication_token
+        end
+    end
+
+    def generate_authentication_token
+        loop do
+            token = Devise.friendly_token
+            break token unless User.where(authentication_token: token).first
+        end
     end
 
     def self.find_for_facebook_oauth(auth)
@@ -50,4 +66,6 @@ class User < ActiveRecord::Base
         end
         user
     end
+
+    private :generate_authentication_token
 end
