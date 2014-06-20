@@ -23,7 +23,7 @@ class ReviewsController < ApplicationController
 
     # update reviews remotely
     # ADD A ROUTE
-    def reviews_data
+    def data
         # redirect unless an admin or a manager
         # update reviews based on query
     end

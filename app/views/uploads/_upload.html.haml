@@ -3,9 +3,8 @@
 
 .item
   .image
-    - if upload.cart.photos.last
-      - upload.cart.photos.each do |photo|
-        = image_tag photo.image.url(:medium)
+    - upload.cart.photos.each do |photo|
+      = image_tag photo.image.url(:medium)
 
   .user_name
     %b Uploader:

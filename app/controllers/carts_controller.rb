@@ -1,4 +1,6 @@
 class CartsController < ApplicationController
+    skip_before_filter :authenticate_basic_http, only: [:data]
+
     # show cart owners
     def index
         # html:
@@ -40,9 +42,11 @@ class CartsController < ApplicationController
         # redirect unless cart owner
     end
 
-    # update carts remotely
-    # ADD A ROUTE
-    def carts_data
-        # update carts based on query
+    respond_to :json
+    def data
+        @carts = Cart.all
+        render :status => 200,
+            :json => { :success => true,
+                :data => @carts }
     end
 end
