@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621201505) do
+ActiveRecord::Schema.define(version: 20140621212750) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20140621201505) do
   add_index "carts", ["created_at", "zip_code"], name: "index_carts_on_created_at_and_zip_code"
   add_index "carts", ["created_at"], name: "index_carts_on_created_at_and_borough"
   add_index "carts", ["created_at"], name: "index_carts_on_created_at_and_description"
+  add_index "carts", ["lat", "lon"], name: "index_carts_on_lat_and_lon"
   add_index "carts", ["permit_number"], name: "index_carts_on_permit_number"
 
   create_table "carts_owners", force: true do |t|
