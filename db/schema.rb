@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620200615) do
+ActiveRecord::Schema.define(version: 20140621014750) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20140620200615) do
     t.float    "lon"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description"
   end
 
   add_index "cart_ghosts", ["created_at", "borough"], name: "index_cart_ghosts_on_created_at_and_borough"
@@ -104,11 +105,11 @@ ActiveRecord::Schema.define(version: 20140620200615) do
   end
 
   add_index "carts", ["created_at", "city"], name: "index_carts_on_created_at_and_city"
-  add_index "carts", ["created_at", "description"], name: "index_carts_on_created_at_and_description"
   add_index "carts", ["created_at", "name"], name: "index_carts_on_created_at_and_name"
   add_index "carts", ["created_at", "permit_number"], name: "index_carts_on_created_at_and_permit_number"
   add_index "carts", ["created_at", "zip_code"], name: "index_carts_on_created_at_and_zip_code"
   add_index "carts", ["created_at"], name: "index_carts_on_created_at_and_borough"
+  add_index "carts", ["created_at"], name: "index_carts_on_created_at_and_description"
   add_index "carts", ["permit_number"], name: "index_carts_on_permit_number"
 
   create_table "carts_owners", force: true do |t|

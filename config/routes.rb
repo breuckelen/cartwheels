@@ -20,11 +20,19 @@ Rails.application.routes.draw do
         get :data, on: :collection
     end
 
+    concern :search do
+        get :search, on: :collection
+    end
+
     # Collection routes
     devise_for :users, controllers: {:registrations => "users/registrations"}
 
     # Quickfix: devise omniauth routes do not support dynamic segments
     devise_scope :user do
+        get "/login" => "devise/sessions#new"
+        delete "/logout" => "devise/sessions#destroy"
+        get "/register" => "users/registrations#new"
+
         match "/users/auth/:provider",
             constraints: { provider: /google_oauth2|facebook/ },
             to: "users/omniauth_callbacks#passthru",
@@ -38,10 +46,10 @@ Rails.application.routes.draw do
     end
 
 
-    resources :users, concerns: [:photos, :reviews, :data]
-    get "/account", to: "users#show", as: :account
+    resources :users, concerns: [:photos, :reviews, :data, :search]
+    get "/account" => "users#show", as: :account
 
-    resources :carts, concerns: [:photos, :reviews, :tags, :categories, :data] do
+    resources :carts, concerns: [:photos, :reviews, :tags, :categories, :data, :search] do
         member do
             resource :menu, only: [:show, :edit, :update, :destroy] do
                 resource :menu_ghosts, path: "ghost_items", shallow: true
@@ -52,10 +60,9 @@ Rails.application.routes.draw do
         end
     end
 
-    resources :cart_ghosts, concerns: [:photos, :tags, :categories, :data]
+    resources :cart_ghosts, concerns: [:photos, :tags, :categories, :data, :search]
 
     devise_for :owners, controllers: {:registrations => "owners/registrations"}
-
 
     resources :owners do
         resources :carts, shallow: true
@@ -66,17 +73,17 @@ Rails.application.routes.draw do
     resources :photos, only: [:show, :edit, :update, :destroy]
 
     resources :reviews, only: [:show, :edit, :update, :destroy],
-        concerns: [:data]
+        concerns: [:data, :search]
 
     resources :tags, only: [:edit, :update, :destroy] do
         member do
-            get "carts", to: "tags#carts"
+            get "carts" => "tags#carts"
         end
     end
 
     resources :categories, only: [:edit, :update, :destroy] do
         member do
-            get "carts", to: "categories#carts"
+            get "carts" => "categories#carts"
         end
     end
 
@@ -91,7 +98,7 @@ Rails.application.routes.draw do
     end
 
     # Search
-    get "/search", to: "search#index", as: :search
+    get "/search" => "search#index", as: :search
 
     # Root page
     root to: "home#index", as: :home
