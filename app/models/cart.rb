@@ -3,7 +3,6 @@ class Cart < ActiveRecord::Base
     belongs_to :upload
     has_one :menu
     has_many :ads
-    has_many :menu_ghosts
     has_many :reviews
     has_many :clickthroughs
     has_many :photos, as: :target, inverse_of: :target, dependent: :destroy

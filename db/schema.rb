@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621195749) do
+ActiveRecord::Schema.define(version: 20140621201505) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -50,34 +50,6 @@ ActiveRecord::Schema.define(version: 20140621195749) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "cart_ghosts", force: true do |t|
-    t.string   "name"
-    t.string   "city"
-    t.string   "borough"
-    t.integer  "permit_number"
-    t.integer  "zip_code"
-    t.float    "lat"
-    t.float    "lon"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "description"
-  end
-
-  add_index "cart_ghosts", ["created_at", "borough"], name: "index_cart_ghosts_on_created_at_and_borough"
-  add_index "cart_ghosts", ["created_at", "city"], name: "index_cart_ghosts_on_created_at_and_city"
-  add_index "cart_ghosts", ["created_at", "name"], name: "index_cart_ghosts_on_created_at_and_name"
-  add_index "cart_ghosts", ["created_at", "permit_number"], name: "index_cart_ghosts_on_created_at_and_permit_number"
-  add_index "cart_ghosts", ["created_at", "zip_code"], name: "index_cart_ghosts_on_created_at_and_zip_code"
-  add_index "cart_ghosts", ["permit_number"], name: "index_cart_ghosts_on_permit_number"
-
-  create_table "cart_ghosts_users", force: true do |t|
-    t.integer "cart_ghost_id"
-    t.integer "user_id"
-  end
-
-  add_index "cart_ghosts_users", ["cart_ghost_id"], name: "index_cart_ghosts_users_on_cart_ghost_id"
-  add_index "cart_ghosts_users", ["user_id"], name: "index_cart_ghosts_users_on_user_id"
 
   create_table "cart_tag_relations", force: true do |t|
     t.integer  "cart_id"
@@ -137,26 +109,6 @@ ActiveRecord::Schema.define(version: 20140621195749) do
 
   add_index "clickthroughs", ["cart_id"], name: "index_clickthroughs_on_cart_id"
   add_index "clickthroughs", ["user_id"], name: "index_clickthroughs_on_user_id"
-
-  create_table "menu_ghosts", force: true do |t|
-    t.text     "description"
-    t.string   "image_url"
-    t.float    "price"
-    t.integer  "menu_id"
-    t.boolean  "approved",    default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "menu_ghosts", ["menu_id"], name: "index_menu_ghosts_on_menu_id"
-
-  create_table "menu_ghosts_users", force: true do |t|
-    t.integer "menu_ghost_id"
-    t.integer "user_id"
-  end
-
-  add_index "menu_ghosts_users", ["menu_ghost_id"], name: "index_menu_ghosts_users_on_menu_ghost_id"
-  add_index "menu_ghosts_users", ["user_id"], name: "index_menu_ghosts_users_on_user_id"
 
   create_table "menu_items", force: true do |t|
     t.text     "description"

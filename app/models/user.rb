@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
     has_many :user_cart_relations
     has_many :uploads
     has_many :carts, :through => :user_cart_relations
-    has_and_belongs_to_many :cart_ghosts
-    has_and_belongs_to_many :menu_ghosts
     has_and_belongs_to_many :badges
 
     # Validations

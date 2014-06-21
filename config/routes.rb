@@ -52,15 +52,12 @@ Rails.application.routes.draw do
     resources :carts, concerns: [:photos, :reviews, :tags, :categories, :data, :search] do
         member do
             resource :menu, only: [:show, :edit, :update, :destroy] do
-                resource :menu_ghosts, path: "ghost_items", shallow: true
                 resource :menu_items, path: "items", shallow: true
             end
 
             resources :ads, shallow: true
         end
     end
-
-    resources :cart_ghosts, concerns: [:photos, :tags, :categories, :data, :search]
 
     devise_for :owners, controllers: {:registrations => "owners/registrations"}
 
