@@ -4,6 +4,17 @@ class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
     before_filter :authenticate_basic_http
 
+    # for mobile actions
+    skip_before_filter :authenticate_basic_http,
+        only: [:create, :update, :destroy, :data, :search],
+        :if => Proc.new { |c| c.request.format == 'application/json' }
+    before_filter :authenticate_user_from_token,
+        only: [:create, :update, :destroy, :data, :search],
+        :if => Proc.new { |c| c.request.format == 'application/json' }
+    before_filter :authenticate_user!,
+        only: [:create, :update, :destroy, :data, :search],
+        :if => Proc.new { |c| c.request.format == 'application/json' }
+
     def authenticate_basic_http
         if Rails.env.production?
             authenticate_or_request_with_http_basic do |username, password|

@@ -38,6 +38,30 @@ class UsersController < ApplicationController
         # allow for deletion of subscriptions
     end
 
+    respond_to :json
+
     def data
+        @users = User.where(data_params)
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
+
+        render :status => 200,
+            :json => {
+                :success => true,
+                :data => @users
+            }
     end
+
+    def data_params
+        params.require(:user).permit(:id, :authentication_token, :email, :name, :zip_code)
+    end
+
+    def search_params
+        ps = params.permit(:offset, :limit, :tq, :lq)
+        defaults = {"offset" => 0, "limit" => 20}
+        defaults.merge(ps)
+    end
+
+    private :data_params
+    private :search_params
 end

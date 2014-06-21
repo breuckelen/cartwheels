@@ -37,9 +37,41 @@ class CartGhostsController < ApplicationController
         # redirect unless admin or manager
     end
 
-    # update carts ghosts remotely
-    # ADD A ROUTE
+    respond_to :json
     def data
-        # update cart ghosts based on query
+        @carts = CartGhost.where(data_params)
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
+
+        render :status => 200,
+            :json => {
+                :success => true,
+                :data => @carts
+            }
     end
+
+    def search
+        @carts = CartGhost.search(search_params["tq"], search_params["lq"])
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
+
+        render :status => 200,
+            :json => {
+                :success => true,
+                :data => @carts
+            }
+    end
+
+    def data_params
+        params.require(:cart).permit(:id, :name, :city, :permit_number, :zip_code)
+    end
+
+    def search_params
+        ps = params.permit(:offset, :limit, :tq, :lq)
+        defaults = {"offset" => 0, "limit" => 20}
+        defaults.merge(ps)
+    end
+
+    private :data_params
+    private :search_params
 end

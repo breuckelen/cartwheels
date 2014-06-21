@@ -13,8 +13,27 @@ class CartGhost < ActiveRecord::Base
     validates :zip_code, format: {:with => /\A\d{5}\Z/}
     validates :users, length: { minimum: 1 }
 
+    # For geospatial searches
+    acts_as_mappable :lat_column_name => :lat,
+        :lng_column_name => :lon
+
     # create a cart out of the cart ghost, adding a secret key
     # only can be done by admins and managers
     def approve
+    end
+
+    def self.search(text_query, location_query)
+        if text_query.blank? and location_query.blank?
+            order("created_at DESC")
+        elsif text_query.blank?
+            within(1, origin: location_query).order("created_at DESC")
+        elsif location_query.blank?
+            tq = "%#{text_query}%"
+            where("name like ?", tq).order("created_at DESC")
+        else
+            tq = "%#{text_query}%"
+            within(1, origin: location_query).where("name like ?", tq)
+                .order("created_at DESC")
+        end
     end
 end

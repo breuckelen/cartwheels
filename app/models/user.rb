@@ -54,6 +54,11 @@ class User < ActiveRecord::Base
         end
     end
 
+    def as_json(options={})
+        options[:except] ||= [:authentication_token, :password, :roles_mask, :provider, :uid]
+        super(options)
+    end
+
     def self.find_for_facebook_oauth(auth)
     end
 

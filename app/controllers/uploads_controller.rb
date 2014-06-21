@@ -92,16 +92,17 @@ class UploadsController < ApplicationController
         end
     end
 
-    private
     # Use callbacks to share common setup or constraints between actions.
     def set_upload
         @upload = Upload.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def upload_params
         params.require(:upload).permit(
             :image, cart_attributes: [:name, :permit_number, :lat, :lon],
         )
     end
+
+    private :set_upload
+    private :upload_params
 end

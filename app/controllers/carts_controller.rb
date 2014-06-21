@@ -1,10 +1,4 @@
 class CartsController < ApplicationController
-    skip_before_filter :authenticate_basic_http, only: [:data],
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-
-    before_filter :authenticate_user_from_token, only: [:data],
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-
     # show cart owners
     def index
         # html:
@@ -27,7 +21,7 @@ class CartsController < ApplicationController
     end
 
     def show
-        @cart = Cart.find(params[:id])
+        @cart = Cart.find(data_params[:id])
         # html:
         # show page statistics if owner, manager, or admin
         # allow deletion of reviews if manager or admin
@@ -47,27 +41,40 @@ class CartsController < ApplicationController
     end
 
     respond_to :json
-
     def data
-        if user_signed_in?
-            @carts = Cart.search(params["tq"], params["lq"])
-                .limit(params["limit"].to_i).offset(params["offset"].to_i)
+        @carts = Cart.where(data_params)
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
 
-            render :status => 200,
-                :json => {
-                    :success => true,
-                    :data => @carts
-                }
-        else
-            data_failure
-        end
-    end
-
-    def data_failure
-        render :status => 401,
+        render :status => 200,
             :json => {
-                :success => false,
-                :data => {}
+                :success => true,
+                :data => @carts
             }
     end
+
+    def search
+        @carts = Cart.search(search_params["tq"], search_params["lq"])
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
+
+        render :status => 200,
+            :json => {
+                :success => true,
+                :data => @carts
+            }
+    end
+
+    def data_params
+        params.require(:cart).permit(:id, :name, :city, :permit_number, :zip_code)
+    end
+
+    def search_params
+        ps = params.permit(:offset, :limit, :tq, :lq)
+        defaults = {"offset" => 0, "limit" => 20}
+        defaults.merge(ps)
+    end
+
+    private :data_params
+    private :search_params
 end
