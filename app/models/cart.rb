@@ -13,6 +13,7 @@ class Cart < ActiveRecord::Base
     has_many :tags, through: :cart_tag_relations
     has_many :cart_category_relations, as: :cart
     has_many :categories, through: :cart_category_relations
+    has_many :notifications
     has_and_belongs_to_many :owners
 
     # Validations

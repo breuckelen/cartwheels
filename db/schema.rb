@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621014750) do
+ActiveRecord::Schema.define(version: 20140621195749) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -176,6 +176,13 @@ ActiveRecord::Schema.define(version: 20140621014750) do
   end
 
   add_index "menus", ["cart_id"], name: "index_menus_on_cart_id"
+
+  create_table "notifications", force: true do |t|
+    t.integer  "cart_id"
+    t.text     "decription"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "owners", force: true do |t|
     t.string   "email",                  default: "", null: false
