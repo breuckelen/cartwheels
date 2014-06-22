@@ -41,6 +41,7 @@ end
 group :development do
     gem 'sqlite3'
     gem 'spring'
+    gem 'capistrano'
 end
 
 
