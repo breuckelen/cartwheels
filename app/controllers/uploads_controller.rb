@@ -5,7 +5,7 @@ class UploadsController < ApplicationController
     # GET /uploads
     # GET /uploads.json
     def index
-        @uploads = Upload.limit(20)
+        @uploads = Upload.where(updated_at: (Time.now - 1.day)..Time.now)
     end
 
     # GET /uploads/new
