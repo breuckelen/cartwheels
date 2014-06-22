@@ -5,8 +5,7 @@ class UploadsController < ApplicationController
     # GET /uploads
     # GET /uploads.json
     def index
-        # Get carts updated in the last day
-        @uploads = Upload.where(updated_at: (Time.now - 1.day)..Time.now)
+        @uploads = Upload.limit(20)
     end
 
     # GET /uploads/new

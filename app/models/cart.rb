@@ -22,9 +22,10 @@ class Cart < ActiveRecord::Base
     validates :permit_number, uniqueness: true
     validates :zip_code, format: {:with => /\A\d{5}\Z/}
 
-    # Reverse geocoding
+    # Filters
     before_validation :reverse_geocode
 
+    # Reverse geocoding
     reverse_geocoded_by :lat, :lon do |obj, results|
         if geo = results.first
             obj.city = geo.city
@@ -37,7 +38,11 @@ class Cart < ActiveRecord::Base
         :lng_column_name => :lon
 
     def as_json(options={})
-        options[:except] ||= [:upload_id, :owner_secret]
+        options[:only] ||= [:id, :name, :city, :permit_number, :zip_code,
+            :description, :lat, :lon]
+        options[:include] ||= {
+            :photos => { :only => :null, :methods => [:image_url] }
+        }
         super(options)
     end
 
