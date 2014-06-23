@@ -46,11 +46,11 @@ class Cart < ActiveRecord::Base
     end
 
     # Get first image url
-    def profile_image_url
+    def admin_image_url
         if photos.first.nil?
             return '/system/images/default.png'
         else
-            return photos.first.image_url_small
+            return photos.first.image_url_thumb
         end
     end
 
@@ -58,7 +58,7 @@ class Cart < ActiveRecord::Base
         options[:only] ||= [:id, :name, :city, :permit_number, :zip_code,
             :description, :lat, :lon]
         options[:include] ||= {
-            :photos => { :only => :null, :methods => [:image_url_small] }
+            :photos => { :only => :null, :methods => [:image_url_thumb] }
         }
         super(options)
     end

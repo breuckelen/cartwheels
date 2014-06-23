@@ -26,7 +26,7 @@ RailsAdmin.config do |config|
           field :photo do
               formatted_value do
                   bindings[:view].tag(:img, {
-                      :src => bindings[:object].profile_image_url})
+                      :src => bindings[:object].admin_image_url})
               end
           end
           field :name

@@ -3,7 +3,8 @@ class Photo < ActiveRecord::Base
     belongs_to :user
     belongs_to :target, polymorphic: true, inverse_of: :photos
     has_attached_file :image, styles: { :medium => "300x300>",
-        :thumb => "100x100>" }, :default_url => "/system/:attachment/default.png",
+        :small => "150x150>", :thumb => "100x100>" },
+        :default_url => "/system/:attachment/default.png",
         :url => "/system/:attachment/:id/:style/:filename"
 
 
@@ -16,6 +17,10 @@ class Photo < ActiveRecord::Base
     end
 
     def image_url_small
+        image.url(:small)
+    end
+
+    def image_url_thumb
         image.url(:thumb)
     end
 end
