@@ -37,11 +37,23 @@ class Cart < ActiveRecord::Base
     acts_as_mappable :lat_column_name => :lat,
         :lng_column_name => :lon
 
+    def carts_owners
+        []
+    end
+
+    def profile_image_url
+        if photos.first.nil?
+            return '/system/images/default.png'
+        else
+            return photos.first.image_url_small
+        end
+    end
+
     def as_json(options={})
         options[:only] ||= [:id, :name, :city, :permit_number, :zip_code,
             :description, :lat, :lon]
         options[:include] ||= {
-            :photos => { :only => :null, :methods => [:image_url] }
+            :photos => { :only => :null, :methods => [:image_url_small] }
         }
         super(options)
     end

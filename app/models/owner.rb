@@ -10,4 +10,8 @@ class Owner < ActiveRecord::Base
     # Devise
     devise :database_authenticatable, :registerable, :recoverable,
         :rememberable, :trackable, :validatable
+
+    def owners_carts
+        []
+    end
 end

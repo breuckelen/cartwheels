@@ -5,4 +5,8 @@ class SearchToken < ActiveRecord::Base
     # Validations
     validates :term, :count, :search_lines, presence: true
     validates :count, numericality: true
+
+    def search_tokens_search_lines
+        []
+    end
 end

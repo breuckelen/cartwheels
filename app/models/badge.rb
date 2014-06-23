@@ -5,4 +5,8 @@ class Badge < ActiveRecord::Base
 
     # Validations
     validates :title, presence: true
+
+    def badges_users
+        []
+    end
 end

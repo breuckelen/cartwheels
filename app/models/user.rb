@@ -30,6 +30,10 @@ class User < ActiveRecord::Base
     # Hooks
     before_save :ensure_authentication_token
 
+    def users_badges
+        []
+    end
+
     # Function to grant a user more priveleges
     def promote(level)
     end

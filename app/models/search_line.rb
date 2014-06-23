@@ -5,4 +5,8 @@ class SearchLine < ActiveRecord::Base
 
     # Validations
     validates :search_history, :search_tokens, presence: true
+
+    def search_lines_search_tokens
+        []
+    end
 end

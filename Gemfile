@@ -13,12 +13,15 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'therubyracer',  platforms: :ruby
 gem 'haml-rails'
 
+gem 'bootstrap-sass'
+
 # Validation gems
 gem 'email_validator'
 
 # Authorization gems
 gem 'devise'
 gem 'role_model'
+gem 'rails_admin'
 
 # More data for caching
 gem 'activerecord-session_store'
