@@ -5,7 +5,7 @@ set :domain, 'cartwheels.us'
 set :application, "cartwheels"
 set :repository,  "git@github.com:breuckelen/cartwheels-site.git"
 set :deploy_to, "/home/battal/cartwheels"
-set :linked_dirs, fetch(:linked_dirs).push("public/uploads")
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 default_run_options[:pty] = true
 
