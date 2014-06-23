@@ -1,3 +1,4 @@
+require 'bundler/capistrano'
 # Application specific info
 set :user, 'battal'
 set :domain, 'cartwheels.us'
