@@ -1,1 +1,27 @@
--# Cart partial template for search results
+%br
+%br
+
+.item
+  .image
+    - cart.photos.each do |photo|
+      = image_tag photo.image.url(:medium)
+
+  .user_name
+    %b Uploader:
+    = cart.uploader.name
+
+  .updated_at
+    %b Last Updated:
+    = cart.updated_at
+
+  .cart_name
+    %b Cart name:
+    = cart.name
+
+  .permit_number
+    %b Permit number:
+    = cart.permit_number
+
+  .borough
+    %b City:
+    = cart.city

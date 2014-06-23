@@ -1,0 +1,13 @@
+%h1 Listing carts
+
+= link_to 'New Cart', new_cart_path, "data-no-turbolink" => true
+%br
+
+#carts
+- @carts.each do |cart|
+  = render(cart)
+
+  %span= link_to 'Show', cart
+  %span= link_to 'Edit', edit_cart_path(cart)
+  %span= link_to 'Destroy', cart, :method => :delete, :data => { :confirm => 'Are you sure?' }
+  %br

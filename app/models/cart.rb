@@ -1,12 +1,11 @@
 class Cart < ActiveRecord::Base
     # Relations
-    belongs_to :upload
     has_one :menu
     has_many :ads
     has_many :reviews
     has_many :clickthroughs
     has_many :photos, as: :target, inverse_of: :target, dependent: :destroy
-    has_many :user_cart_relations
+    has_many :user_cart_relations, inverse_of: :cart
     has_many :users, through: :user_cart_relations
     has_many :cart_tag_relations, as: :cart
     has_many :tags, through: :cart_tag_relations
@@ -41,6 +40,12 @@ class Cart < ActiveRecord::Base
         []
     end
 
+    # Replace type 0 with a constant for uploader
+    def uploader
+        user_cart_relations.where(relation_type: 0).first.user
+    end
+
+    # Get first image url
     def profile_image_url
         if photos.first.nil?
             return '/system/images/default.png'
