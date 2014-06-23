@@ -1,7 +1,7 @@
 %h1 Welcome employees
 %h2 If you do not yet have an account, sign up
 - if user_signed_in?
-  = link_to "Upload a cart", uploads_path
+  = link_to "Upload a cart", carts_path
   %br
   = link_to "Log Out", logout_path, method: :delete
 - else

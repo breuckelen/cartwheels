@@ -85,8 +85,6 @@ Rails.application.routes.draw do
         end
     end
 
-    resources :uploads
-
     namespace :mobile do
         devise_scope :user do
             post 'sessions' => 'sessions#create', :as => 'mobile_login'
