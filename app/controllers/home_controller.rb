@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+    before_filter :authenticate_basic_http
+
     # home page
     def index
         # get ads
