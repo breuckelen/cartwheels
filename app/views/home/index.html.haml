@@ -1,10 +1,70 @@
-%h1 Welcome employees
-%h2 If you do not yet have an account, sign up
-- if user_signed_in?
-  = link_to "Upload a cart", carts_path
-  %br
-  = link_to "Log Out", logout_path, method: :delete
-- else
-  = link_to "Log In", login_path
-  %br
-  = link_to "Sign Up", register_path
+-content_for :head do
+  =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
+
+#poster.carousel.slide
+  / Indicators
+  %ol.carousel-indicators
+    %li.active{"data-slide-to" => "0", "data-target" => "#poster"}
+      %li{"data-slide-to" => "1", "data-target" => "#poster"}
+        %li{"data-slide-to" => "2", "data-target" => "#poster"}
+          / Wrapper for slides
+  .carousel-inner
+    .item.active
+      .fill{style: "background-image:url('http://placehold.it/1900x1080&text=Cartwheels');"}
+        .carousel-caption
+          %p A Full-Width Image Slider Template
+    .item
+      .fill{style: "background-image:url('http://placehold.it/1900x1080&text=Slide Two');"}
+        .carousel-caption
+          %p Caption 2
+    .item
+      .fill{style: "background-image:url('http://placehold.it/1900x1080&text=Slide Three');"}
+        .carousel-caption
+          %p Caption 3
+  / Controls
+  %a.left.carousel-control{"data-slide" => "prev", href: "#poster"}
+    %span.icon-prev
+  %a.right.carousel-control{"data-slide" => "next", href: "#poster"}
+    %span.icon-next
+
+%nav.navbar.navbar-inverse{role: "navigation"}
+  .container
+    .navbar-header
+      %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", type: "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+          %span.icon-bar
+            %span.icon-bar
+              %a.navbar-brand{href: "index.php"} Start Bootstrap
+    / Collect the nav links, forms, and other content for toggling
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      %ul.nav.navbar-nav
+        %li
+          %a{href: "#about"} Map
+        %li
+          %a{href: "#services"} Social Media
+        %li
+          %a{href: "#carts"} Carts
+        %li
+          %a{href: "#contact"} Contact
+      %ul.nav.navbar-nav.icons
+        %li
+          %a.navbar-brand{href: "#"}
+            =image_tag("http://placehold.it/40x40&text=Icon")
+        %li
+          %a.navbar-brand{href: "#"}
+            =image_tag("http://placehold.it/40x40&text=Icon")
+        %li
+          %a.navbar-brand{href: "#"}
+            =image_tag("http://placehold.it/40x40&text=Icon")
+        %li
+          %a.navbar-brand{href: "#"}
+            =image_tag("http://placehold.it/40x40&text=Icon")
+
+#main-content.container
+  #map-section.row
+    #map-container
+  %footer.row
+    .row
+      .col-lg-12
+        %p Copyright © Company 2013
