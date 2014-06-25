@@ -2,30 +2,9 @@
   =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
 
 #poster.carousel.slide
-  / Indicators
-  %ol.carousel-indicators
-    %li.active{"data-slide-to" => "0", "data-target" => "#poster"}
-      %li{"data-slide-to" => "1", "data-target" => "#poster"}
-        %li{"data-slide-to" => "2", "data-target" => "#poster"}
-          / Wrapper for slides
-  .carousel-inner
-    .item.active
-      .fill{style: "background-image:url('http://placehold.it/1900x1080&text=Cartwheels');"}
-        .carousel-caption
-          %p A Full-Width Image Slider Template
-    .item
-      .fill{style: "background-image:url('http://placehold.it/1900x1080&text=Slide Two');"}
-        .carousel-caption
-          %p Caption 2
-    .item
-      .fill{style: "background-image:url('http://placehold.it/1900x1080&text=Slide Three');"}
-        .carousel-caption
-          %p Caption 3
-  / Controls
-  %a.left.carousel-control{"data-slide" => "prev", href: "#poster"}
-    %span.icon-prev
-  %a.right.carousel-control{"data-slide" => "next", href: "#poster"}
-    %span.icon-next
+  .fill{style: "background-color: black;"}
+    .banner
+      %span Cartwheels
 
 %nav.navbar.navbar-inverse{role: "navigation"}
   .container

@@ -4,7 +4,7 @@
 
 
 html, body
-    font-family: "Bebas Neue"
+    font-family: $defaultFont
     -webkit-font-smoothing: antialiased
 
     height: 100%
@@ -16,8 +16,16 @@ html, body
 
     top: 0
 
-.item, .active, .carousel-inner
-    height: 100%
+    .banner
+        text-align: center
+        line-height: 400px
+
+        span
+            font-size: 5em
+            color: white
+
+            line-height: normal
+            vertical-align: middle
 
 .navbar
     height: 90px
@@ -45,7 +53,7 @@ html, body
 
             > li > a
                 color: #eee
-                font-weight: 200
+                font-weight: bold
 
                 &:hover
                     color: $defaultColor
