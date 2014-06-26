@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass here: http://sass-lang.com/
 
+$posterHeight: 450px
 
 html, body
     font-family: $defaultFont
@@ -12,20 +13,32 @@ html, body
 
 
 #poster
-    height: 400px
+    height: $posterHeight
 
     top: 0
 
-    .banner
-        text-align: center
-        line-height: 400px
+    .fill
+        width: 100%
+        height: 100%
 
-        span
-            font-size: 5em
-            color: white
+        background-image: image-url("header.png")
+        background-position: top center
+        background-size: cover
 
-            line-height: normal
-            vertical-align: middle
+        opacity: 0.8
+
+        .banner
+            text-align: center
+            line-height: $posterHeight
+
+            opacity: 1.0
+
+            span
+                font-size: 8em
+                color: white
+
+                line-height: normal
+                vertical-align: middle
 
 .navbar
     height: 90px
@@ -64,35 +77,90 @@ html, body
 
         .icons
             margin-left: 5%
+
             > li > a
                 &:hover
                     border-bottom: none
 
-.fill
-    width: 100%
-    height: 100%
-    background-position: center
-    background-size: cover
+                img
+                    width: 40px
+                    height: 40px
 
 #main-content
     width: 100%
     height: 100%
     padding: 0px
+    position: relative
 
     background-size: cover
     background-position: center
     background-color: $defaultColor
 
-    #map-section
-        width: 100%
-        height: 100%
-        padding: 0px
+    #map-header
+        width: 80%
 
-        #map-container
-            width: 90%
+        margin-top: 20px
+        margin-bottom: 10px
+        margin-left: auto
+        margin-right: auto
+
+        .row-header
+            font-family: "Bebas Neue"
+            font-size: 2.5em
+            color: white
+
+            border: 2px solid white
+            text-align: center
+
+
+    #map-container
+        position: relative
+        width: 80%
+        height: 80%
+        padding: 0px
+        margin: auto
+
+        #map-input
+            position: absolute
+            top: 3%
+            left: 8%
+
+            z-index: 1
+
+            input.gmaps-input
+                font-family: "Roboto Light"
+                font-size: 15px
+                font-weight: 300
+
+                height: 32px
+                width: 400px
+                padding: 0 11px 0 13px
+
+                border: 1px solid transparent
+                border-radius: 2px 0 0 2px
+                box-sizing: border-box
+                -moz-box-sizing: border-box
+                outline: none
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
+                background-color: #fff
+                text-overflow: ellipsis
+
+                &:focus
+                    border-color: #4d90fe
+                    margin-left: -1px
+                    padding-left: 14px
+                    width: 401px
+
+            button
+                box-sizing: border-box
+                vertical-align: middle
+
+                img
+                    height: 18px
+
+        #map-div
+            z-index: 0
             height: 500px
-            margin-left: auto
-            margin-right: auto
 
     footer
         margin: 50px 50px

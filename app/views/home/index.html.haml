@@ -2,7 +2,7 @@
   =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
 
 #poster.carousel.slide
-  .fill{style: "background-color: black;"}
+  .fill
     .banner
       %span Cartwheels
 
@@ -25,24 +25,29 @@
         %li
           %a{href: "#carts"} Carts
         %li
-          %a{href: "#contact"} Contact
+          %a{href: "#about"} About
       %ul.nav.navbar-nav.icons
         %li
           %a.navbar-brand{href: "#"}
-            =image_tag("http://placehold.it/40x40&text=Icon")
+            =image_tag("fb-icon.png")
         %li
-          %a.navbar-brand{href: "#"}
-            =image_tag("http://placehold.it/40x40&text=Icon")
+          %a.navbar-brand{href: "#hello"}
+            =image_tag("tw-icon.png")
         %li
-          %a.navbar-brand{href: "#"}
-            =image_tag("http://placehold.it/40x40&text=Icon")
-        %li
-          %a.navbar-brand{href: "#"}
-            =image_tag("http://placehold.it/40x40&text=Icon")
+          %a.navbar-brand{href: "#world"}
+            =image_tag("gp-icon.png")
 
 #main-content.container
-  #map-section.row
-    #map-container
+  #map-header.row
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      .row-header Find Carts In Your Area
+  #map-container.row
+    #map-input
+      %input.gmaps-input
+      %button.btn.btn-primary
+        =image_tag("search.png")
+    #map-div
+
   %footer.row
     .row
       .col-lg-12

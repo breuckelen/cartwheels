@@ -23,5 +23,7 @@ module Cartwheels
     # config.generators do |g|
     #   g.assets false
     # end
+    config.assets.paths << Rails.root.join("vendor", "assets", "images")
+    config.assets.paths << Rails.root.join("vendor", "assets", "fonts")
   end
 end
