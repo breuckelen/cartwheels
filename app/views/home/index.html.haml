@@ -1,7 +1,7 @@
 -content_for :head do
   =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
 
-#poster.carousel.slide
+#poster.carousel.slide{speed: ".5"}
   .fill
     .banner
       %span Cartwheels
@@ -27,15 +27,12 @@
         %li
           %a{href: "#about"} About
       %ul.nav.navbar-nav.icons
-        %li
-          %a.navbar-brand{href: "#"}
-            =image_tag("fb-icon.png")
-        %li
-          %a.navbar-brand{href: "#hello"}
-            =image_tag("tw-icon.png")
-        %li
-          %a.navbar-brand{href: "#world"}
-            =image_tag("gp-icon.png")
+        %a.navbar-brand{href: "#"}
+          =image_tag("fb-icon.png")
+        %a.navbar-brand{href: "#hello"}
+          =image_tag("tw-icon.png")
+        %a.navbar-brand{href: "#world"}
+          =image_tag("gp-icon.png")
 
 #main-content.container
   #map-header.row
@@ -51,4 +48,4 @@
   %footer.row
     .row
       .col-lg-12
-        %p Copyright © Company 2013
+        %p Copyright © Cartwheels 2014

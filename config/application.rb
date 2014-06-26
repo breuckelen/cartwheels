@@ -25,5 +25,6 @@ module Cartwheels
     # end
     config.assets.paths << Rails.root.join("vendor", "assets", "images")
     config.assets.paths << Rails.root.join("vendor", "assets", "fonts")
+    config.assets.precompile += %w( *.otf *.ttf *.png* )
   end
 end

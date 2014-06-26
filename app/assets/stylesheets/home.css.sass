@@ -13,9 +13,11 @@ html, body
 
 
 #poster
-    height: $posterHeight
+    position: fixed
+    width: 100%
+    height: $posterHeight + 300px
 
-    top: 0
+    top: 0px
 
     .fill
         width: 100%
@@ -28,8 +30,8 @@ html, body
         opacity: 0.8
 
         .banner
-            text-align: center
             line-height: $posterHeight
+            text-align: center
 
             opacity: 1.0
 
@@ -43,6 +45,7 @@ html, body
 .navbar
     height: 90px
     text-align: center
+    margin-top: $posterHeight
     margin-bottom: 0px
 
     border-radius: 0px
@@ -82,9 +85,9 @@ html, body
                 &:hover
                     border-bottom: none
 
-                img
-                    width: 40px
-                    height: 40px
+            img
+                width: 40px
+                height: 40px
 
 #main-content
     width: 100%
@@ -163,4 +166,7 @@ html, body
             height: 500px
 
     footer
+        text-align: center
+        font-weight: bold
+
         margin: 50px 50px
