@@ -100,12 +100,9 @@ html, body
     background-color: $defaultColor
 
     #map-header
-        width: 80%
-
         margin-top: 20px
         margin-bottom: 10px
-        margin-left: auto
-        margin-right: auto
+        margin-left: 10px
 
         .row-header
             font-family: "Bebas Neue"
@@ -131,7 +128,7 @@ html, body
             z-index: 1
 
             input.gmaps-input
-                font-family: "Roboto Light"
+                font-family: Roboto
                 font-size: 15px
                 font-weight: 300
 
@@ -154,16 +151,18 @@ html, body
                     padding-left: 14px
                     width: 401px
 
-            button
-                box-sizing: border-box
+            .gmaps-button
                 vertical-align: middle
+
+                box-sizing: border-box
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
 
                 img
                     height: 18px
 
         #map-div
             z-index: 0
-            height: 500px
+            height: 600px
 
     footer
         text-align: center

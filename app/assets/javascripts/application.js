@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery_mousewheel
 //= require turbolinks
 //= require underscore
 //= require bootstrap
