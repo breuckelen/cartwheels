@@ -2,9 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass here: http://sass-lang.com/
 
+//Variables
 $posterHeight: 450px
+$posterOffset: 300px
+$navHeight: 90px
+$mapHeight: 600px
 
 html, body
+    @include scale-property(font-size, 12px)
     font-family: $defaultFont
     -webkit-font-smoothing: antialiased
 
@@ -14,9 +19,9 @@ html, body
 #poster
     position: fixed
     width: 100%
-    height: $posterHeight + 300px
+    @include scale-property(height, $posterHeight + $posterOffset)
 
-    top: 0px
+    top: 0
 
     .fill
         width: 100%
@@ -43,26 +48,27 @@ html, body
 
 .navbar
     text-align: center
-    height: 90px
+    @include scale-property(height, $navHeight)
     margin-top: $posterHeight
-    margin-bottom: 0px
+    margin-bottom: 0
 
-    border-radius: 0px
+    border-radius: 0
 
     .container
         height: inherit
 
     .navbar-brand
-        padding: 0 15px
+        @include scale-property(padding-left, 15px)
+        @include scale-property(padding-right, 15px)
 
-    .navbar-collapse.collapse
+    .navbar-collapse
         width: 70%
         margin-left: auto
 
         .navbar-nav
             font-size: 1.35em
 
-            margin-top: 25px
+            @include scale-property(margin-top, 25px)
 
             > li > a
                 color: #eee
@@ -76,6 +82,7 @@ html, body
                     border-bottom: 2px solid $defaultColor
 
         .icons
+            @include scale-property(margin-top, 12px)
             margin-left: 5%
 
             > li > a
@@ -83,13 +90,12 @@ html, body
                     border-bottom: none
 
             img
-                width: 40px
-                height: 40px
+                @include scale-property(height, 40px)
 
 #main-content
     width: 100%
     height: 100%
-    padding: 0px
+    padding: 0
     position: relative
 
     background-size: cover
@@ -99,9 +105,9 @@ html, body
     overflow-x: hidden
 
     #map-header
-        margin-top: 20px
-        margin-bottom: 10px
-        margin-left: 10px
+        @include scale-property(margin-top, 20px)
+        @include scale-property(margin-bottom, 10px)
+        @include scale-property(margin-left, 10px)
 
         .row-header
             font-family: "Bebas Neue"
@@ -116,7 +122,7 @@ html, body
         position: relative
         width: 80%
         height: 80%
-        padding: 0px
+        padding: 0
         margin: auto
 
         #map-input
@@ -128,12 +134,13 @@ html, body
 
             input.gmaps-input
                 font-family: Roboto
-                font-size: 15px
+                font-size: 1.3em
                 font-weight: 300
 
-                height: 32px
-                width: 400px
-                padding: 0 11px 0 13px
+                @include scale-property(height, 32px)
+                @include scale-property(width, 400px)
+                @include scale-property(padding-left, 11px)
+                @include scale-property(padding-right, 13px)
 
                 border: 1px solid transparent
                 border-radius: 2px 0 0 2px
@@ -146,9 +153,9 @@ html, body
 
                 &:focus
                     border-color: #4d90fe
-                    margin-left: -1px
-                    padding-left: 14px
-                    width: 401px
+                    @include scale-property(width, 401px)
+                    @include scale-property(margin-left, -1px)
+                    @include scale-property(padding-left, 14px)
 
             .gmaps-button
                 vertical-align: middle
@@ -157,18 +164,18 @@ html, body
                 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
 
                 img
-                    height: 18px
+                    @include scale-property(height, 18px)
 
         #map-div
             z-index: 0
-            height: 600px
+            @include scale-property(height, $mapHeight)
 
         #map-tags
             z-index: 1
             background-color: black
 
             position: absolute
-            right: 0px
+            right: 0
             height: 100%
             width: 10%
 
@@ -178,4 +185,7 @@ html, body
         text-align: center
         font-weight: bold
 
-        margin: 50px 50px
+        @include scale-property(margin-left, 50px)
+        @include scale-property(margin-right, 50px)
+        @include scale-property(margin-top, 50px)
+        @include scale-property(margin-bottom, 50px)
