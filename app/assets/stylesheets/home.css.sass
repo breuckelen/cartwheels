@@ -11,7 +11,6 @@ html, body
     height: 100%
     width: 100%
 
-
 #poster
     position: fixed
     width: 100%
@@ -43,22 +42,20 @@ html, body
                 vertical-align: middle
 
 .navbar
-    height: 90px
     text-align: center
+    height: 90px
     margin-top: $posterHeight
     margin-bottom: 0px
 
     border-radius: 0px
 
+    .container
+        height: inherit
 
     .navbar-brand
         padding: 0 15px
 
-    .navbar-header
-        width: 100px
-        height: 100px
-
-    .navbar-collapse
+    .navbar-collapse.collapse
         width: 70%
         margin-left: auto
 
@@ -98,6 +95,8 @@ html, body
     background-size: cover
     background-position: center
     background-color: $defaultColor
+
+    overflow-x: hidden
 
     #map-header
         margin-top: 20px
@@ -163,6 +162,17 @@ html, body
         #map-div
             z-index: 0
             height: 600px
+
+        #map-tags
+            z-index: 1
+            background-color: black
+
+            position: absolute
+            right: 0px
+            height: 100%
+            width: 10%
+
+            opacity: 0.3
 
     footer
         text-align: center

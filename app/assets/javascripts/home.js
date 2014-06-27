@@ -23,7 +23,7 @@
             scrollwheel: false
         });
 
-        $(window).mousewheel(onScroll);
+        $(window).scroll(onScroll);
     };
     $(document).ready(ready);
 })();

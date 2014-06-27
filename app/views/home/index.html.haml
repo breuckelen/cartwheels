@@ -1,7 +1,7 @@
 -content_for :head do
   =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
 
-#poster.carousel.slide{speed: ".5"}
+#poster.carousel.slide{speed: "0.5"}
   .fill
     .banner
       %span Cartwheels
@@ -44,6 +44,7 @@
       %input.gmaps-input
       %button.gmaps-button.btn.btn-primary
         =image_tag("search.png")
+    #map-tags
     #map-div
 
   %footer.row
