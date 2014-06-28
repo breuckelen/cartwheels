@@ -33,34 +33,6 @@ html, body
     height: 100%
     width: 100%
 
-#poster
-    position: fixed
-    width: 100%
-    @include scale-property(height, $posterHeight + $posterOffset)
-    top: 0
-
-    .fill
-        width: 100%
-        height: 100%
-
-        background-image: image-url("header.png")
-        background-position: top center
-        background-size: cover
-        opacity: 0.8
-
-        .banner
-            text-align: center
-            line-height: $posterHeight
-
-            opacity: 1.0
-
-            span
-                font-size: 8em
-                color: white
-
-                line-height: normal
-                vertical-align: middle
-
 #sidebar-wrapper
     font-weight: bold
 
@@ -153,6 +125,40 @@ html, body
 .form-control
     @include vendor(border-radius, none)
 
+#content-wrapper
+    width: 100%
+    height: 100%
+
+    @include vendor(transition, margin-left 0.4s ease 0s)
+
+#poster
+    position: absolute
+    width: 100%
+    @include scale-property(height, $posterHeight + $posterOffset)
+    top: 0
+
+    .fill
+        width: 100%
+        height: 100%
+
+        background-image: image-url("header.png")
+        background-position: top center
+        background-size: cover
+        opacity: 0.8
+
+        .banner
+            text-align: center
+            line-height: $posterHeight
+
+            opacity: 1.0
+
+            span
+                font-size: 8em
+                color: white
+
+                line-height: normal
+                vertical-align: middle
+
 .navbar
     @include scale-property(height, $navHeight)
     margin-top: $posterHeight
@@ -226,6 +232,7 @@ html, body
     background-position: center
     background-color: getColor(default)
     overflow-x: hidden
+    overflow-y: hidden
 
 #map-header
     @include scale-property(margin-top, 20px)

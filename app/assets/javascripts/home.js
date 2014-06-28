@@ -32,8 +32,14 @@
         var navbar = $('#navbar-wrapper');
         navbar.find('.glyphicon.glyphicon-list').parent().on('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             sidebar.css({'left': '300px'});
             sidebar.css({'box-shadow': boxShadow});
+        });
+
+        $('#content-wrapper').on('click', function(e) {
+            sidebar.css({'left': '0'});
+            sidebar.css({'box-shadow': 'none'});
         });
     };
 
