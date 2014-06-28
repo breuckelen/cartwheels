@@ -67,9 +67,9 @@ html, body
     z-index: 2
     position: fixed
     height: 100%
-    @include scale-property(width, 300px)
-    @include scale-property(margin-left, -300px)
-    @include scale-property(left, 0px)
+    width: 300px
+    margin-left: -300px
+    left: 0px
     top: 0
 
     background: #222
@@ -205,6 +205,7 @@ html, body
             @include scale-property(margin-top, 20px)
 
         &.navbar-right
+            padding-left: 10%
             width: 30%
             @include scale-property(margin-top, 12px)
 
@@ -213,7 +214,7 @@ html, body
                     border-bottom: none
 
             img
-                @include scale-property(height, 40px)
+                @include scale-property(width, 40px, 0.8, 0.7, 0.5, 0.4)
 
 #main-content
     width: 100%

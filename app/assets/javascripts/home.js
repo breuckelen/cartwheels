@@ -14,6 +14,7 @@
         e.stopPropagation();
     }
 
+    var boxShadow = '0 4px 12px rgba(0, 0, 0, 0.7)'
     var ready = function(e) {
         var cartMap = new GMaps({
             div: '#map-div',
@@ -24,13 +25,15 @@
 
         var sidebar = $('#sidebar-wrapper');
         sidebar.find('.glyphicon.glyphicon-remove-circle').on('click', function(e) {
-            sidebar.css({left: '0'});
+            sidebar.css({'left': '0'});
+            sidebar.css({'box-shadow': 'none'});
         });
 
         var navbar = $('#navbar-wrapper');
         navbar.find('.glyphicon.glyphicon-list').parent().on('click', function(e) {
             e.preventDefault();
-            sidebar.css({left: '300px'});
+            sidebar.css({'left': '300px'});
+            sidebar.css({'box-shadow': boxShadow});
         });
     };
 
