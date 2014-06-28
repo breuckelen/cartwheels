@@ -2,11 +2,28 @@
 // They will automatically be included in application.css.
 // You can use Sass here: http://sass-lang.com/
 
-//Variables
 $posterHeight: 450px
 $posterOffset: 300px
 $navHeight: 90px
 $mapHeight: 600px
+
+.bg-highlight:hover
+    background: #333
+
+@each $color in $colors
+    $c: nth($color, 1)
+
+    .highlight-#{$c}
+        @include highlight(white)
+
+    .highlight-#{$c}:hover
+        @include highlight($c)
+
+    .underline-#{$c}
+        @include underline(white)
+
+    .underline-#{$c}:hover
+        @include underline($c)
 
 html, body
     @include scale-property(font-size, 12px)
@@ -20,7 +37,6 @@ html, body
     position: fixed
     width: 100%
     @include scale-property(height, $posterHeight + $posterOffset)
-
     top: 0
 
     .fill
@@ -30,12 +46,11 @@ html, body
         background-image: image-url("header.png")
         background-position: top center
         background-size: cover
-
         opacity: 0.8
 
         .banner
-            line-height: $posterHeight
             text-align: center
+            line-height: $posterHeight
 
             opacity: 1.0
 
@@ -46,44 +61,152 @@ html, body
                 line-height: normal
                 vertical-align: middle
 
+#sidebar-wrapper
+    font-weight: bold
+
+    z-index: 2
+    position: fixed
+    height: 100%
+    @include scale-property(width, 300px)
+    @include scale-property(margin-left, -300px)
+    @include scale-property(left, 0px)
+    top: 0
+
+    background: #222
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7)
+    overflow-y: auto
+    @include vendor(transition, all 0.4s ease 0s)
+
+.sidebar-nav
+    top: 0
+    width: 100%
+    list-style: none
+    margin: 0
+    padding: 0
+
+    li
+        line-height: 50px
+        text-indent: 20px
+        width: 100%
+
+    a
+        font-size: 2em
+        text-decoration: none
+
+        &:hover
+            background: rgba(255, 255, 255, 0.2)
+            text-decoration: none
+
+        &:active, &:focus
+            text-decoration: none
+
+    .section
+        border-bottom: 2px solid white
+
+    .sidebar-brand
+        font-size: 1.5em
+        text-indent: 10px
+
+        float: left
+        height: 65px
+        margin-top: 10px
+        margin-right: 20px
+        line-height: 60px
+
+    a
+        color: #eee
+
+        &:hover
+            background: none
+
+
+    .search-input
+        font-family: OpenSans
+        font-size: 1.1em
+        font-weight: 300
+
+        display: block
+        width: 80%
+        @include scale-property(height, 32px)
+        margin-bottom: 8px
+        margin-left: 20px
+        @include scale-property(padding-left, 11px)
+        @include scale-property(padding-right, 13px)
+        line-height: 20px
+        vertical-align: middle
+
+        border: 1px solid transparent
+        @include vendor(border-radius, 2px)
+        @include vendor(box-sizing, border-box)
+        outline: none
+        background-color: #fff
+        text-overflow: ellipsis
+
+        @include vendor(transition, all 0.2s ease 0s)
+
+        &:focus
+            @include scale-property(margin-left, 12px)
+            border-color: #4d90fe
+
+        &.search-location
+
+.form-control
+    @include vendor(border-radius, none)
+
 .navbar
-    text-align: center
     @include scale-property(height, $navHeight)
     margin-top: $posterHeight
     margin-bottom: 0
 
-    border-radius: 0
+    @include vendor(border-radius, 0)
 
     .container
+        width: 100%
         height: inherit
 
-    .navbar-brand
-        @include scale-property(padding-left, 15px)
-        @include scale-property(padding-right, 15px)
+.navbar-brand
+    @include scale-property(padding-left, 18px)
+    @include scale-property(padding-right, 15px)
 
-    .navbar-collapse
-        width: 70%
-        margin-left: auto
+.navbar-collapse
+    font-weight: bold
+    font-size: 1.6em
+    text-align: center
 
-        .navbar-nav
-            font-size: 1.35em
+    .navbar-nav
+        width: 40%
+        text-align: center
 
-            @include scale-property(margin-top, 25px)
+        .navbar-center
+            float: none
+            @include scale-property(margin-top, 35px)
+            padding: 0
 
-            > li > a
-                color: #eee
-                font-weight: bold
+            > li
+                display: inline-block
+                padding-left: 10px
+                padding-right: 10px
 
                 &:hover
-                    color: $defaultColor
+                    @include highlight(default)
+                    @include underline(default)
+
+                > a
+                    display: inline-block
+                    color: #eee
 
                     padding-bottom: 3px
 
-                    border-bottom: 2px solid $defaultColor
+                    &:hover
+                        text-decoration: none
 
-        .icons
+        &.navbar-left
+            width: 30%
+            @include scale-property(margin-top, 20px)
+
+        &.navbar-right
+            width: 30%
             @include scale-property(margin-top, 12px)
-            margin-left: 5%
 
             > li > a
                 &:hover
@@ -100,92 +223,130 @@ html, body
 
     background-size: cover
     background-position: center
-    background-color: $defaultColor
-
+    background-color: getColor(default)
     overflow-x: hidden
 
-    #map-header
-        @include scale-property(margin-top, 20px)
-        @include scale-property(margin-bottom, 10px)
-        @include scale-property(margin-left, 10px)
+#map-header
+    @include scale-property(margin-top, 20px)
+    @include scale-property(margin-bottom, 10px)
+    @include scale-property(margin-left, 10px)
 
-        .row-header
-            font-family: "Bebas Neue"
-            font-size: 2.5em
-            color: white
+    .row-header
+        font-family: "Bebas Neue"
+        font-size: 2.5em
+        color: white
 
-            border: 2px solid white
+        text-align: center
+
+        border: 2px solid white
+
+
+#map-container
+    position: relative
+    width: 80%
+    height: 80%
+    margin: auto
+    padding: 0
+
+    #map-input
+        z-index: 1
+        position: absolute
+        top: 3%
+        left: 8%
+
+        input.gmaps-input
+            font-family: Roboto
+            font-size: 1.3em
+            font-weight: 300
+
+            @include scale-property(height, 32px)
+            @include scale-property(width, 400px)
+            @include scale-property(padding-left, 11px)
+            @include scale-property(padding-right, 13px)
+
+            border: 1px solid transparent
+            border-radius: 2px 0 0 2px
+            box-sizing: border-box
+            -moz-box-sizing: border-box
+            outline: none
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
+            background-color: #fff
+            text-overflow: ellipsis
+
+            &:focus
+                @include scale-property(width, 401px)
+                @include scale-property(margin-left, -1px)
+                @include scale-property(padding-left, 14px)
+
+                border-color: #4d90fe
+
+        .gmaps-button
+            vertical-align: middle
+            box-sizing: border-box
+
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
+
+            img
+                @include scale-property(height, 18px)
+
+    #map-div
+        z-index: 0
+        @include scale-property(height, $mapHeight)
+
+    #map-tags
+        z-index: 1
+        position: absolute
+        height: 80%
+        @include scale-property(width, 118px, 0.9, 0.85, 0.7, 0.6)
+        @include scale-property(margin-top, 50px)
+        right: 0
+
+        background-color: rgba(0, 0, 0, 0.8)
+        @include vendor(border-radius, 2px)
+
+        @include vendor(transition, all 0.2s ease 0s)
+
+        .tags-header
+            font-weight: bold
+
             text-align: center
 
+            a
+                font-size: 1.7em
 
-    #map-container
-        position: relative
-        width: 80%
-        height: 80%
-        padding: 0
-        margin: auto
+                &:hover
+                    text-decoration: none
 
-        #map-input
-            position: absolute
-            top: 3%
-            left: 8%
+            @include highlight(blue)
+            @include underline(blue)
 
-            z-index: 1
+        .form-group
+            @include scale-property(margin-top, 20px)
 
-            input.gmaps-input
-                font-family: Roboto
-                font-size: 1.3em
-                font-weight: 300
+        .tag
+            font-family: OpenSans
+            font-size: 1.25em
+            color: white
 
-                @include scale-property(height, 32px)
-                @include scale-property(width, 400px)
-                @include scale-property(padding-left, 11px)
-                @include scale-property(padding-right, 13px)
+            width: 100%
+            @include scale-property(margin-bottom, 40px)
+            @include scale-property(padding-left, 7px)
 
-                border: 1px solid transparent
-                border-radius: 2px 0 0 2px
-                box-sizing: border-box
-                -moz-box-sizing: border-box
-                outline: none
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
-                background-color: #fff
-                text-overflow: ellipsis
+            display: block
+            word-wrap: break-word
 
-                &:focus
-                    border-color: #4d90fe
-                    @include scale-property(width, 401px)
-                    @include scale-property(margin-left, -1px)
-                    @include scale-property(padding-left, 14px)
+            input
+                @include scale-property(margin, 5px)
 
-            .gmaps-button
-                vertical-align: middle
+        &:hover
+            background-color: rgba(0, 0, 0, 0.9)
 
-                box-sizing: border-box
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
+footer
+    text-align: center
+    font-weight: bold
 
-                img
-                    @include scale-property(height, 18px)
+    @include scale-property(margin-left, 50px)
+    @include scale-property(margin-right, 50px)
+    @include scale-property(margin-top, 50px)
+    @include scale-property(margin-bottom, 50px)
 
-        #map-div
-            z-index: 0
-            @include scale-property(height, $mapHeight)
-
-        #map-tags
-            z-index: 1
-            background-color: black
-
-            position: absolute
-            right: 0
-            height: 100%
-            width: 10%
-
-            opacity: 0.3
-
-    footer
-        text-align: center
-        font-weight: bold
-
-        @include scale-property(margin-left, 50px)
-        @include scale-property(margin-right, 50px)
-        @include scale-property(margin-top, 50px)
-        @include scale-property(margin-bottom, 50px)

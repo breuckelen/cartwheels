@@ -111,19 +111,25 @@
     -o-#{$property}: $value
     #{$property}: $value
 
-@mixin scale-property($property, $default)
+@mixin scale-property($property, $default, $tl: 0.9, $tp: 0.7, $ml: 0.5, $mp: 0.4)
     @include desktop-only
         #{$property}: $default
 
     @include tablet-landscape-only
-        #{$property}: $default * 0.9
+        #{$property}: $default * $tl
 
     @include tablet-portrait-only
-        #{$property}: $default * 0.7
+        #{$property}: $default * $tp
 
     @include mobile-landscape-only
-        #{$property}: $default * 0.5
+        #{$property}: $default * $ml
 
     @include mobile-portrait-only
         #{$property}: $default * 0.3
 
+@mixin highlight($color)
+    a
+        color: getColor($color)
+
+@mixin underline($color)
+    border-bottom: 2px solid getColor($color)

@@ -14,16 +14,26 @@
         e.stopPropagation();
     }
 
-    var cartMap;
     var ready = function(e) {
-        cartMap = new GMaps({
+        var cartMap = new GMaps({
             div: '#map-div',
             lat: -12.043333,
             lng: -77.028333,
             scrollwheel: false
         });
 
-        $(window).scroll(onScroll);
+        var sidebar = $('#sidebar-wrapper');
+        sidebar.find('.glyphicon.glyphicon-remove-circle').on('click', function(e) {
+            sidebar.css({left: '0'});
+        });
+
+        var navbar = $('#navbar-wrapper');
+        navbar.find('.glyphicon.glyphicon-list').parent().on('click', function(e) {
+            e.preventDefault();
+            sidebar.css({left: '300px'});
+        });
     };
+
+    $(window).scroll(onScroll);
     $(document).ready(ready);
 })();

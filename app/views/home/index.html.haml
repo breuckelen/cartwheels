@@ -6,20 +6,43 @@
     .banner
       %span Cartwheels
 
-%nav.navbar.navbar-inverse{role: "navigation"}
+#sidebar-wrapper
+  %ul.sidebar-nav
+    %li.sidebar-brand.highlight-red
+      %a
+        %span.glyphicon.glyphicon-remove-circle
+    %li.section
+      %form
+        .form-group
+          %input.search-input{type: "text", placeholder: "Search"}
+          %input.search-input.search-location{type: "text", placeholder: "Location"}
+    %li.section.bg-highlight.highlight-default
+      %a{href: "#"} Sign Up
+    %li.section.bg-highlight.highlight-default
+      %a{href: "#"} Sign In
+    %li.bg-highlight.highlight-default
+      %a{href: "#"} Home
+
+%nav#navbar-wrapper.navbar.navbar-inverse{role: "navigation"}
   .container
     / Collect the nav links, forms, and other content for toggling
-    .navbar-collapse.navbar-ex1-collapse
-      %ul.nav.navbar-nav
-        %li
-          %a{href: "#about"} Map
-        %li
-          %a{href: "#services"} Social Media
-        %li
-          %a{href: "#carts"} Carts
-        %li
-          %a{href: "#about"} About
-      %ul.nav.navbar-nav.icons
+    .navbar-collapse.collapse
+      %ul.nav.navbar-nav.navbar-left
+        %li.sidebar-brand.highlight-default
+          %a{href: "#"}
+            %span.glyphicon.glyphicon-list
+            %span Menu
+      .nav.navbar-nav
+        %ul.navbar-center
+          %li
+            %a{href: "#about"} Map
+          %li
+            %a{href: "#services"} Social Media
+          %li
+            %a{href: "#carts"} Carts
+          %li
+            %a{href: "#about"} About
+      %ul.nav.navbar-nav.navbar-right
         %a.navbar-brand{href: "#"}
           =image_tag("fb-icon.png")
         %a.navbar-brand{href: "#hello"}
@@ -38,6 +61,31 @@
       %button.gmaps-button.btn.btn-primary
         =image_tag("search.png")
     #map-tags
+      .tags-header
+        %a{href: "#"} Search For
+
+      .form-group
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Trucks
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Halal
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Hot Dog Stands
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Dessert
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Breakfast
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Fruit
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Other
     #map-div
 
   %footer.row

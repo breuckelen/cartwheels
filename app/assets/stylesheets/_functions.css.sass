@@ -1,0 +1,7 @@
+@function getColor ($colorName)
+    // Run across the color list.
+    @each $color in $colors
+        // If the key (first child of the current $color) is
+        // the same as the specified by params, return the value.
+        @if nth($color, 1) == $colorName
+            @return nth($color, 2)
