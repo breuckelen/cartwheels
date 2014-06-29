@@ -14,8 +14,10 @@
         e.stopPropagation();
     }
 
-    var boxShadow = '0 4px 12px rgba(0, 0, 0, 0.7)'
     var ready = function(e) {
+        var controller = $('#home-index');
+        if (controller.length == 0) return;
+
         var cartMap = new GMaps({
             div: '#map-div',
             lat: -12.043333,
@@ -23,26 +25,9 @@
             scrollwheel: false
         });
 
-        var sidebar = $('#sidebar-wrapper');
-        sidebar.find('.glyphicon.glyphicon-remove-circle').on('click', function(e) {
-            sidebar.css({'left': '0'});
-            sidebar.css({'box-shadow': 'none'});
-        });
-
-        var navbar = $('#navbar-wrapper');
-        navbar.find('.glyphicon.glyphicon-list').parent().on('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            sidebar.css({'left': '300px'});
-            sidebar.css({'box-shadow': boxShadow});
-        });
-
-        $('#content-wrapper').on('click', function(e) {
-            sidebar.css({'left': '0'});
-            sidebar.css({'box-shadow': 'none'});
-        });
+        $(window).scroll(onScroll);
     };
 
-    $(window).scroll(onScroll);
     $(document).ready(ready);
+    $(document).on('page:load', ready);
 })();

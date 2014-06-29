@@ -1,0 +1,119 @@
+#sidebar-wrapper
+    font-family: $defaultFont
+    font-weight: bold
+    font-size: 11px
+
+    z-index: 2
+    position: fixed
+    height: 100%
+    width: 300px
+    margin-left: -300px
+    top: 0
+
+    @include vendor(transition, all 0.4s ease 0s)
+
+    &.closed
+        left: 0px
+
+    &.open
+        left: 300px
+
+.sidebar
+    height: 100%
+    background: #222
+    overflow-y: auto
+
+    border-right: 2px solid white
+
+.sidebar-nav
+    top: 0
+    width: 100%
+    list-style: none
+    margin: 0
+    padding: 0
+
+    li
+        line-height: 50px
+        text-indent: 20px
+        width: 100%
+
+    a
+        font-size: 2em
+        text-decoration: none
+
+        &:hover
+            background: rgba(255, 255, 255, 0.2)
+            text-decoration: none
+
+        &:active, &:focus
+            text-decoration: none
+
+    .section
+        border-bottom: 2px solid white
+
+    .sidebar-brand
+        font-size: 1.5em
+        text-indent: 10px
+
+        float: left
+        height: 65px
+        margin-top: 10px
+        margin-right: 20px
+        line-height: 60px
+
+    a
+        color: #eee
+
+        &:hover
+            background: none
+
+.search-group
+    font-family: OpenSans
+    margin-left: 20px
+
+.search-input
+    @extend .form-input
+
+    &:focus
+        border-color: #4d90fe
+
+.search-btn
+    width: 40%
+    line-height: 20px
+    height: 32px
+
+.attached-btn
+    font-size: 1.5em
+
+    position: absolute
+    z-index: 3
+    width: 45px
+    height: 50px
+    top: 10%
+    left: 300px
+    text-align: left
+
+    background: #444
+    border: none
+    overflow: hidden
+    @include vendor(border-radius, 0 0.2em 0.2em 0)
+
+    @include vendor(transition, all 0.2s ease 0s)
+
+    span
+        color: white
+
+    .label
+        margin-left: 5px
+        font-size: 1.0em
+
+    .open &
+        width: 100px
+
+    &:hover
+        background: #333
+        width: 100px
+
+    &:focus
+        outline: 0
+

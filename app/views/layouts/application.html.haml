@@ -10,4 +10,32 @@
 
 %body
   %div{:id => "#{controller.controller_name}-#{action_name}"}
-    = yield
+    #sidebar-wrapper.closed
+      .sidebar
+        %ul.sidebar-nav
+          %li.sidebar-brand.highlight-red
+            %a{href: "#"}
+              %span.glyphicon.glyphicon-remove-circle
+          %li.section
+            %form
+              .form-group.search-group
+                %input.search-input.no-scale{type: "text", placeholder: "Food"}
+                %input.search-input.no-scale{type: "text", placeholder: "Location"}
+                %button.btn.btn-primary.search-btn Search
+          - if user_signed_in?
+            %li.section.bg-highlight.highlight-full-default
+              = link_to "Logout", logout_path, :method => :delete
+          - else
+            %li.section.bg-highlight.highlight-full-default
+              = link_to "Sign Up", register_path
+            %li.section.bg-highlight.highlight-full-default
+              = link_to "Sign In", login_path
+          %li.bg-highlight.highlight-full-default
+            = link_to "Home", home_path
+
+      %button.btn.attached-btn
+        %span.glyphicon.glyphicon-th-list
+        %span.label Menu
+
+    #content-wrapper
+      = yield

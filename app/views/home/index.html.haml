@@ -1,95 +1,73 @@
 -content_for :head do
   =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
 
-#sidebar-wrapper
-  %ul.sidebar-nav
-    %li.sidebar-brand.highlight-red
-      %a
-        %span.glyphicon.glyphicon-remove-circle
-    %li.section
-      %form
-        .form-group
-          %input.search-input{type: "text", placeholder: "Search"}
-          %input.search-input.search-location{type: "text", placeholder: "Location"}
-    %li.section.bg-highlight.highlight-default
-      %a{href: "#"} Sign Up
-    %li.section.bg-highlight.highlight-default
-      %a{href: "#"} Sign In
-    %li.bg-highlight.highlight-default
-      %a{href: "#"} Home
+#poster.carousel.slide{speed: "0.2"}
+  .fill
+    .banner
+      %span Cartwheels
 
-#content-wrapper
-  #poster.carousel.slide{speed: "0.2"}
-    .fill
-      .banner
-        %span Cartwheels
+%nav#navbar-wrapper.navbar.navbar-inverse{role: "navigation"}
+  .container
+    / Collect the nav links, forms, and other content for toggling
+    .navbar-collapse.collapse
+      %ul.nav.navbar-nav.navbar-left
+      .nav.navbar-nav
+        %ul.navbar-center
+          %li
+            %a{href: "#about"} Map
+          %li
+            %a{href: "#services"} Social Media
+          %li
+            %a{href: "/carts"} Carts
+          %li
+            %a{href: "#about"} About
+      %ul.nav.navbar-nav.navbar-right
+        %a.navbar-brand{href: "http://facebook.com"}
+          =image_tag("fb-icon.png")
+        %a.navbar-brand{href: "http://twitter.com"}
+          =image_tag("tw-icon.png")
+        %a.navbar-brand{href: "http://plus.google.com"}
+          =image_tag("gp-icon.png")
 
-  %nav#navbar-wrapper.navbar.navbar-inverse{role: "navigation"}
-    .container
-      / Collect the nav links, forms, and other content for toggling
-      .navbar-collapse.collapse
-        %ul.nav.navbar-nav.navbar-left
-          %li.sidebar-brand.highlight-default
-            %a{href: "#"}
-              %span.glyphicon.glyphicon-list
-              %span Menu
-        .nav.navbar-nav
-          %ul.navbar-center
-            %li
-              %a{href: "#about"} Map
-            %li
-              %a{href: "#services"} Social Media
-            %li
-              %a{href: "#carts"} Carts
-            %li
-              %a{href: "#about"} About
-        %ul.nav.navbar-nav.navbar-right
-          %a.navbar-brand{href: "#"}
-            =image_tag("fb-icon.png")
-          %a.navbar-brand{href: "#hello"}
-            =image_tag("tw-icon.png")
-          %a.navbar-brand{href: "#world"}
-            =image_tag("gp-icon.png")
+#main-content.container
+  #map-header.row
+    .col-lg-1.col-md-1.col-sm-1.col-xs-1
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      .row-header Find Carts In Your Area
+  #map-container.row
+    #map-input
+      %input.gmaps-input
+      %button.gmaps-button.btn.btn-primary
+        =image_tag("search.png")
+    #map-tags
+      .tags-header
+        %a{href: "#"} Search For
 
-  #main-content.container
-    #map-header.row
-      .col-lg-1.col-md-1.col-sm-1.col-xs-1
-      .col-lg-4.col-md-4.col-sm-4.col-xs-4
-        .row-header Find Carts In Your Area
-    #map-container.row
-      #map-input
-        %input.gmaps-input
-        %button.gmaps-button.btn.btn-primary
-          =image_tag("search.png")
-      #map-tags
-        .tags-header
-          %a{href: "#"} Search For
+      .form-group
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Trucks
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Halal
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Hot Dog Stands
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Dessert
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Breakfast
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Fruit
+        .checkbox.tag
+          %label
+            %input{type: "checkbox"} Other
+    #map-div
 
-        .form-group
-          .checkbox.tag
-            %label
-              %input{type: "checkbox"} Trucks
-          .checkbox.tag
-            %label
-              %input{type: "checkbox"} Halal
-          .checkbox.tag
-            %label
-              %input{type: "checkbox"} Hot Dog Stands
-          .checkbox.tag
-            %label
-              %input{type: "checkbox"} Dessert
-          .checkbox.tag
-            %label
-              %input{type: "checkbox"} Breakfast
-          .checkbox.tag
-            %label
-              %input{type: "checkbox"} Fruit
-          .checkbox.tag
-            %label
-              %input{type: "checkbox"} Other
-      #map-div
-
-    %footer.row
-      .row
-        .col-lg-12
-          %p Copyright © Cartwheels 2014
+  %footer.row
+    .row
+      .col-lg-12
+        %p Copyright © Cartwheels 2014

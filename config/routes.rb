@@ -26,12 +26,13 @@ Rails.application.routes.draw do
     end
 
     # Collection routes
-    devise_for :users, controllers: {:registrations => "users/registrations"}
+    devise_for :users, controllers: {:registrations => "users/registrations",
+        :sessions => "users/sessions"}
 
     # Quickfix: devise omniauth routes do not support dynamic segments
     devise_scope :user do
-        get "/login" => "devise/sessions#new"
-        delete "/logout" => "devise/sessions#destroy"
+        get "/login" => "users/sessions#new"
+        delete "/logout" => "users/sessions#destroy"
         get "/register" => "users/registrations#new"
 
         match "/users/auth/:provider",

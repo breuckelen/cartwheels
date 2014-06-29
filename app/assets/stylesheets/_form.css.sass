@@ -1,0 +1,67 @@
+.wheels-form
+    margin: 0 auto
+
+    .form-input
+        width: 70%
+        @include scale-property(height, 32px)
+
+.form-header
+    font-family: "Bebas Book"
+    font-weight: bold
+    font-size: 30px
+    color: #eee
+
+    margin-bottom: 5%
+
+    @extend .highlight-blue
+    @extend .underline-blue
+
+.form-label
+    font-family: "Bebas Book"
+    font-weight: bold
+    font-size: 1.5em
+    color: #eee
+    vertical-align: middle
+
+    @include scale-property(height, 32px)
+    @include scale-property(line-height, 32px)
+
+.form-input
+    font-size: 1.2em
+    font-weight: 300
+
+    display: block
+    width: 80%
+    margin-bottom: 8px
+    padding-left: 11px
+    padding-right: 13px
+    vertical-align: middle
+    @include scale-property(height, 32px)
+    @include scale-property(line-height, 20px)
+
+    border: 1px solid transparent
+    border-radius: 2px
+    box-sizing: border-box
+    outline: none
+    background-color: #fff
+    text-overflow: ellipsis
+
+    @include vendor(transition, all 0.2s ease 0s)
+
+    &.no-scale
+        height: 32px
+        line-height: 20px
+
+.form-btn
+    font-size: 1.2em
+
+    vertical-align: middle
+    @include scale-property(width, 115px)
+    @include scale-property(height, 32px)
+    @include scale-property(line-height, 16px)
+
+    @include vendor(transition, all 0.2s ease 0s)
+
+    &.no-scale
+        height: 32px
+        line-height: 20px

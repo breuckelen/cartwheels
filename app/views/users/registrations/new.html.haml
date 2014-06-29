@@ -1,43 +1,56 @@
-%h2 Sign up
+#form-wrapper.wheels-form
+  .form-header.row
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+    .col-lg-4
+      %a{href: "#"} Sign Up
 
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = devise_error_messages!
+  = form_for @user, url: registration_path("user") do |f|
+    - if @user.errors.any?
+      .error_messages
+        %ul
+          - for m in @user.errors.full_messages
+            %li= m
 
-  %div
-    = f.label :name
-    %br
+    .form-group.row
+      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+        .form-label Name
+      - if session['devise.auth_data']
+        = f.text_field :name, :class => 'form-input', :placeholder => 'Name',
+            value: session['devise.auth_data']['info']['name']
+      - else
+        = f.text_field :name, :class => 'form-input', :placeholder => 'Name'
+
+    .form-group.row
+      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+        .form-label Email
+      - if session['devise.auth_data']
+        = f.text_field :email, :class => 'form-input', :placeholder => 'Email',
+            value: session['devise.auth_data']['info']['email']
+      - else
+        = f.text_field :email, :class => 'form-input', :placeholder => 'Email'
+
+    .form-group.row
+      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+        .form-label Password
+      = f.password_field :password, :class => 'form-input',
+          :placeholder => 'Password'
+
+    .form-group.row
+      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+        .form-label Confirm
+      = f.password_field :password_confirmation, :class => 'form-input',
+          :placeholder => 'Confirm Password'
+
+    .form-group.row
+      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+        .form-label Zip Code
+      = f.text_field :zip_code, :class => 'form-input', :autocomplete => "off",
+          :placeholder => 'Zip Code'
+
     - if session['devise.auth_data']
-      = f.text_field :name, autofocus: true, value: session['devise.auth_data']['info']['name']
-    - else
-      = f.text_field :name, autofocus: true
+      = f.hidden_field :provider, value: session['devise.auth_data']['provider']
+      = f.hidden_field :uid, value: session['devise.auth_data']['uid']
 
-  %div
-    = f.label :email
-    %br
-    - if session['devise.auth_data']
-      = f.email_field :email, autofocus: true, value: session['devise.auth_data']['info']['email']
-    - else
-      = f.email_field :email, autofocus: true
-
-  %div
-    = f.label :zip_code
-    %br
-    = f.text_field :zip_code
-
-  %div
-    = f.label :password
-    %br
-    = f.password_field :password, autocomplete: "off"
-
-  %div
-    = f.label :password_confirmation
-    %br
-    = f.password_field :password_confirmation, autocomplete: "off"
-
-  - if session['devise.auth_data']
-    = f.hidden_field :provider, value: session['devise.auth_data']['provider']
-    = f.hidden_field :uid, value: session['devise.auth_data']['uid']
-
-  %div= f.submit "Sign up"
-
-= render "devise/shared/links"
+    .form-group.row
+      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+      %button.btn.btn-primary.form-btn{type: "submit"} Register

@@ -4,12 +4,28 @@
 @import functions
 @import mixins
 @import typography
+@import form
+@import highlight
+@import sidebar
 @import home
 @import carts
 @import reviews
 @import menus
 @import search
 @import users
+
+html, body
+    width: 100%
+    height: 100%
+    @include scale-property(font-size, 12px)
+
+
+#content-wrapper
+    width: 100%
+    height: 100%
+
+    a
+        text-decoration: none
 
 //LAYOUT FOR CSS STYLES
 //Font

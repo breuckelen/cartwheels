@@ -7,135 +7,18 @@ $posterOffset: 300px
 $navHeight: 90px
 $mapHeight: 600px
 
-.bg-highlight:hover
-    background: #333
-
-@each $color in $colors
-    $c: nth($color, 1)
-
-    .highlight-#{$c}
-        @include highlight(white)
-
-    .highlight-#{$c}:hover
-        @include highlight($c)
-
-    .underline-#{$c}
-        @include underline(white)
-
-    .underline-#{$c}:hover
-        @include underline($c)
-
-html, body
-    @include scale-property(font-size, 12px)
+#home-index
     font-family: $defaultFont
     -webkit-font-smoothing: antialiased
 
     height: 100%
     width: 100%
 
-#sidebar-wrapper
-    font-weight: bold
-
-    z-index: 2
-    position: fixed
-    height: 100%
-    width: 300px
-    margin-left: -300px
-    left: 0px
-    top: 0
-
-    background: #222
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7)
-    overflow-y: auto
-    @include vendor(transition, all 0.4s ease 0s)
-
-.sidebar-nav
-    top: 0
-    width: 100%
-    list-style: none
-    margin: 0
-    padding: 0
-
-    li
-        line-height: 50px
-        text-indent: 20px
-        width: 100%
-
-    a
-        font-size: 2em
-        text-decoration: none
-
-        &:hover
-            background: rgba(255, 255, 255, 0.2)
-            text-decoration: none
-
-        &:active, &:focus
-            text-decoration: none
-
-    .section
-        border-bottom: 2px solid white
-
-    .sidebar-brand
-        font-size: 1.5em
-        text-indent: 10px
-
-        float: left
-        height: 65px
-        margin-top: 10px
-        margin-right: 20px
-        line-height: 60px
-
-    a
-        color: #eee
-
-        &:hover
-            background: none
-
-
-    .search-input
-        font-family: OpenSans
-        font-size: 1.1em
-        font-weight: 300
-
-        display: block
-        width: 80%
-        @include scale-property(height, 32px)
-        margin-bottom: 8px
-        margin-left: 20px
-        @include scale-property(padding-left, 11px)
-        @include scale-property(padding-right, 13px)
-        line-height: 20px
-        vertical-align: middle
-
-        border: 1px solid transparent
-        @include vendor(border-radius, 2px)
-        @include vendor(box-sizing, border-box)
-        outline: none
-        background-color: #fff
-        text-overflow: ellipsis
-
-        @include vendor(transition, all 0.2s ease 0s)
-
-        &:focus
-            @include scale-property(margin-left, 12px)
-            border-color: #4d90fe
-
-        &.search-location
-
-.form-control
-    @include vendor(border-radius, none)
-
-#content-wrapper
-    width: 100%
-    height: 100%
-
-    @include vendor(transition, margin-left 0.4s ease 0s)
-
 #poster
     position: absolute
     width: 100%
-    @include scale-property(height, $posterHeight + $posterOffset)
     top: 0
+    @include scale-property(height, $posterHeight + $posterOffset)
 
     .fill
         width: 100%
@@ -148,7 +31,7 @@ html, body
 
         .banner
             text-align: center
-            line-height: $posterHeight
+            @include scale-property(line-height, $posterHeight)
 
             opacity: 1.0
 
@@ -160,13 +43,17 @@ html, body
                 vertical-align: middle
 
 .navbar
-    @include scale-property(height, $navHeight)
-    margin-top: $posterHeight
     margin-bottom: 0
+    @include scale-property(margin-top, $posterHeight)
+    @include scale-property(height, $navHeight)
 
     @include vendor(border-radius, 0)
 
     .container
+        font-weight: bold
+        font-size: 1.6em
+        text-align: center
+
         width: 100%
         height: inherit
 
@@ -174,53 +61,48 @@ html, body
     @include scale-property(padding-left, 18px)
     @include scale-property(padding-right, 15px)
 
-.navbar-collapse
-    font-weight: bold
-    font-size: 1.6em
+.navbar-nav
+    width: 40%
     text-align: center
 
-    .navbar-nav
-        width: 40%
-        text-align: center
+    .navbar-center
+        float: none
+        padding: 0
+        @include scale-property(margin-top, 35px)
 
-        .navbar-center
-            float: none
-            @include scale-property(margin-top, 35px)
-            padding: 0
+        > li
+            display: inline-block
+            padding-left: 10px
+            padding-right: 10px
 
-            > li
+            &:hover
+                @include highlight(default)
+                @include underline(default)
+
+            > a
                 display: inline-block
-                padding-left: 10px
-                padding-right: 10px
+                color: #eee
+
+                padding-bottom: 3px
 
                 &:hover
-                    @include highlight(default)
-                    @include underline(default)
+                    text-decoration: none
 
-                > a
-                    display: inline-block
-                    color: #eee
+    &.navbar-left
+        width: 30%
+        @include scale-property(margin-top, 20px)
 
-                    padding-bottom: 3px
+    &.navbar-right
+        padding-left: 10%
+        width: 30%
+        @include scale-property(margin-top, 12px)
 
-                    &:hover
-                        text-decoration: none
+        > li > a
+            &:hover
+                border-bottom: none
 
-        &.navbar-left
-            width: 30%
-            @include scale-property(margin-top, 20px)
-
-        &.navbar-right
-            padding-left: 10%
-            width: 30%
-            @include scale-property(margin-top, 12px)
-
-            > li > a
-                &:hover
-                    border-bottom: none
-
-            img
-                @include scale-property(width, 40px, 0.8, 0.7, 0.5, 0.4)
+        img
+            @include scale-property(width, 40px, 0.8, 0.7, 0.5, 0.4)
 
 #main-content
     width: 100%
@@ -304,10 +186,10 @@ html, body
     #map-tags
         z-index: 1
         position: absolute
-        height: 80%
-        @include scale-property(width, 118px, 0.9, 0.85, 0.7, 0.6)
-        @include scale-property(margin-top, 50px)
         right: 0
+        @include scale-property(width, 118px, 0.9, 0.85, 0.7, 0.6)
+        @include scale-property(height, $mapHeight * 0.8)
+        @include scale-property(margin-top, 50px)
 
         background-color: rgba(0, 0, 0, 0.8)
         @include vendor(border-radius, 2px)
@@ -325,7 +207,7 @@ html, body
                 &:hover
                     text-decoration: none
 
-            @include highlight(blue)
+            @include highlight-full(blue)
             @include underline(blue)
 
         .form-group
@@ -357,4 +239,3 @@ footer
     @include scale-property(margin-right, 50px)
     @include scale-property(margin-top, 50px)
     @include scale-property(margin-bottom, 50px)
-
