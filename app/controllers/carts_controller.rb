@@ -128,8 +128,8 @@ class CartsController < ApplicationController
         @cart = Cart.find(params[:id])
     end
 
-    private :set_cart
     private :data_params
     private :search_params
     private :cart_params
+    private :set_cart
 end

@@ -58,7 +58,7 @@ class Cart < ActiveRecord::Base
         options[:only] ||= [:id, :name, :city, :permit_number, :zip_code,
             :description, :lat, :lon]
         options[:include] ||= {
-            :photos => { :only => :null, :methods => [:image_url_thumb] }
+            :photos => { :only => :null, :methods => [:image_url] }
         }
         super(options)
     end

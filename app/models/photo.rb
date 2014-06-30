@@ -12,7 +12,7 @@ class Photo < ActiveRecord::Base
     validates :target, :target_type, :user, presence: true
     validates_attachment_content_type :image, :content_type => /\Aimage/
 
-    def image_url_medium
+    def image_url
         image.url(:medium)
     end
 
