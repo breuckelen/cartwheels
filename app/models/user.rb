@@ -28,9 +28,15 @@ class User < ActiveRecord::Base
 
     # Hooks
     before_save :ensure_authentication_token
+    before_create :build_default_search_history
 
     def users_badges
         []
+    end
+
+    def build_default_search_history
+        build_search_history
+        true
     end
 
     # Function to grant a user more priveleges
@@ -56,7 +62,7 @@ class User < ActiveRecord::Base
     end
 
     def as_json(options={})
-        options[:except] ||= [:authentication_token, :password, :roles_mask, :provider, :uid]
+        options[:only] ||= [:id, :email, :name, :zip_code, :created_at, :updated_at]
         super(options)
     end
 

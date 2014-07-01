@@ -4,6 +4,9 @@ class Tag < ActiveRecord::Base
     has_many :carts, :through => :cart_tag_relations
 
     # Validations
-    validates :name, :count, presence: true
-    validates :count, numericality: true
+    validates :name, presence: true
+
+    def count
+        return CartTagRelation.where(tag_id: self.id).count
+    end
 end

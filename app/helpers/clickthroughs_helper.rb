@@ -1,0 +1,2 @@
+module ClickthroughsHelper
+end

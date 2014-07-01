@@ -4,12 +4,12 @@ class Cart < ActiveRecord::Base
     has_many :ads
     has_many :reviews
     has_many :clickthroughs
-    has_many :photos, as: :target, inverse_of: :target, dependent: :destroy
+    has_many :photos, as: :target, inverse_of: :target
     has_many :user_cart_relations, inverse_of: :cart
     has_many :users, through: :user_cart_relations
-    has_many :cart_tag_relations, as: :cart
+    has_many :cart_tag_relations
     has_many :tags, through: :cart_tag_relations
-    has_many :cart_category_relations, as: :cart
+    has_many :cart_category_relations
     has_many :categories, through: :cart_category_relations
     has_many :notifications
     has_and_belongs_to_many :owners
@@ -23,6 +23,7 @@ class Cart < ActiveRecord::Base
 
     # Filters
     before_validation :reverse_geocode
+    before_create :build_default_menu
 
     # Reverse geocoding
     reverse_geocoded_by :lat, :lon do |obj, results|
@@ -35,6 +36,11 @@ class Cart < ActiveRecord::Base
     # For geospatial searches
     acts_as_mappable :lat_column_name => :lat,
         :lng_column_name => :lon
+
+    def build_default_menu
+        build_menu
+        true
+    end
 
     def carts_owners
         []
@@ -81,4 +87,6 @@ class Cart < ActiveRecord::Base
     # Get most popular carts (highest ratings, most clickthroughs)
     def self.trending
     end
+
+    private :build_default_menu
 end

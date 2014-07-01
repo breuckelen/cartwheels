@@ -4,6 +4,5 @@ class Ad < ActiveRecord::Base
     belongs_to :ad_type
 
     # Validations
-    validates :title, :description, :start_date, :end_date, :cart, :ad_type,
-        presence: true
+    validates :title, :description, :cart, :ad_type, presence: true
 end

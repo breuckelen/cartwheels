@@ -1,4 +1,6 @@
 class CartsController < ApplicationController
+    skip_before_filter :verify_authenticity_token,
+        :if => Proc.new { |c| c.request.format == 'application/json' }
     before_action :set_cart, only: [:show, :edit, :update, :destroy]
 
     # show cart owners
@@ -44,11 +46,13 @@ class CartsController < ApplicationController
                 format.html { redirect_to carts_path,
                     notice: 'Cart was succesfully created.' }
                 format.json { render :show, status: :created,
-                    location: @cart }
+                    location: @cart,
+                    :json => { :success => true }}
             else
                 format.html { render :new }
                 format.json { render json: @cart.errors,
-                    status: :unprocessable_entity }
+                    status: :unprocessable_entity,
+                    :json => { :success => false }}
             end
         end
     end
@@ -59,15 +63,17 @@ class CartsController < ApplicationController
         end
 
         respond_to do |format|
-            if @cart.save
+            if @cart.update(cart_params)
                 format.html { redirect_to carts_path,
-                    notice: 'Cart was succesfully created.' }
-                format.json { render :show, status: :created,
-                    location: @cart }
+                    notice: 'Cart was succesfully updated.' }
+                format.json { render :show, status: :ok,
+                    location: @cart,
+                    :json => { :success => true }}
             else
-                format.html { render :new }
+                format.html { render :edit }
                 format.json { render json: @cart.errors,
-                    status: :unprocessable_entity }
+                    status: :unprocessable_entity,
+                    :json => { :success => false }}
             end
         end
     end
@@ -82,7 +88,7 @@ class CartsController < ApplicationController
                 format.json { render json: {
                     success: true } }
             else
-                format.html { redirect_to carts_path,
+                format.html { redirect_to @cart,
                     notice: 'You do not have permission to perform this action.' }
                 format.json { render json: {
                     success: false }

@@ -9,12 +9,20 @@ Rails.application.routes.draw do
         resources :reviews, only: [:index, :new, :create]
     end
 
-    concern :tags do
-        resources :tags, path: "tags", only: [:index, :new, :create]
+    concern :ads do
+        resources :ads, only: [:index, :new, :create]
     end
 
-    concern :categories do
-        resources :categories, path: "categories", only: [:index, :new, :create]
+    concern :user_cart_relations do
+        resources :user_cart_relations, path: "subscribers", only: [:index, :new, :create]
+    end
+
+    concern :cart_tag_relations do
+        resources :cart_tag_relations, path: "tags", only: [:index, :new, :create]
+    end
+
+    concern :cart_category_relations do
+        resources :cart_category_relations, path: "categories", only: [:index, :new, :create]
     end
 
     concern :data do
@@ -28,6 +36,9 @@ Rails.application.routes.draw do
     # Collection routes
     devise_for :users, controllers: {:registrations => "users/registrations",
         :sessions => "users/sessions"}
+
+    devise_for :owners, controllers: {:registrations => "owners/registrations",
+        :sessions => "owners/sessions"}
 
     # Quickfix: devise omniauth routes do not support dynamic segments
     devise_scope :user do
@@ -47,50 +58,68 @@ Rails.application.routes.draw do
             via: [:get, :post]
     end
 
-
+    # User routes
     resources :users, concerns: [:photos, :reviews, :data, :search]
     get "/account" => "users#show", as: :account
 
-    resources :carts, concerns: [:photos, :reviews, :tags, :categories, :data, :search] do
-        member do
-            resource :menu, only: [:show, :edit, :update, :destroy] do
-                resource :menu_items, path: "items", shallow: true
-            end
+    resources :owners, concerns: [:data] do
+        resources :carts, only: [:index, :new, :create]
+    end
 
-            resources :ads, shallow: true
+    # Cart routes
+    resources :carts, concerns: [:photos, :reviews, :data, :search, :ads,
+            :user_cart_relations, :cart_tag_relations, :cart_category_relations] do
+        member do
+            resource :menu do
+                resources :menu_items, path: "items", only: [:index, :new, :create]
+            end
         end
     end
 
-    devise_for :owners, controllers: {:registrations => "owners/registrations"}
-
-    resources :owners do
-        resources :carts, shallow: true
-    end
-
-    resources :ad_types
-
-    resources :photos, only: [:show, :edit, :update, :destroy]
+    # Other public routes
+    resources :photos, only: [:show, :edit, :update, :destroy],
+        concerns: [:data]
 
     resources :reviews, only: [:show, :edit, :update, :destroy],
         concerns: [:data, :search]
 
-    resources :tags, only: [:edit, :update, :destroy] do
-        member do
-            get "carts" => "tags#carts"
-        end
-    end
+    resources :ad_types, concerns: [:data], path: "advertise"
 
-    resources :categories, only: [:edit, :update, :destroy] do
-        member do
-            get "carts" => "categories#carts"
-        end
-    end
+    resources :tags, concerns: [:data]
+
+    resources :categories, concerns: [:data]
+
+    # Private routes
+    resources :ads, only: [:show, :edit, :update, :destroy],
+        concerns: [:data], path: "_ads"
+
+    resources :menu_items, only: [:show, :edit, :update, :destroy],
+        concerns: [:data], path: "_menu_items"
+
+    resources :user_cart_relations, only: [:show, :edit, :update, :destroy],
+        concerns: [:data], path: "_cart_associations"
+
+    resources :cart_tag_relations, only: [:show, :edit, :update, :destroy],
+        concerns: [:data], path: "_tag_instances"
+
+    resources :cart_category_relations, only: [:show, :edit, :update, :destroy],
+        concerns: [:data], path: "_category_instances"
+
+    resources :search_lines, concerns: [:data], path: "_search_lines"
+
+    resources :clickthroughs, concerns: [:data], path: "_clickthroughs"
 
     namespace :mobile do
         devise_scope :user do
             post 'sessions' => 'sessions#create', :as => 'mobile_login'
             delete 'sessions' => 'sessions#destroy', :as => 'mobile_logout'
             post 'registrations' => 'registrations#create', :as => 'mobile_register'
+        end
+
+        devise_scope :owner do
+            post 'owners/sessions' => 'sessions#create', :as => 'mobile_owner_login'
+            delete 'owners/sessions' => 'sessions#destroy', :as => 'mobile_owner_logout'
+            post 'owners/registrations' => 'registrations#create', :as => 'mobile_owner_register'
         end
     end
 

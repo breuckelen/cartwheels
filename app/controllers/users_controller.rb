@@ -13,10 +13,6 @@ class UsersController < ApplicationController
                 return redirect_to :home, :notice => "You are not logged in."
             end
         end
-
-        unless @user == current_user
-            return redirect_to :home, :notice => "Access denied."
-        end
     end
 
     def edit
@@ -31,25 +27,14 @@ class UsersController < ApplicationController
         # redirect unless correct user, admin, or manager
     end
 
-    # action for editing subscriptions
-    def edit_subscriptions
-        # redirect unless correct user
-        # html:
-        # allow for deletion of subscriptions
-    end
-
     respond_to :json
-
     def data
         @users = User.where(data_params)
             .limit(search_params["limit"].to_i)
             .offset(search_params["offset"].to_i)
 
         render :status => 200,
-            :json => {
-                :success => true,
-                :data => @users
-            }
+            :json => { :success => true, :data => @users }
     end
 
     def data_params

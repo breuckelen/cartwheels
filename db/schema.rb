@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140623193408) do
+ActiveRecord::Schema.define(version: 20140701013846) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -23,8 +23,6 @@ ActiveRecord::Schema.define(version: 20140623193408) do
   create_table "ads", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "start_date"
-    t.datetime "end_date"
     t.integer  "cart_id"
     t.integer  "ad_type_id"
     t.datetime "created_at"
@@ -45,7 +43,6 @@ ActiveRecord::Schema.define(version: 20140623193408) do
 
   create_table "cart_category_relations", force: true do |t|
     t.integer  "cart_id"
-    t.string   "cart_type"
     t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -53,13 +50,12 @@ ActiveRecord::Schema.define(version: 20140623193408) do
 
   create_table "cart_tag_relations", force: true do |t|
     t.integer  "cart_id"
-    t.string   "cart_type"
     t.integer  "tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cart_tag_relations", ["cart_id", "cart_type"], name: "index_cart_tag_relations_on_cart_id_and_cart_type"
+  add_index "cart_tag_relations", ["cart_id"], name: "index_cart_tag_relations_on_cart_id_and_cart_type"
   add_index "cart_tag_relations", ["tag_id"], name: "index_cart_tag_relations_on_tag_id"
 
   create_table "carts", force: true do |t|
@@ -94,7 +90,6 @@ ActiveRecord::Schema.define(version: 20140623193408) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
-    t.integer  "count",      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -150,6 +145,7 @@ ActiveRecord::Schema.define(version: 20140623193408) do
     t.string   "name",                   default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "authentication_token"
   end
 
   add_index "owners", ["email"], name: "index_owners_on_email", unique: true
@@ -204,8 +200,7 @@ ActiveRecord::Schema.define(version: 20140623193408) do
   end
 
   create_table "search_tokens", force: true do |t|
-    t.string  "term"
-    t.integer "count", default: 0
+    t.string "term"
   end
 
   add_index "search_tokens", ["term"], name: "index_search_tokens_on_term"
@@ -222,7 +217,6 @@ ActiveRecord::Schema.define(version: 20140623193408) do
 
   create_table "tags", force: true do |t|
     t.string   "name"
-    t.integer  "count",      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

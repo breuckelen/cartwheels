@@ -1,9 +1,11 @@
 class OwnersController < ApplicationController
     def show
-        @user = Owner.find(params[:id])
-
-        unless @owner == current_owner
-            redirect_to :back, :alert => "Access denied."
+        if params.has_key? :id
+            begin
+                @owner = Owner.find(params[:id])
+            rescue
+                return redirect_to :home, :notice => "This owner does not exist."
+            end
         end
     end
 
@@ -19,21 +21,26 @@ class OwnersController < ApplicationController
         # redirect unless owner of the cart, admin, or manager
     end
 
-    # action for editing pictures and menus
-    # ADD ROUTE
-    def edit_content
-        # redirect unless owner of the cart
+    respond_to :json
+    def data
+        @owners = Owner.where(data_params)
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
+
+        render :status => 200,
+            :json => { :success => true, :data => @owners }
     end
 
-    # action for editing information
-    # ADD ROUTE
-    def edit_info
-        # redirect unless owner of the cart
+    def data_params
+        params.require(:owner).permit(:id, :email, :name)
     end
 
-    # action for editing ads
-    # ADD ROUTE
-    def edit_ads
-        # redirect unless owner of the cart
+    def search_params
+        ps = params.permit(:offset, :limit, :tq, :lq)
+        defaults = {"offset" => 0, "limit" => 20}
+        defaults.merge(ps)
     end
+
+    private :data_params
+    private :search_params
 end

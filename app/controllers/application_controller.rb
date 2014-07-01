@@ -4,15 +4,26 @@ class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
 
     before_filter :authenticate_basic_http
-
-    # For mobile actions
     skip_before_filter :authenticate_basic_http,
         only: [:create, :update, :destroy, :data, :search],
         :if => Proc.new { |c| c.request.format == 'application/json' }
+
     before_filter :authenticate_user_from_token,
         only: [:create, :update, :destroy, :data, :search],
         :if => Proc.new { |c| c.request.format == 'application/json' }
+
     before_filter :authenticate_user!, only: [:create, :update, :destroy]
+    before_filter :authenticate_user!,
+        :if => Proc.new { |c| c.request.format == 'application/json' }
+
+    skip_before_filter :authenticate_user!,
+        :if => Proc.new { |c| current_owner != nil }
+    before_filter :authenticate_owner!, only: [:create, :update, :destroy]
+    before_filter :authenticate_owner!,
+        :if => Proc.new { |c| c.request.format == 'application/json' }
+
+    skip_before_filter :authenticate_owner!,
+        :if => Proc.new { |c| current_user != nil }
 
     def authenticate_basic_http
         if Rails.env.production?
@@ -25,6 +36,7 @@ class ApplicationController < ActionController::Base
     def authenticate_user_from_token
         user_email = params[:email].presence
         user       = user_email && User.find_by_email(user_email)
+        user     ||= user_email && Owner.find_by_email(user_email)
 
         # Notice how we use Devise.secure_compare to compare the token
         # in the database with the token given in the params, mitigating

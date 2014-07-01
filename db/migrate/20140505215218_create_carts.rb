@@ -8,8 +8,8 @@ class CreateCarts < ActiveRecord::Migration
         t.integer :owner_secret, precision: 10
         t.integer :permit_number
         t.integer :zip_code
-        t.float :lat, precision: 8, scale: 5
-        t.float :lon, precision: 8, scale: 5
+        t.float :lat, precision: 10, scale: 7
+        t.float :lon, precision: 10, scale: 7
 
         t.timestamps
     end

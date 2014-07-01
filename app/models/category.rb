@@ -4,6 +4,9 @@ class Category < ActiveRecord::Base
     has_many :carts, through: :cart_category_relations
 
     # Validations
-    validates :name, :count, presence: true
-    validates :count, numericality: true
+    validates :name, presence: true
+
+    def count
+        return CartCategoryRelation.where(category_id: self.id).count
+    end
 end

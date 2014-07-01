@@ -1,0 +1,2 @@
+module CartCategoryRelationsHelper
+end

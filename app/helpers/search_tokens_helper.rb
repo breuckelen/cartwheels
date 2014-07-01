@@ -1,0 +1,2 @@
+module SearchTokensHelper
+end
