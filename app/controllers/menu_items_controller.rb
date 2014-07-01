@@ -48,6 +48,7 @@ class MenuItemsController < ApplicationController
         end
 
         cart = @menu_item.menu.cart
+
         respond_to do |format|
             if @menu_item.update(menu_item_params)
                 format.html { redirect_to cart,

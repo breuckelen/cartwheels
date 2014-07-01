@@ -46,7 +46,7 @@ class Mobile::RegistrationsController < Devise::RegistrationsController
 
     def owner_sign_up_params
         params.require(:owner).permit(:name, :email, :password,
-            :password_confirmation, :owner_secret)
+            :password_confirmation)
     end
 
     private :user_sign_up_params

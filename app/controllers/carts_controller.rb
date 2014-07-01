@@ -1,6 +1,7 @@
 class CartsController < ApplicationController
     skip_before_filter :verify_authenticity_token,
         :if => Proc.new { |c| c.request.format == 'application/json' }
+    before_filter :authenticate_user!, only: [:new]
     before_action :set_cart, only: [:show, :edit, :update, :destroy]
 
     # show cart owners
