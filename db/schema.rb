@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702163120) do
+ActiveRecord::Schema.define(version: 20140702223442) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"

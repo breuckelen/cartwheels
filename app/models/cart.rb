@@ -63,7 +63,11 @@ class Cart < ActiveRecord::Base
     end
 
     def save_rating
-        self.rating = reviews.sum(:rating) / reviews.count.to_f
+        if reviews.last
+            self.rating = reviews.sum(:rating) / reviews.count.to_f
+        else
+            self.rating = nil
+        end
     end
 
     # Replace type 0 with a constant for uploader

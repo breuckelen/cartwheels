@@ -135,7 +135,8 @@ class CartsController < ApplicationController
     end
 
     def cart_params
-        params.require(:cart).permit(:name, :name, :permit_number, :lat, :lon, :green)
+        params.require(:cart).permit(:name, :name, :permit_number, :lat, :lon,
+            :green, :rating)
     end
 
     def set_cart

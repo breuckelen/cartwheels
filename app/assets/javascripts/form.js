@@ -29,10 +29,10 @@
             if (errors === undefined) {
                 window.location.replace(jqxhr.getResponseHeader('Location'));
             }
-            // note: jqxhr.responseJSON undefined, parsing responseText instead
             $(event.data).render_form_errors( errors );
         });
     }
 
     $(document).ready(ready);
+    $(document).on('page:load', ready);
 })();
