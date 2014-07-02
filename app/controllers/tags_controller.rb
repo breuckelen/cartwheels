@@ -56,12 +56,17 @@ class TagsController < ApplicationController
 
     respond_to :json
     def data
-        @categories = Tag.where(data_params)
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+        if params[:tag].empty?
+            @tags = Tag.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            @tags = Tag.where(data_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
 
         render :status => 200,
-            :json => { :success => true, :data => @categories }
+            :json => { :success => true, :data => @tags }
     end
 
     def data_params

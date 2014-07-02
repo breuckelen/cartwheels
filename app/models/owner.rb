@@ -1,5 +1,6 @@
 class Owner < ActiveRecord::Base
     # Relations
+    has_many :checkins, as: :user
     has_and_belongs_to_many :carts
 
     # Validations

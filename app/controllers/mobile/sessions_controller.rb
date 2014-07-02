@@ -7,7 +7,6 @@ class Mobile::SessionsController < Devise::SessionsController
     before_filter :authenticate_user_from_token, only: [:destroy]
 
     respond_to :json
-
     def create
         warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
         auth_token   = current_user && current_user.authentication_token

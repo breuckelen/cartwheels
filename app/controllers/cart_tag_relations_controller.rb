@@ -58,9 +58,14 @@ class CartTagRelationsController < ApplicationController
 
     respond_to :json
     def data
-        @ctrs = CartTagRelation.where(data_params)
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+        if params[:cart_tag_relation].empty?
+            @ctrs = CartTagRelation.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            @ctrs = CartTagRelation.where(data_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
 
         render :status => 200,
             :json => { :success => true, :data => @ctrs }

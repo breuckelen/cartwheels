@@ -1,0 +1,10 @@
+= form_for @checkin do |f|
+  - if @checkin.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@checkin.errors.count, "error")} prohibited this checkin from being saved:"
+      %ul
+        - @checkin.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'

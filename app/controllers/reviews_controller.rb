@@ -86,6 +86,12 @@ class ReviewsController < ApplicationController
     end
 
     def search
+        @reviews = Review.search(search_params["tq"], search_params["lq"])
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
+
+        render :status => 200, :json => { :success => true,
+            :data => @reviews }
     end
 
     def data_params
@@ -93,7 +99,7 @@ class ReviewsController < ApplicationController
     end
 
     def search_params
-        ps = params.permit(:offset, :limit)
+        ps = params.permit(:offset, :limit, :lq, :tq)
         defaults = {"offset" => 0, "limit" => 20}
         defaults.merge(ps)
     end

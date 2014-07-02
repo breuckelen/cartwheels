@@ -101,16 +101,22 @@ class CartsController < ApplicationController
 
     respond_to :json
     def data
-        @carts = Cart.where(data_params)
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+        if params[:cart].empty?
+            @carts = Cart.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            @carts = Cart.where(data_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
 
         render :status => 200, :json => { :success => true,
             :data => @carts }
     end
 
     def search
-        @carts = Cart.search(search_params["tq"], search_params["lq"])
+        @carts = Cart.search(search_params["sort_by"], search_params["tq"],
+                search_params["lq"])
             .limit(search_params["limit"].to_i)
             .offset(search_params["offset"].to_i)
 
@@ -123,8 +129,8 @@ class CartsController < ApplicationController
     end
 
     def search_params
-        ps = params.permit(:offset, :limit, :tq, :lq)
-        defaults = {"offset" => 0, "limit" => 20}
+        ps = params.permit(:offset, :limit, :sort_by, :tq, :lq)
+        defaults = {"offset" => 0, "limit" => 20, "sort_by" => "popularity"}
         defaults.merge(ps)
     end
 

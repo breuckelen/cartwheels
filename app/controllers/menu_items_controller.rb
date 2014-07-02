@@ -87,13 +87,18 @@ class MenuItemsController < ApplicationController
 
     respond_to :json
     def data
-        new_params = data_params
-        new_params[:menu_id] = Cart.find_by_id(new_params.delete(:cart_id))
-            .menu.id
+        if params[:menu_item].empty?
+            @menu_items = MenuItem.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            new_params = data_params
+            new_params[:menu_id] = Cart.find_by_id(new_params.delete(:cart_id))
+                .menu.id
 
-        @menu_items = MenuItem.where(new_params)
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+            @menu_items = MenuItem.where(new_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
 
         render :status => 200, :json => { :success => true,
             :data => @menu_items }

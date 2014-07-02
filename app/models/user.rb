@@ -1,11 +1,13 @@
 class User < ActiveRecord::Base
     # Relations
     has_one :search_history
+    has_one :profile_photo, class_name: "Photo", as: :target
     has_many :reviews
     has_many :clickthroughs
     has_many :photos
     has_many :user_cart_relations
     has_many :carts, :through => :user_cart_relations
+    has_many :checkins, as: :user
     has_and_belongs_to_many :badges
 
     # Validations

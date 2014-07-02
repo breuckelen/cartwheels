@@ -58,9 +58,14 @@ class UserCartRelationsController < ApplicationController
 
     respond_to :json
     def data
-        @ucrs = UserCartRelation.where(data_params)
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+        if params[:user_cart_relation].empty?
+            @ucrs = UserCartRelation.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            @ucrs = UserCartRelation.where(data_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
 
         render :status => 200,
             :json => { :success => true, :data => @ucrs }

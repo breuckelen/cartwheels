@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702064730) do
+ActiveRecord::Schema.define(version: 20140702163120) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -69,7 +69,9 @@ ActiveRecord::Schema.define(version: 20140702064730) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
-    t.boolean  "green",         default: false
+    t.integer  "green",         default: 0
+    t.integer  "popularity",    default: 0
+    t.float    "rating"
   end
 
   add_index "carts", ["created_at", "city"], name: "index_carts_on_created_at_and_city"
@@ -93,6 +95,16 @@ ActiveRecord::Schema.define(version: 20140702064730) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "checkins", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "cart_id"
+    t.float    "lat"
+    t.float    "lon"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "user_type"
   end
 
   create_table "clickthroughs", force: true do |t|

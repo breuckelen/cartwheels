@@ -9,6 +9,10 @@ Rails.application.routes.draw do
         resources :reviews, only: [:index, :new, :create]
     end
 
+    concern :checkins do
+        resources :checkins, only: [:index, :new, :create]
+    end
+
     concern :ads do
         resources :ads, only: [:index, :new, :create]
     end
@@ -59,7 +63,7 @@ Rails.application.routes.draw do
     end
 
     # User routes
-    resources :users, concerns: [:photos, :reviews, :data, :search]
+    resources :users, concerns: [:photos, :reviews, :checkins, :data, :search]
     get "/account" => "users#show", as: :account
 
     resources :owners, concerns: [:data] do
@@ -67,7 +71,7 @@ Rails.application.routes.draw do
     end
 
     # Cart routes
-    resources :carts, concerns: [:photos, :reviews, :data, :search, :ads,
+    resources :carts, concerns: [:photos, :reviews, :checkins, :data, :search, :ads,
             :user_cart_relations, :cart_tag_relations, :cart_category_relations] do
         member do
             resource :menu do
@@ -92,6 +96,9 @@ Rails.application.routes.draw do
     # Private routes
     resources :ads, only: [:show, :edit, :update, :destroy],
         concerns: [:data], path: "_ads"
+
+    resources :checkins, only: [:show, :edit, :update, :destroy],
+        concerns: [:data, :search], path: "_checkins"
 
     resources :menu_items, only: [:show, :edit, :update, :destroy],
         concerns: [:data], path: "_menu_items"

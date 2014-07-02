@@ -30,12 +30,14 @@
 
     .form-group
       .row
-        .form-label Is This a Green Cart? Check the umbrella.
+        .form-label Is this an NYC Green Cart?
       .row
-        = f.radio_button :green, true
-        = label_tag(:age_true, "Yes")
-        = f.radio_button :green, false
+        = f.radio_button :green, 1
+        = label_tag(:age_false, "Yes")
+        = f.radio_button :green, 2
         = label_tag(:age_false, "No")
+        = f.radio_button :green, 0
+        = label_tag(:age_true, "Not Sure")
       .row
         .help-block
 

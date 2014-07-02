@@ -67,9 +67,14 @@ class SearchLinesController < ApplicationController
 
     respond_to :json
     def data
-        @search_lines = SearchLine.where(data_params)
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+        if params[:search_line].empty?
+            @search_lines = SearchLine.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            @search_lines = SearchLine.where(data_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
 
         render :status => 200, :json => { :success => true,
             :data => @search_lines }
