@@ -4,53 +4,67 @@
     .col-lg-4
       %a{href: "#"} Sign Up
 
-  = form_for @user, url: registration_path("user") do |f|
+  = form_for @user, remote: true, url: registration_path("user"), html: {'data-model' => 'user'} do |f|
     - if @user.errors.any?
       .error_messages
         %ul
           - for m in @user.errors.full_messages
             %li= m
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Name
-      - if session['devise.auth_data']
-        = f.text_field :name, :class => 'form-input', :placeholder => 'Name',
-            value: session['devise.auth_data']['info']['name']
-      - else
-        = f.text_field :name, :class => 'form-input', :placeholder => 'Name'
+      .row
+        - if session['devise.auth_data']
+          = f.text_field :name, :class => 'form-input', :placeholder => 'Name',
+              value: session['devise.auth_data']['info']['name']
+        - else
+          = f.text_field :name, :class => 'form-input', :placeholder => 'Name'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Email
-      - if session['devise.auth_data']
-        = f.text_field :email, :class => 'form-input', :placeholder => 'Email',
-            value: session['devise.auth_data']['info']['email']
-      - else
-        = f.text_field :email, :class => 'form-input', :placeholder => 'Email'
+      .row
+        - if session['devise.auth_data']
+          = f.text_field :email, :class => 'form-input', :placeholder => 'Email',
+              value: session['devise.auth_data']['info']['email']
+        - else
+          = f.text_field :email, :class => 'form-input', :placeholder => 'Email'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Password
-      = f.password_field :password, :class => 'form-input',
-          :placeholder => 'Password'
+      .row
+        = f.password_field :password, :class => 'form-input',
+            :placeholder => 'Password'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Confirm
-      = f.password_field :password_confirmation, :class => 'form-input',
-          :placeholder => 'Confirm Password'
+      .row
+        = f.password_field :password_confirmation, :class => 'form-input',
+            :placeholder => 'Confirm Password'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Zip Code
-      = f.text_field :zip_code, :class => 'form-input', :autocomplete => "off",
-          :placeholder => 'Zip Code'
+      .row
+        = f.text_field :zip_code, :class => 'form-input', :autocomplete => "off",
+            :placeholder => 'Zip Code'
+      .row
+        .help-block
 
     - if session['devise.auth_data']
       = f.hidden_field :provider, value: session['devise.auth_data']['provider']
       = f.hidden_field :uid, value: session['devise.auth_data']['uid']
 
     .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
-      %button.btn.btn-primary.form-btn{type: "submit"} Register
+      = f.submit "Register", class: "btn btn-primary form-btn"

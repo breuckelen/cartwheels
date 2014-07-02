@@ -1,7 +1,9 @@
 (function() {
+    var sidebar, content;
+
     var ready = function(e) {
-        var sidebar = $('#sidebar-wrapper'),
-            content = $('#content-wrapper');
+        sidebar = $('#sidebar-wrapper');
+        content = $('#content-wrapper');
 
         sidebar.find('.glyphicon.glyphicon-remove-circle').on('click', function(e) {
             e.preventDefault();

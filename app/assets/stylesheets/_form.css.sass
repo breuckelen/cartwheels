@@ -5,6 +5,10 @@
         width: 70%
         @include scale-property(height, 32px)
 
+    label
+        color: white
+        size: 1.5em
+
 .form-header
     font-family: "Bebas Book"
     font-weight: bold
@@ -17,16 +21,17 @@
     @extend .underline-blue
 
 .form-desc
-    font-family: OpenSans
+    font-family: "Helvetica Neue"
     font-size: 1.2em
+    font-weight: 500
     color: white
 
     margin-bottom: 5%
 
 
 .form-label
-    font-family: "Bebas Book"
-    font-weight: bold
+    font-family: OpenSans
+    font-weight: 500
     font-size: 1.5em
     color: #eee
     vertical-align: middle
@@ -60,14 +65,21 @@
         height: 32px
         line-height: 20px
 
+    &:focus
+        border-color: #4d90fe
+
+    .has-error &
+        border: 1px solid getColor(red)
+
 .form-btn
     font-size: 1.2em
     color: white
 
     vertical-align: middle
-    @include scale-property(width, 115px)
     @include scale-property(height, 32px)
     @include scale-property(line-height, 16px)
+    @include scale-property(padding-left, 30px)
+    @include scale-property(padding-right, 30px)
 
     @include vendor(transition, all 0.2s ease 0s)
 
@@ -79,6 +91,8 @@
         color: #eee
 
 .file-btn
+    font-weight: 500
+
     position: relative
     overflow: hidden
     background: getColor(red)
@@ -103,3 +117,14 @@
 input[type=readonly]
     background-color: white !important
     cursor: text !important
+
+.help-block
+    font-size: 1.5em
+    font-color: getColor(red)
+
+    margin: 0px
+    height: 0px
+    @include vendor(transition, all 0.4s ease 0s)
+
+    .has-error &
+        height: 20px

@@ -36,6 +36,7 @@ gem 'geokit-rails'
 
 # Images
 gem "paperclip", "~> 4.1"
+gem "remotipart"
 
 group :production do
     gem "mysql2"

@@ -46,6 +46,10 @@ class ApplicationController < ActionController::Base
         end
     end
 
+    def last_path(resource)
+        stored_location_for(resource) || request.referer || home_path
+    end
+
     private :authenticate_basic_http
     private :authenticate_user_from_token
 end

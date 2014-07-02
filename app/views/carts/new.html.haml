@@ -9,38 +9,52 @@
       Are any of your favorite food carts not yet listed on the site? You can register them in a few clicks, and then begin adding reviews, images, and more!
     .col-lg-2.col-md-2.col-sm-2.col-xs-2
 
-  = form_for @cart, :html => {:multipart => true} do |f|
-    - if @cart.errors.any?
-      .error_messages
-        %ul
-          - for m in @cart.errors.full_messages
-            %li= m
-
-    .form-group.row
-      .col-lg-3.col-md-3.col-sm-3.col-xs-3
+  = form_for @cart, remote: true, html: {:multipart => true, 'data-model' => 'cart'} do |f|
+    .form-group
+      .row
         .form-label Name
-      = f.text_field :name, :class => 'form-input',
-          :placeholder => 'Name'
+      .row
+        = f.text_field :name, :class => 'form-input',
+            :placeholder => 'Name of the cart.'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-3.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Permit Number
-      = f.text_field :permit_number, :class => 'form-input',
-          :placeholder => 'Permit Number'
+      .row
+        = f.text_field :permit_number, :class => 'form-input',
+            :placeholder => 'Check the side of the cart.  If unsure, leave blank.'
+      .row
+        .help-block
+
+    .form-group
+      .row
+        .form-label Is This a Green Cart? Check the umbrella.
+      .row
+        = f.radio_button :green, true
+        = label_tag(:age_true, "Yes")
+        = f.radio_button :green, false
+        = label_tag(:age_false, "No")
+      .row
+        .help-block
 
     .form-group.row
-      .col-lg-3.col-md-3.col-sm-3.col-xs-3
-        .form-label Image
       %span.btn.btn-secondary.form-btn.file-btn
-        Image
-        = f.file_field :image, :placeholder => 'Image'
+        .label
+          Upload Image
+        = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
+      .row
+        .help-block
+
+    .form-group.row
+      .img-preview
+        %img#img-preview{src: "#"}
+      .row
+        .help-block
 
     = f.hidden_field :lat
     = f.hidden_field :lon
 
     .form-group.row
-      .col-lg-3.col-md-3.col-sm-3.col-xs-3
-      %button.btn.btn-primary.form-btn{type: "submit"} Submit
-
-.form-group.row
-  = link_to 'Back', carts_path, :class => "footer-link"
+      = f.submit "Submit", class: "btn btn-primary form-btn"

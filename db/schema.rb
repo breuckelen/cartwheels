@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701013846) do
+ActiveRecord::Schema.define(version: 20140702064730) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20140701013846) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
+    t.boolean  "green",         default: false
   end
 
   add_index "carts", ["created_at", "city"], name: "index_carts_on_created_at_and_city"

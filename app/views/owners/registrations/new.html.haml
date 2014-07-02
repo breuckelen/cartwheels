@@ -4,35 +4,48 @@
     .col-lg-4
       %a{href: "#"} Sign Up
 
-  = form_for @owner, url: registration_path("owner") do |f|
+  = form_for @owner, remote: true, url: registration_path("owner"), html: {'data-model' => 'owner'} do |f|
     - if @owner.errors.any?
       .error_messages
         %ul
           - for m in @owner.errors.full_messages
             %li= m
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Name
-      = f.text_field :name, :class => 'form-input', :placeholder => 'Name'
+      .row
+        = f.text_field :name, :class => 'form-input',
+            :placeholder => 'Your name'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Email
-      = f.text_field :email, :class => 'form-input', :placeholder => 'Email'
+      .row
+        = f.text_field :email, :class => 'form-input',
+            :placeholder => 'Your email address'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Password
-      = f.password_field :password, :class => 'form-input',
-          :placeholder => 'Password'
+      .row
+        = f.password_field :password, :class => 'form-input',
+            :placeholder => 'Password (8 or more letters)'
+      .row
+        .help-block
 
-    .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
+    .form-group
+      .row
         .form-label Confirm
-      = f.password_field :password_confirmation, :class => 'form-input',
-          :placeholder => 'Confirm Password'
+      .row
+        = f.password_field :password_confirmation, :class => 'form-input',
+            :placeholder => 'Confirm password'
+      .row
+        .help-block
 
     .form-group.row
-      .col-lg-2.col-md-3.col-sm-3.col-xs-3
-      %button.btn.btn-primary.form-btn{type: "submit"} Register
+      = f.submit "Register", class: "btn btn-primary form-btn"

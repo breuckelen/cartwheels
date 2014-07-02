@@ -10,6 +10,10 @@
 
 %body
   %div{:id => "#{controller.controller_name}-#{action_name}"}
+    .flash-wrapper
+      - flash.each do |key, value|
+        %div{class: "#{flash_class(key)}"}
+          =value
     #sidebar-wrapper.closed
       .sidebar
         %ul.sidebar-nav
@@ -25,6 +29,9 @@
           - if user_signed_in?
             %li.section.bg-highlight.highlight-full-default
               = link_to "Logout", logout_path, :method => :delete
+          - elsif owner_signed_in?
+            %li.section.bg-highlight.highlight-full-default
+              = link_to "Logout", destroy_owner_session_path, :method => :delete
           - else
             %li.section.bg-highlight.highlight-full-default
               = link_to "Sign Up", register_path

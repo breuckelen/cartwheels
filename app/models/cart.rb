@@ -20,6 +20,7 @@ class Cart < ActiveRecord::Base
     validates :permit_number, :zip_code, :lat, :lon, numericality: true
     validates :permit_number, uniqueness: true
     validates :zip_code, format: {:with => /\A\d{5}\Z/}
+    validates :green, :inclusion => {:in => [true, false]}
 
     # Filters
     before_validation :reverse_geocode

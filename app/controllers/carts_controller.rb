@@ -44,16 +44,18 @@ class CartsController < ApplicationController
 
         respond_to do |format|
             if @cart.save
-                format.html { redirect_to carts_path,
-                    notice: 'Cart was succesfully created.' }
-                format.json { render :show, status: :created,
-                    location: @cart,
+                flash[:notice] = "Cart was successfully created."
+                format.json { render status: :created,
+                    location: carts_path,
+                    :json => { :success => true }}
+                format.js { render status: :created,
+                    location: carts_path,
                     :json => { :success => true }}
             else
-                format.html { render :new }
-                format.json { render json: @cart.errors,
-                    status: :unprocessable_entity,
-                    :json => { :success => false }}
+                format.json { render status: :unprocessable_entity,
+                    :json => { :errors => @cart.errors, :success => false }}
+                format.js { render status: :unprocessable_entity,
+                    :json => { :errors => @cart.errors, :success => false }}
             end
         end
     end
@@ -72,9 +74,8 @@ class CartsController < ApplicationController
                     :json => { :success => true }}
             else
                 format.html { render :edit }
-                format.json { render json: @cart.errors,
-                    status: :unprocessable_entity,
-                    :json => { :success => false }}
+                format.json { render status: :unprocessable_entity,
+                    :json => { :errors => @cart.errors, :success => false }}
             end
         end
     end
@@ -128,7 +129,7 @@ class CartsController < ApplicationController
     end
 
     def cart_params
-        params.require(:cart).permit(:name, :name, :permit_number, :lat, :lon)
+        params.require(:cart).permit(:name, :name, :permit_number, :lat, :lon, :green)
     end
 
     def set_cart

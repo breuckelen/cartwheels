@@ -1,12 +1,21 @@
 (function() {
-    var lastVertPos = $(window).scrollTop();
+    var controller;
+    var lastVertPos;
+
+    var init = function() {
+        controller = $('#home-index');
+        lastVertPos = $(window).scrollTop();
+    }
+
     var onScroll = function(e) {
         var currVertPos = $(window).scrollTop();
         var delta = currVertPos - lastVertPos;
+
         $("#poster").each(function(){
             $(this).css("top", parseFloat($(this).css("top")) -
                 delta * $(this).attr("speed") + "px");
         });
+
         lastVertPos = currVertPos;
     }
 
@@ -15,7 +24,8 @@
     }
 
     var ready = function(e) {
-        var controller = $('#home-index');
+        init();
+
         if (controller.length == 0) return;
 
         var cartMap = new GMaps({
