@@ -1,6 +1,7 @@
 (function() {
     var controller, cartMap, searchInput;
     var lastVertPos, searchOffset, searchLimit;
+    var textQuery, locationQuery;
 
     var init = function() {
         $(window).scrollTop(0);
@@ -31,6 +32,7 @@
     var onSearchSuccess = function(data) {
         cartMap.removeMarkers();
         console.log(data);
+
         $.each(data.data, function(i, d) {
             cartMap.addMarker({
                 lat: d.lat,
@@ -45,22 +47,17 @@
 
         if (data.data.length === searchLimit) {
             searchOffset += searchLimit;
+        } else {
+            searchOffset = 0;
         }
+
+        $('.more').removeClass('hide');
     }
 
-    var onMapSearch = function(e) {
-        var tq = searchInput[0].value,
-            lq = searchInput[1].value;
-
-        if (lq.toLowerCase() == "current location") {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                lq = position.latitude + " " + position.longitude;
-            });
-        }
-
+    var loadSearchResults = function() {
         var data = {
-            "tq": tq,
-            "lq": lq,
+            "tq": textQuery,
+            "lq": locationQuery,
             "offset": searchOffset,
             "limit": searchLimit
         };
@@ -71,6 +68,13 @@
             data: data,
             success: onSearchSuccess
         });
+    }
+
+    var onMapSearch = function(e) {
+        textQuery = searchInput[0].value;
+        locationQuery = searchInput[1].value;
+
+        loadSearchResults();
     }
 
     var ready = function(e) {
@@ -94,9 +98,19 @@
             if(e.which === 13) {
                 onMapSearch();
             }
+            else {
+                controller.find('.more').addClass('hide');
+            }
         });
 
-        $('.gmaps-button').click(onMapSearch);
+        controller.find('.gmaps-button').click(function(e) {
+            onMapSearch();
+        });
+
+        controller.find('.more').click(function(e) {
+            e.preventDefault();
+            loadSearchResults();
+        });
 
         $(window).scroll(onScroll);
     };
