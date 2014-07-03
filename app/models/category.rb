@@ -9,4 +9,9 @@ class Category < ActiveRecord::Base
     def count
         return CartCategoryRelation.where(category_id: self.id).count
     end
+
+    def as_json(options={})
+        options[:only] ||= [:id, :name]
+        super(options)
+    end
 end

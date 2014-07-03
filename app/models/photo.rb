@@ -9,7 +9,7 @@ class Photo < ActiveRecord::Base
 
 
     # Validations
-    validates :target, :target_type, :user, presence: true
+    validates :target, :user, presence: true
     validates_attachment_content_type :image, :content_type => /\Aimage/
 
     def image_url
@@ -22,5 +22,12 @@ class Photo < ActiveRecord::Base
 
     def image_url_thumb
         image.url(:thumb)
+    end
+
+    def as_json(options={})
+        options[:only] ||= [:id, :caption, :target_id, :target_type, :created_at,
+            :updated_at, :user_id]
+        options[:methods] ||= [:image_url, :image_url_small, :image_url_thumb]
+        super(options)
     end
 end

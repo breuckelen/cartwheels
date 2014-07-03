@@ -87,8 +87,6 @@ Rails.application.routes.draw do
     resources :reviews, only: [:show, :edit, :update, :destroy],
         concerns: [:data, :search]
 
-    resources :ad_types, concerns: [:data], path: "advertise"
-
     resources :tags, concerns: [:data]
 
     resources :categories, concerns: [:data]
@@ -96,6 +94,8 @@ Rails.application.routes.draw do
     # Private routes
     resources :ads, only: [:show, :edit, :update, :destroy],
         concerns: [:data], path: "_ads"
+
+    resources :ad_types, concerns: [:data], path: "_ad_types"
 
     resources :checkins, only: [:show, :edit, :update, :destroy],
         concerns: [:data, :search], path: "_checkins"

@@ -21,6 +21,20 @@ class ApplicationController < ActionController::Base
     skip_before_filter :authenticate_owner!,
         :if => Proc.new { |c| current_user != nil }
 
+    def last_path(resource)
+        if stored_location_for(resource)
+            stored_location_for(resource) || request.referer || home_path
+        else
+            home_path
+        end
+    end
+
+    def no_permission
+        flash[:warning] = "You do not have permission to perform this action."
+        format.html { redirect_to home_path }
+        format.json { render json: { success: false } }
+    end
+
     def authenticate_basic_http
         if Rails.env.production?
             authenticate_or_request_with_http_basic do |username, password|
@@ -40,10 +54,6 @@ class ApplicationController < ActionController::Base
         if user && Devise.secure_compare(user.authentication_token, params[:auth_token])
             sign_in user, store: false
         end
-    end
-
-    def last_path(resource)
-        stored_location_for(resource) || request.referer || home_path
     end
 
     private :authenticate_basic_http

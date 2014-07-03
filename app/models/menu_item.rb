@@ -6,4 +6,8 @@ class MenuItem < ActiveRecord::Base
     # Validations
     validates :description, :price, :menu, presence: true
     validates :price, numericality: true
+
+    def as_json(options={})
+        options[:only] ||= [:id, :description, :price, :menu_id]
+    end
 end

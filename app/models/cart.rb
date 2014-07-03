@@ -25,7 +25,7 @@ class Cart < ActiveRecord::Base
 
     # Filters
     before_validation :reverse_geocode
-    before_save :save_popularity, :save_rating
+    before_save :update_popularity, :update_rating, :update_location
     before_create :build_default_menu
 
     # Reverse geocoding
@@ -49,7 +49,7 @@ class Cart < ActiveRecord::Base
         true
     end
 
-    def save_popularity
+    def update_popularity
         scale_factor = 2.0
         if checkins.last
             scale_factor = Math.log(
@@ -62,11 +62,28 @@ class Cart < ActiveRecord::Base
         self.popularity = (reviews.count + checkins.count.to_f / 2.0) / scale_factor
     end
 
-    def save_rating
+    def update_rating
         if reviews.last
             self.rating = reviews.sum(:rating) / reviews.count.to_f
         else
             self.rating = nil
+        end
+    end
+
+    def update_location
+        if checkins.last
+            recent_checkins = checkins.where(
+                created_at: (Time.now - 5.day)..Time.now).limit(20)
+
+            lat_lon = recent_checkins.each do |c|
+                if recent_checkins.within(0.1, origin: c).count\
+                        > recent_checkins.count / 2
+                    return [c.lat, c.lon]
+                end
+            end
+
+            self.lat = lat_lon[0]
+            self.lon = lat_lon[1]
         end
     end
 
@@ -95,16 +112,17 @@ class Cart < ActiveRecord::Base
 
     def self.search(sort_by, text_query, location_query)
         if text_query.blank? and location_query.blank?
-            order("#{sort_by} DESC")
+            order("#{sort_by} DESC, created_at DESC")
         elsif text_query.blank?
-            within(1, origin: location_query).order("#{sort_by} DESC")
+            within(1,
+                origin: location_query).order("#{sort_by} DESC, created_at DESC")
         elsif location_query.blank?
             tq = "%#{text_query}%"
-            where("name like ?", tq).order("#{sort_by} DESC")
+            where("name like ?", tq).order("#{sort_by} DESC, created_at DESC")
         else
             tq = "%#{text_query}%"
             within(1, origin: location_query).where("name like ?", tq)
-                .order("#{sort_by} DESC")
+                .order("#{sort_by} DESC, created_at DESC")
         end
     end
 

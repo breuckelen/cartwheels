@@ -37,7 +37,9 @@
       .row-header Find Carts In Your Area
   #map-container.row
     #map-input
-      %input.gmaps-input
+      .input-block
+        %input.gmaps-input{placeholder: "Halal Guys, wafles and dinges, breakfast"}
+        %input.gmaps-input.input-hidden{placeholder: "10282, brooklyn, 456 allen st"}
       %button.gmaps-button.btn.btn-primary
         =image_tag("search.png")
     #map-tags

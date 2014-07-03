@@ -28,8 +28,14 @@ class CheckinsController < ApplicationController
 
         @checkin.cart_id = params[:cart_id]
 
+        if image = params[:checkin][:image]
+            @checkin.photos.build(user: current_user, image: image)
+        end
+
         respond_to do |format|
             if @checkin.save
+                @checkin.cart.photos.create(user: current_user, image: image)
+
                 format.html { redirect_to @checkin,
                     notice: 'Checkin was succesfully created.' }
                 format.json { render :show, status: :created,
@@ -44,6 +50,10 @@ class CheckinsController < ApplicationController
     end
 
     def update
+        if image = params[:checkin][:image]
+            @checkin.photos.build(user: current_user, image: image)
+        end
+
         respond_to do |format|
             if @checkin.update(checkin_params)
                 format.html { redirect_to @checkin,
@@ -116,7 +126,7 @@ class CheckinsController < ApplicationController
     end
 
     def checkin_params
-        params.require(:checkin).permit(:lat, :lon)
+        params.require(:checkin).permit(:lat, :lon, :description)
     end
 
     def set_checkin

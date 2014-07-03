@@ -1,11 +1,11 @@
 class Checkin < ActiveRecord::Base
     belongs_to :user, polymorphic: true
     belongs_to :cart
-    has_many :photos, as: :target
+    has_many :photos, as: :target, inverse_of: :target
 
     validates :user, :cart, :lat, :lon, presence: true
 
-    before_create :update_cart
+    after_create :update_cart
 
     # For geospatial searches
     acts_as_mappable :lat_column_name => :lat,

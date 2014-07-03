@@ -9,4 +9,9 @@ class Tag < ActiveRecord::Base
     def count
         return CartTagRelation.where(tag_id: self.id).count
     end
+
+    def as_json(options={})
+        options[:only] ||= [:id, :name]
+        super(options)
+    end
 end

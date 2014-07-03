@@ -25,8 +25,8 @@ class ReviewsController < ApplicationController
 
         respond_to do |format|
             if @review.save
-                format.html { redirect_to @review,
-                    notice: 'Review was succesfully created.' }
+                flash[:notice] = "Review was successfully created."
+                format.html { redirect_to @review }
                 format.json { render :show, status: :created,
                     location: @review,
                     :json => { :success => true }}
@@ -63,23 +63,25 @@ class ReviewsController < ApplicationController
 
                 format.html { redirect_to cart,
                     notice: 'Review was successfully destroyed.' }
-                format.json { render json: {
-                    success: true } }
+                format.json { render json: { success: true } }
             else
                 format.html { redirect_to cart,
                     notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
-                }
+                format.json { render json: { success: false } }
             end
         end
     end
 
     respond_to :json
     def data
-        @reviews = Review.where(data_params)
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+        if params[:review].empty?
+            @reviews = Review.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            @reviews = Review.where(data_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
 
         render :status => 200,
             :json => { :success => true, :data => @reviews }
