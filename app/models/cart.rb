@@ -1,7 +1,7 @@
 class Cart < ActiveRecord::Base
     # Relations
-    has_one :menu
-    has_many :ads
+    has_one :menu, dependent: :destroy
+    has_many :ads, dependent: :destroy
     has_many :reviews
     has_many :clickthroughs
     has_many :photos, as: :target, inverse_of: :target

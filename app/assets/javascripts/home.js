@@ -1,7 +1,6 @@
 (function() {
     var controller, cartMap, searchInput;
     var lastVertPos, searchOffset, searchLimit;
-    var textQuery, locationQuery;
 
     var init = function() {
         $(window).scrollTop(0);
@@ -30,21 +29,36 @@
     }
 
     var onSearchSuccess = function(data) {
+        var bounds = [];
         cartMap.removeMarkers();
-        console.log(data);
 
         $.each(data.data, function(i, d) {
+            //Extend the bounds of the map
+            var latlng = new google.maps.LatLng(d.lat, d.lon);
+            bounds.push(latlng);
+
+            var icon = {
+                scaledSize: new google.maps.Size(25, 32),
+                url: "assets/pin.jpg"
+            };
+            //Add a marker
             cartMap.addMarker({
                 lat: d.lat,
                 lng: d.lon,
-                title: d.name
+                title: d.name,
+                icon: icon,
+                animation: google.maps.Animation.DROP
             });
 
+            //Center on the last data point
             if (i === data.data.length - 1) {
                 cartMap.setCenter(d.lat, d.lon);
             }
         });
 
+        cartMap.fitLatLngBounds(bounds);
+
+        //Increase search offset if more results, else reset
         if (data.data.length === searchLimit) {
             searchOffset += searchLimit;
         } else {
@@ -54,27 +68,40 @@
         $('.more').removeClass('hide');
     }
 
-    var loadSearchResults = function() {
-        var data = {
-            "tq": textQuery,
-            "lq": locationQuery,
-            "offset": searchOffset,
-            "limit": searchLimit
-        };
+    var loadSearchResults = function(tq, lq) {
+        if ((/^\s*[Cc]urrent\s+[Ll]ocation\s*$/g).test(lq)) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    loadSearchResults(tq, position.coords.latitude + " " + position.coords.longitude);
+                },
+                function(error){
+                    alert(error.message);
+                }, {
+                enableHighAccuracy: true
+                ,timeout : 5000
+            });
+        } else {
+            var data = {
+                "tq": tq,
+                "lq": lq,
+                "offset": searchOffset,
+                "limit": searchLimit
+            };
 
-        $.ajax({
-            dataType: "json",
-            url: "/carts/search",
-            data: data,
-            success: onSearchSuccess
-        });
+            $.ajax({
+                dataType: "json",
+                url: "/carts/search",
+                data: data,
+                success: onSearchSuccess
+            });
+        }
     }
 
     var onMapSearch = function(e) {
-        textQuery = searchInput[0].value;
-        locationQuery = searchInput[1].value;
+        var textQuery = searchInput[0].value;
+        var locationQuery = searchInput[1].value;
 
-        loadSearchResults();
+        loadSearchResults(textQuery, locationQuery);
     }
 
     var ready = function(e) {
@@ -84,10 +111,10 @@
 
         cartMap = new GMaps({
             div: '#map-div',
-            lat: 40.7820015,
-            lng: -73.8317032,
-            zoom: 11,
-            scrollwheel: false
+                lat: 40.7820015,
+                lng: -73.8317032,
+                zoom: 11,
+                scrollwheel: false
         });
 
         searchInput.focus(function(e) {

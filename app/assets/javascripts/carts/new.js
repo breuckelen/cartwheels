@@ -7,7 +7,6 @@
      */
     var init = function() {
         controller = $('#carts-new');
-        navigator.geolocation.getCurrentPosition(showSubmit);
     }
 
     var showSubmit = function(position) {
@@ -69,6 +68,11 @@
     var ready = function() {
         //Init
         init();
+
+        if(controller.length == 0) return;
+
+        //Calls
+        navigator.geolocation.getCurrentPosition(showSubmit);
 
         //Variables
         var watchId = navigator.geolocation.watchPosition(getPosition);
