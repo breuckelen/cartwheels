@@ -6,6 +6,7 @@ set :application, "cartwheels"
 set :repository,  "git@github.com:breuckelen/cartwheels-site.git"
 set :deploy_to, "/home/battal/cartwheels"
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :keep_releases, 3
 
 default_run_options[:pty] = true
 
