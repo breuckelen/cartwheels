@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703020956) do
+ActiveRecord::Schema.define(version: 20140703064959) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 20140703020956) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "user_type"
-    t.text     "description", default: ""
+    t.text     "description"
   end
 
   create_table "clickthroughs", force: true do |t|
