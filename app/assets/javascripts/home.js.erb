@@ -1,6 +1,7 @@
 (function() {
     var controller, cartMap, searchInput;
     var lastVertPos, searchOffset, searchLimit;
+    var textQuery, locationQuery;
 
     var init = function() {
         $(window).scrollTop(0);
@@ -68,11 +69,12 @@
         $('.more').removeClass('hide');
     }
 
-    var loadSearchResults = function(tq, lq) {
-        if ((/^\s*[Cc]urrent\s+[Ll]ocation\s*$/g).test(lq)) {
+    var loadSearchResults = function() {
+        if ((/^\s*[Cc]urrent\s+[Ll]ocation\s*$/g).test(locationQuery)) {
             navigator.geolocation.getCurrentPosition(
                 function(position) {
-                    loadSearchResults(tq, position.coords.latitude + " " + position.coords.longitude);
+                    locationQuery = position.coords.latitude + " " + position.coords.longitude;
+                    loadSearchResults();
                 },
                 function(error){
                     alert(error.message);
@@ -82,8 +84,8 @@
             });
         } else {
             var data = {
-                "tq": tq,
-                "lq": lq,
+                "tq": textQuery,
+                "lq": locationQuery,
                 "offset": searchOffset,
                 "limit": searchLimit
             };
@@ -98,10 +100,10 @@
     }
 
     var onMapSearch = function(e) {
-        var textQuery = searchInput[0].value;
-        var locationQuery = searchInput[1].value;
+        textQuery = searchInput[0].value;
+        locationQuery = searchInput[1].value;
 
-        loadSearchResults(textQuery, locationQuery);
+        loadSearchResults();
     }
 
     var ready = function(e) {
