@@ -18,8 +18,11 @@
             background: white
 
         #title-bar
-            background: #333
+            padding: 0px
+            margin: 0
             margin-bottom: 10px
+
+            background: #333
 
             .column-header
                 font-family: "Bebas Regular"
@@ -36,7 +39,7 @@
             .cart
                 font-family: OpenSans
 
-                width: 80%
+                width: 90%
                 height: 220px
                 margin: 0 auto
                 padding-left: 2%
@@ -59,13 +62,49 @@
                         img
                             width: 100px
 
+                    .location
+                        .map
+                            img
+                                border: 1px solid getColor(default)
+
                     .hours
                         .hours-heading
                             font-size: 1.4em
                             font-weight: bold
 
+                            &.warning
+                                color: getColor(red)
+
+                        .item
+                            font-size: 1em
+
+                        .start, .end
+                            padding: none
+
                         .day, .bridge
                             font-weight: 600
+
+                        .bridge
+                            width: 10px
+                            padding: 0
+
+                        .add-hours
+                            margin-top: 10px
+
+                        .form-control
+                            font-family: OpenSans
+                            font-size: 0.8em
+
+                            width: 75px
+                            height: 20px
+                            padding: 0
+
+                        .hours-btn
+                            font-size: 1em
+
+                            margin-top: 5px
+                            padding: 3px 8px
+                            @include vendor(border-radius, 2px)
 
         .column-left
 

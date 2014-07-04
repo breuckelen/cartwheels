@@ -77,11 +77,6 @@
         //Variables
         var watchId = navigator.geolocation.watchPosition(getPosition);
 
-        //Events
-        $('#img-input').change(function(e) {
-            readUrl(this);
-        });
-
         $('#new_cart').submit(function(e) {
             e.preventDefault();
 

@@ -17,7 +17,7 @@
     .column-content
       -@carts.each do |cart|
         .cart{id: "cart_#{cart.id}"}
-          .info.row
+          .info
             .col-lg-3
               .name=cart.name
               .photo
@@ -29,34 +29,37 @@
               .categories
                 -cart.categories.each do |item|
                   .item=item.name
-            .col-lg-3
-              .hours
-                -if cart.hours.first
-                  .hours-heading Hours
-                  -cart.hours.order(:day).each do |item|
-                    .item.row
-                      .day.col-lg-5=n_to_day(item.day)
-                      .start.col-lg-2=n_to_time(item.start)
-                      .bridge.col-lg-2 To
-                      .end.col-lg-2=n_to_time(item.end)
-                -else
-                  .hours-heading No hours available
-                .add-hours.wheels-form
-                  =form_for Hour.new, remote: true, url: cart_hours_path(cart), html: {'data-model' => 'hour'} do |f|
-                    .form-group
-                      .row
-                        = f.text_field :start, :class => 'form-input',
-                            :placeholder => 'Start'
-
-
-            .col-lg-3
+            .col-lg-5
               .location
                 .map
+                  = image_tag "http://maps.google.com/maps/api/staticmap?size=250x120&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
+
                 .meta
                   //Find a way to specify what's streets between
                   .address
                   //Use google maps or geocoding api
                   .trains
+            .col-lg-4
+              .hours
+                -if cart.hours.first
+                  .hours-heading Hours
+                  -cart.hours.order(:day).each do |item|
+                    .item.row
+                      .day.col-lg-3=n_to_day(item.day)
+                      .start.col-lg-4=n_to_time(item.start)
+                      .bridge.col-lg-1 To
+                      .end.col-lg-4=n_to_time(item.end)
+                -else
+                  .hours-heading.warning No hours available
+                .add-hours.wheels-form
+                  =form_for Hour.new, remote: true, url: cart_hours_path(cart), html: {'data-model' => 'hour', :class => "form-inline"} do |f|
+                    .form-group
+                      .row
+                        =f.select :day, options_for_select(day_options, 1), {}, {class: "form-control"}
+                        =f.select :start, options_for_select(time_options, "0800"), {}, {class: "form-control"}
+                        =f.select :end, options_for_select(time_options, "0800"), {}, {class: "form-control"}
+                      .row
+                        = f.submit "Submit", class: "btn btn-primary hours-btn"
           //Slideshow form default, list form when expands
           .menu
             .meta
