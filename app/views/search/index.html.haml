@@ -1,0 +1,90 @@
+#top-content
+  #search-bar
+
+#main-content
+  #title-bar.row
+    .col-lg-2
+      .column-header
+        =link_to "Featured Carts", "#"
+    .col-lg-7
+      .column-header
+        =link_to "Search Results", "#"
+    .col-lg-3
+      .column-header
+        =link_to "Reviews", "#"
+  #featured-bar.col-lg-2.column-left
+  #search-results.col-lg-7.column-center
+    .column-content
+      -@carts.each do |cart|
+        .cart{id: "cart_#{cart.id}"}
+          .info.row
+            .col-lg-3
+              .name=cart.name
+              .photo
+                -if cart.photos.first
+                  =image_tag(asset_path("cw-logo-no-text.jpg"))
+                -else
+                  =image_tag(cart.photos.first.image_url)
+              .rating{"data-score" => cart.rating }
+              .categories
+                -cart.categories.each do |item|
+                  .item=item.name
+            .col-lg-3
+              .hours
+                -if cart.hours.first
+                  .hours-heading Hours
+                  -cart.hours.order(:day).each do |item|
+                    .item.row
+                      .day.col-lg-5=n_to_day(item.day)
+                      .start.col-lg-2=n_to_time(item.start)
+                      .bridge.col-lg-2 To
+                      .end.col-lg-2=n_to_time(item.end)
+                -else
+                  .hours-heading No hours available
+                .add-hours.wheels-form
+                  =form_for Hour.new, remote: true, url: cart_hours_path(cart), html: {'data-model' => 'hour'} do |f|
+                    .form-group
+                      .row
+                        = f.text_field :start, :class => 'form-input',
+                            :placeholder => 'Start'
+
+
+            .col-lg-3
+              .location
+                .map
+                .meta
+                  //Find a way to specify what's streets between
+                  .address
+                  //Use google maps or geocoding api
+                  .trains
+          //Slideshow form default, list form when expands
+          .menu
+            .meta
+              .price-range
+                .label
+                .content
+              //Popular items, implement later
+              .popular
+            .notes-left
+            .slideshow
+              -cart.menu.menu_items.each do |item|
+                //For getting notes on the item
+                .item{id: "#{item.id}"}
+                  .price=item.price
+                  .photo
+                    =image_tag(item.photo.image_url)
+                  .desc=item.description
+            .notes-right
+          .reviews
+            -cart.reviews.each do |review|
+              .user=review.user.name
+              .text=review.text
+              .rating=review.rating
+          .checkins
+            -cart.checkins.each do |checkin|
+              .user=checkin.user.name
+              .photo
+                =image_tag(checkin.photos.first.image_url)
+              .description=checkin.description
+          .expand
+  #other-results.col-lg-3.column-right

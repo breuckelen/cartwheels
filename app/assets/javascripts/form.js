@@ -27,7 +27,10 @@
         $(document).bind('ajaxError', 'form[data-remote=true]', function(event, jqxhr, settings, exception){
             var errors = $.parseJSON(jqxhr.responseText).errors;
             if (errors === undefined) {
-                window.location.replace(jqxhr.getResponseHeader('Location'));
+                var loc = jqxhr.getResponseHeader('Location');
+                if(loc) {
+                    window.location.replace(loc);
+                }
             }
             $(event.data).render_form_errors( errors );
         });

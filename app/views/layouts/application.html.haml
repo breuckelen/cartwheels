@@ -21,10 +21,10 @@
             %a{href: "#"}
               %span.glyphicon.glyphicon-remove-circle
           %li.section
-            %form
+            %form{action: "/search"}
               .form-group.search-group
-                %input.search-input.no-scale{type: "text", placeholder: "Food"}
-                %input.search-input.no-scale{type: "text", placeholder: "Location"}
+                %input.search-input.no-scale{type: "text", name: "tq", placeholder: "Food"}
+                %input.search-input.no-scale{type: "text", name: "lq", placeholder: "Location"}
                 %button.btn.btn-primary.search-btn Search
           - if user_signed_in?
             %li.section.bg-highlight.highlight-full-default

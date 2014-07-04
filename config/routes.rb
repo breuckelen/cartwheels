@@ -29,6 +29,14 @@ Rails.application.routes.draw do
         resources :cart_category_relations, path: "categories", only: [:index, :new, :create]
     end
 
+    concern :notes do
+        resources :notes, only: [:index, :new, :create]
+    end
+
+    concern :hours do
+        resources :hours, only: [:index, :new, :create]
+    end
+
     concern :data do
         get :data, on: :collection
     end
@@ -71,8 +79,8 @@ Rails.application.routes.draw do
     end
 
     # Cart routes
-    resources :carts, concerns: [:photos, :reviews, :checkins, :data, :search, :ads,
-            :user_cart_relations, :cart_tag_relations, :cart_category_relations] do
+    resources :carts, concerns: [:photos, :reviews, :checkins, :hours, :data, :search,
+        :ads, :user_cart_relations, :cart_tag_relations, :cart_category_relations] do
         member do
             resource :menu do
                 resources :menu_items, path: "items", only: [:index, :new, :create]
@@ -101,7 +109,13 @@ Rails.application.routes.draw do
         concerns: [:data, :search], path: "_checkins"
 
     resources :menu_items, only: [:show, :edit, :update, :destroy],
-        concerns: [:data], path: "_menu_items"
+        concerns: [:data, :notes]
+
+    resources :notes, only: [:show, :edit, :update, :destroy],
+        concerns: [:data], path: "_notes"
+
+    resources :hours, only: [:show, :edit, :update, :destroy],
+        concerns: [:data], path: "_hours"
 
     resources :user_cart_relations, only: [:show, :edit, :update, :destroy],
         concerns: [:data], path: "_cart_associations"

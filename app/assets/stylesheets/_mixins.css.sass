@@ -112,7 +112,7 @@
     #{$property}: $value
 
 @mixin scale-property($property, $default, $tl: 0.9, $tp: 0.7, $ml: 0.5, $mp: 0.4)
-    @include desktop-only
+    @include desktop-and-up
         #{$property}: $default
 
     @include tablet-landscape-only
@@ -124,5 +124,5 @@
     @include mobile-landscape-only
         #{$property}: $default * $ml
 
-    @include mobile-portrait-only
+    @include mobile-portrait-and-below
         #{$property}: $default * 0.3

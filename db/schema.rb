@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703064959) do
+ActiveRecord::Schema.define(version: 20140704030410) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -119,6 +119,15 @@ ActiveRecord::Schema.define(version: 20140703064959) do
   add_index "clickthroughs", ["cart_id"], name: "index_clickthroughs_on_cart_id"
   add_index "clickthroughs", ["user_id"], name: "index_clickthroughs_on_user_id"
 
+  create_table "hours", force: true do |t|
+    t.integer  "cart_id"
+    t.integer  "day"
+    t.string   "start"
+    t.string   "end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "menu_items", force: true do |t|
     t.text     "description"
     t.string   "image_url"
@@ -137,6 +146,14 @@ ActiveRecord::Schema.define(version: 20140703064959) do
   end
 
   add_index "menus", ["cart_id"], name: "index_menus_on_cart_id"
+
+  create_table "notes", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "menu_item_id"
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "notifications", force: true do |t|
     t.integer  "cart_id"

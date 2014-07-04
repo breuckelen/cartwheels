@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
     has_many :user_cart_relations
     has_many :carts, :through => :user_cart_relations
     has_many :checkins, as: :user
+    has_many :notes
     has_and_belongs_to_many :badges
 
     # Validations

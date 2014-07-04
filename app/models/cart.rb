@@ -13,6 +13,7 @@ class Cart < ActiveRecord::Base
     has_many :categories, through: :cart_category_relations
     has_many :notifications
     has_many :checkins
+    has_many :hours
     has_and_belongs_to_many :owners
 
     # Validations
@@ -66,7 +67,7 @@ class Cart < ActiveRecord::Base
         if reviews.last
             self.rating = reviews.sum(:rating) / reviews.count.to_f
         else
-            self.rating = nil
+            self.rating = 0
         end
     end
 
