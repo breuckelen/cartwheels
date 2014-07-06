@@ -2,7 +2,7 @@ class CartsController < ApplicationController
     skip_before_filter :verify_authenticity_token,
         :if => Proc.new { |c| c.request.format == 'application/json' }
     before_filter :authenticate_user!, only: [:new]
-    before_action :set_cart, only: [:show, :edit, :update, :destroy]
+    before_action :set_cart, only: [:show, :edit, :update, :destroy, :claim]
 
     # show cart owners
     def index
@@ -66,16 +66,25 @@ class CartsController < ApplicationController
         end
 
         respond_to do |format|
-            if @cart.update(cart_params)
-                format.html { redirect_to carts_path,
-                    notice: 'Cart was succesfully updated.' }
-                format.json { render :show, status: :ok,
-                    location: @cart,
-                    :json => { :success => true }}
+            if current_user == @cart.uploader or current_user.has_role? :admin\
+                    or current_owner.in? == @cart.owners
+                if @cart.update(cart_params)
+                    format.html { redirect_to carts_path,
+                        notice: 'Cart was succesfully updated.' }
+                    format.json { render :show, status: :ok,
+                        location: @cart,
+                        :json => { :success => true }}
+                else
+                    format.html { render :edit }
+                    format.json { render status: :unprocessable_entity,
+                        :json => { :errors => @cart.errors, :success => false }}
+                end
             else
-                format.html { render :edit }
-                format.json { render status: :unprocessable_entity,
-                    :json => { :errors => @cart.errors, :success => false }}
+                format.html { redirect_to @cart,
+                    notice: 'You do not have permission to perform this action.' }
+                format.json { render json: {
+                    success: false }
+                }
             end
         end
     end
@@ -124,6 +133,25 @@ class CartsController < ApplicationController
             :data => @carts }
     end
 
+    def claim
+        respond_to do |format|
+            if params[:permit_number] == @cart.permit_number
+                @cart.owners << current_owner
+
+                format.html { redirect_to carts_path,
+                    notice: 'Cart successfully claimed.' }
+                format.json { render json: {
+                    success: true } }
+            else
+                format.html { redirect_to @cart,
+                    notice: 'You do not have permission to perform this action.' }
+                format.json { render json: {
+                    success: false }
+                }
+            end
+        end
+    end
+
     def data_params
         params.require(:cart).permit(:id, :name, :city, :permit_number, :zip_code)
     end
@@ -135,7 +163,7 @@ class CartsController < ApplicationController
     end
 
     def cart_params
-        params.require(:cart).permit(:name, :name, :permit_number, :lat, :lon,
+        params.require(:cart).permit(:name, :city, :permit_number, :lat, :lon,
             :green, :rating)
     end
 

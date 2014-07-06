@@ -17,7 +17,7 @@ class Cart < ActiveRecord::Base
     has_and_belongs_to_many :owners
 
     # Validations
-    validates :name, :city, :permit_number, :zip_code, :lat, :lon,
+    validates :name, :city, :permit_number, :zip_code, :address, :lat, :lon,
         presence: true
     validates :permit_number, :zip_code, :lat, :lon, :popularity, numericality: true
     validates :permit_number, uniqueness: true
@@ -34,6 +34,7 @@ class Cart < ActiveRecord::Base
         if geo = results.first
             obj.city = geo.city
             obj.zip_code = geo.postal_code
+            obj.address = geo.address.split(', ')[0..1].join(', ')
         end
     end
 

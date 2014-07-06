@@ -45,6 +45,10 @@ Rails.application.routes.draw do
         get :search, on: :collection
     end
 
+    concern :claim do
+        get :claim, on: :member
+    end
+
     # Collection routes
     devise_for :users, controllers: {:registrations => "users/registrations",
         :sessions => "users/sessions"}
@@ -80,7 +84,8 @@ Rails.application.routes.draw do
 
     # Cart routes
     resources :carts, concerns: [:photos, :reviews, :checkins, :hours, :data, :search,
-        :ads, :user_cart_relations, :cart_tag_relations, :cart_category_relations] do
+            :claim, :ads, :user_cart_relations, :cart_tag_relations,
+            :cart_category_relations] do
         member do
             resource :menu do
                 resources :menu_items, path: "items", only: [:index, :new, :create]

@@ -113,11 +113,13 @@
 
         cartMap = new GMaps({
             div: '#map-div',
-                lat: 40.7820015,
-                lng: -73.8317032,
-                zoom: 11,
-                scrollwheel: false
+            lat: 40.7820015,
+            lng: -73.8317032,
+            zoom: 11,
+            scrollwheel: false
         });
+
+        console.log(cartMap.map);
 
         searchInput.focus(function(e) {
             $('.input-hidden').fadeIn();

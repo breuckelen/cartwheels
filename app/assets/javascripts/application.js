@@ -14,8 +14,8 @@
 //= require jquery_ujs
 //= require jquery.form.min.js
 //= require jquery.raty.js
-//= require jquery_mousewheel
 //= require turbolinks
 //= require underscore
 //= require bootstrap
+//= require typeahead.bundle.min.js
 //= require_tree .

@@ -6,8 +6,6 @@ class Review < ActiveRecord::Base
     # Validations
     validates :text, :rating, :cart, :user, presence: true
     validates :rating, numericality: true, inclusion: {:in => 1..5}
-    validates :user_id, uniqueness: {:scope => :cart_id,
-        :message => "Users may only write one review per cart."}
 
     after_create :update_cart
 

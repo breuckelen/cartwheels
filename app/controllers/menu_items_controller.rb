@@ -92,12 +92,21 @@ class MenuItemsController < ApplicationController
                 .offset(search_params["offset"].to_i)
         else
             new_params = data_params
-            new_params[:menu_id] = Cart.find_by_id(new_params.delete(:cart_id))
-                .menu.id
+
+            if new_params[:cart_id]
+                cart = Cart.find_by_id(new_params.delete(:cart_id))
+
+                if cart
+                    new_params[:menu_id] = cart.menu.id
+                else
+                    new_params[:menu_id] = -1
+                end
+            end
 
             @menu_items = MenuItem.where(new_params)
                 .limit(search_params["limit"].to_i)
                 .offset(search_params["offset"].to_i)
+
         end
 
         render :status => 200, :json => { :success => true,

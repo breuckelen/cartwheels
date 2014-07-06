@@ -40,17 +40,8 @@
      */
     var readUrl = function(input) {
         if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            var img = controller.find('#img-preview');
             var label = input.files[0].name;
-
-            reader.onload = function (e) {
-                img.attr('src', e.target.result);
-                controller.find('.img-preview').slideDown();
-                controller.find('.file-btn .label').text(label);
-            }
-
-            reader.readAsDataURL(input.files[0]);
+            controller.find('.file-btn .label').text(label);
         }
     }
 
@@ -76,6 +67,10 @@
 
         //Variables
         var watchId = navigator.geolocation.watchPosition(getPosition);
+
+        $('#img-input').change(function(e) {
+            readUrl(this);
+        });
 
         $('#new_cart').submit(function(e) {
             e.preventDefault();

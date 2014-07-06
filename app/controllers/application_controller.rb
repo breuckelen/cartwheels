@@ -9,14 +9,14 @@ class ApplicationController < ActionController::Base
         :if => Proc.new { |c| c.request.format == 'application/json' }
 
     before_filter :authenticate_user_from_token,
-        only: [:create, :update, :destroy],
+        only: [:create, :update, :destroy, :claim],
         :if => Proc.new { |c| c.request.format == 'application/json' }
 
     before_filter :authenticate_user!, only: [:create, :update, :destroy]
 
     skip_before_filter :authenticate_user!,
         :if => Proc.new { |c| current_owner != nil }
-    before_filter :authenticate_owner!, only: [:create, :update, :destroy]
+    before_filter :authenticate_owner!, only: [:create, :update, :destroy, :claim]
 
     skip_before_filter :authenticate_owner!,
         :if => Proc.new { |c| current_user != nil }

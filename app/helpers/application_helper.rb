@@ -50,4 +50,12 @@ module ApplicationHelper
         end
         return options
     end
+
+    def category_options
+        options = []
+        Category.all.each do |cat|
+            options.unshift([cat.name, cat.id])
+        end
+        return options
+    end
 end

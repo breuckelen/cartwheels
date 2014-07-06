@@ -33,6 +33,9 @@ class Owner < ActiveRecord::Base
 
     def as_json(options={})
         options[:only] ||= [:id, :email, :name, :zip_code, :created_at, :updated_at]
+        options[:include] ||= {
+            :carts => { :only => [:id]}
+        }
         super(options)
     end
 

@@ -1,0 +1,213 @@
+<% environment.context_class.instance_eval { include ApplicationHelper } %>
+
+(function(e) {
+    var controller;
+
+    var init = function() {
+        controller = $('#search-index');
+    }
+
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+                if (substrRegex.test(str)) {
+                    // the typeahead jQuery plugin expects suggestions to a
+                    // JavaScript object, refer to typeahead docs for more info
+                    matches.push({ value: str });
+                }
+            });
+
+            cb(matches);
+        };
+    }
+
+    var getRoute = function(start, end, display, service) {
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode.WALKING
+        };
+
+        service.route(request, function (response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                display.setDirections(response);
+            } else {
+                alert("error displaying directions");
+            }
+        });
+    }
+
+    var initDirections = function(modalMap) {
+        var directionsDisplay = new google.maps.DirectionsRenderer(),
+            directionsService = new google.maps.DirectionsService();
+        var lat = modalMap.attr('data-latitude'),
+            lon = modalMap.attr('data-longitude');
+        var end = new google.maps.LatLng(lat, lon);
+        var directionsMap = new GMaps({
+            div: modalMap.get(0),
+            zoom: 13,
+            lat: lat,
+            lng: lon,
+            scrollwheel: false
+        });
+        var rawMap = new google.maps.Map(modalMap.get(0));
+        var $container = modalMap.parent();
+
+        directionsMap.removeMarkers();
+        directionsMap.addMarker({
+            lat: lat,
+            lng: lon,
+        });
+        directionsDisplay.setMap(rawMap);
+        directionsDisplay.setPanel($container.find('.directions-panel').get(0));
+
+        $container.find('#address').on('keypress', function(e) {
+            if(e.which === 13) {
+                GMaps.geocode({
+                    address: $container.find('#address').val(),
+                    callback: function(results, status) {
+                        if(status == 'OK') {
+                            var start = results[0].geometry.location;
+
+                            modalMap.addClass('squeezed');
+                            modalMap.resize();
+                            getRoute(start, end, directionsDisplay, directionsService);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    var getMenuNotes = function(cart) {
+        var notes = [];
+        $.getJSON('/menu_items/data', {'menu_item': {'cart_id': 5 } }, function(data) {
+            $.each(data.data, function(i, d) {
+                var notes = cart.find('.notes');
+                notes.append(d.notes[0].text);
+            });
+        });
+    }
+
+    var ready = function() {
+        init();
+
+        if (controller.length === 0) return;
+
+        var categorySuggestions = _.map(<%= category_options.to_json %>, function(item) {return item[0];});
+
+        controller.find('.cart .rating').raty({
+            path: "assets",
+            readOnly: true,
+            size: 12,
+            score: function() {
+                return $(this).attr('data-score');
+            }
+        });
+
+        controller.find('.typeahead').typeahead({
+            minLength: 1,
+            highlight: true
+        }, {
+            name: 'categories',
+            source: substringMatcher(categorySuggestions)
+        });
+
+        controller.find('.next').click(function(e) {
+            e.preventDefault();
+            var $content = $(this).prev('.cart').find('.content');
+            var oclass = $content.attr('class').split(' ')[1],
+                nclass;
+
+            if($content.hasClass('first')) {
+                nclass = 'second';
+                $content.addClass('second');
+                $content.removeClass('first');
+            }
+            else if($content.hasClass('second')) {
+                nclass = 'third';
+                $content.addClass('third');
+                $content.removeClass('second');
+            }
+            else if($content.hasClass('third')) {
+                nclass = 'fourth';
+                $content.addClass('fourth');
+                $content.removeClass('third');
+            }
+            else if($content.hasClass('fourth')) {
+                nclass = 'first';
+                $content.addClass('first');
+                $content.removeClass('fourth');
+            }
+
+            $content.parent().find('a[data-target-class=' + nclass + ']').parent().addClass('active');
+            $content.parent().find('a[data-target-class=' + oclass + ']').parent().removeClass('active');
+        });
+
+        controller.find('.prev').click(function(e) {
+            e.preventDefault();
+            var $content = $(this).next('.cart').find('.content');
+            var oclass = $content.attr('class').split(' ')[1],
+                nclass;
+
+            if($content.hasClass('first')) {
+                nclass = 'fourth';
+                $content.addClass('fourth');
+                $content.removeClass('first');
+            }
+            else if($content.hasClass('second')) {
+                nclass = 'first';
+                $content.addClass('first');
+                $content.removeClass('second');
+            }
+            else if($content.hasClass('third')) {
+                nclass = 'second';
+                $content.addClass('second');
+                $content.removeClass('third');
+            }
+            else if($content.hasClass('fourth')) {
+                nclass = 'third';
+                $content.addClass('third');
+                $content.removeClass('fourth');
+            }
+
+            $content.parent().find('a[data-target-class=' + nclass + ']').parent().addClass('active');
+            $content.parent().find('a[data-target-class=' + oclass + ']').parent().removeClass('active');
+        });
+
+        controller.find('.cart .subname a').click(function(e) {
+            e.preventDefault();
+            var $content = $(this).parents('.cart').find('.content');
+            var nclass = $(this).attr('data-target-class'),
+                oclass = $content.attr('class').split(' ')[1];
+
+            $(this).parent().siblings('.active').removeClass('active');
+            $(this).parent().addClass('active');
+
+            $content.addClass(nclass);
+            $content.removeClass(oclass);
+        });
+
+        controller.find('.directions-modal').on('shown.bs.modal', function() {
+            var modalMap = $(this).find('.directions-map');
+
+            initDirections(modalMap);
+        });
+
+        getMenuNotes($('.cart'));
+    }
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
+
+})();
