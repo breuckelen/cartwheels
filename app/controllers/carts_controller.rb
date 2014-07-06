@@ -135,7 +135,7 @@ class CartsController < ApplicationController
 
     def claim
         respond_to do |format|
-            if params[:permit_number] == @cart.permit_number
+            if params[:permit_number].to_i == @cart.permit_number
                 @cart.owners << current_owner
 
                 format.html { redirect_to carts_path,
