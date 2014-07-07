@@ -68,7 +68,7 @@ class CartsController < ApplicationController
         respond_to do |format|
             if (current_user and (current_user == @cart.uploader or current_user.has_role? :admin))\
                     or (current_owner.in? @cart.owners)
-                if @cart.update(cart_params)
+                if @cart.send(:update_without_callbacks, cart_params)
                     format.html { redirect_to carts_path,
                         notice: 'Cart was succesfully updated.' }
                     format.json { render :show, status: :ok,
