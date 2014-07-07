@@ -75,7 +75,9 @@ class Cart < ActiveRecord::Base
     def update_location
         if checkins.last
             recent_checkins = checkins.where(
-                created_at: (Time.now - 5.day)..Time.now).limit(20)
+                created_at: (Time.now - 5.day)..Time.now)
+                .limit(20)
+                .order('created_at DESC')
 
             new_lat = self.lat
             new_lon = self.lon
@@ -110,7 +112,7 @@ class Cart < ActiveRecord::Base
 
     def as_json(options={})
         options[:only] ||= [:id, :name, :city, :permit_number, :zip_code,
-            :description, :lat, :lon]
+            :description, :rating, :lat, :lon]
         options[:include] ||= {
             :photos => { :only => :null, :methods => [:image_url] }
         }
