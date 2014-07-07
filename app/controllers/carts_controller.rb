@@ -9,7 +9,7 @@ class CartsController < ApplicationController
         # html:
         # map display with interactive popups
         # statistics about cart owners
-        @carts = Cart.where(updated_at: (Time.now - 1.day)..Time.now)
+        @carts = Cart.where(created_at: (Time.now - 1.day)..Time.now)
     end
 
     def show
