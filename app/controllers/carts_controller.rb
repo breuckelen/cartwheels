@@ -68,13 +68,25 @@ class CartsController < ApplicationController
         respond_to do |format|
             if (current_user and (current_user == @cart.uploader or current_user.has_role? :admin))\
                     or (current_owner.in? @cart.owners)
-                if @cart.send(:update_without_callbacks, cart_params)
+                Cart.skip_callback(:validation, :before, :update_popularity)
+                Cart.skip_callback(:validation, :before, :update_rating)
+                Cart.skip_callback(:validation, :before, :update_location)
+
+                if @cart.update(cart_params)
+                    Cart.set_callback(:validation, :before, :update_popularity)
+                    Cart.set_callback(:validation, :before, :update_rating)
+                    Cart.set_callback(:validation, :before, :update_location)
+
                     format.html { redirect_to carts_path,
                         notice: 'Cart was succesfully updated.' }
                     format.json { render :show, status: :ok,
                         location: @cart,
                         :json => { :success => true }}
                 else
+                    Cart.set_callback(:validation, :before, :update_popularity)
+                    Cart.set_callback(:validation, :before, :update_rating)
+                    Cart.set_callback(:validation, :before, :update_location)
+
                     format.html { render :edit }
                     format.json { render status: :unprocessable_entity,
                         :json => { :errors => @cart.errors, :success => false }}
