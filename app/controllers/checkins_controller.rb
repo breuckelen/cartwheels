@@ -2,6 +2,7 @@ class CheckinsController < ApplicationController
     skip_before_filter :verify_authenticity_token,
         :if => Proc.new { |c| c.request.format == 'application/json' }
     before_action :set_checkin, only: [:show, :edit, :update, :destroy]
+    before_action :set_cart, only: [:new]
 
     def index
     end
@@ -36,14 +37,16 @@ class CheckinsController < ApplicationController
             if @checkin.save
                 @checkin.cart.photos.create(user: current_user, image: image)
 
-                format.html { redirect_to @checkin,
-                    notice: 'Checkin was succesfully created.' }
-                format.json { render :show, status: :created,
-                    location: @checkin,
+                format.json { render status: :created,
+                    location: last_path(current_user),
+                    :json => { :success => true }}
+                format.js { render status: :created,
+                    location: last_path(current_user),
                     :json => { :success => true }}
             else
-                format.html { render :new }
                 format.json { render status: :unprocessable_entity,
+                    :json => { :success => false, :errors => @checkin.errors}}
+                format.js { render status: :unprocessable_entity,
                     :json => { :success => false, :errors => @checkin.errors}}
             end
         end
@@ -56,10 +59,10 @@ class CheckinsController < ApplicationController
 
         respond_to do |format|
             if @checkin.update(checkin_params)
-                format.html { redirect_to @checkin,
+                format.html { redirect_to last_path(current_user),
                     notice: 'Checkin was succesfully updated.' }
-                format.json { render :show, status: :ok,
-                    location: @checkin,
+                format.json { render status: :ok,
+                    location: last_path(current_user),
                     :json => { :success => true }}
             else
                 format.html { render :edit }
@@ -133,8 +136,13 @@ class CheckinsController < ApplicationController
         @checkin = Checkin.find(params[:id])
     end
 
+    def set_cart
+        @cart = Cart.find(params[:cart_id])
+    end
+
     private :data_params
     private :search_params
     private :checkin_params
     private :set_checkin
+    private :set_cart
 end

@@ -14,7 +14,7 @@ class Cart < ActiveRecord::Base
     has_many :notifications
     has_many :checkins
     has_many :hours
-    has_and_belongs_to_many :owners
+    has_and_belongs_to_many :owners, :uniq => true
 
     # Validations
     validates :name, :city, :permit_number, :zip_code, :address, :lat, :lon,
@@ -25,8 +25,8 @@ class Cart < ActiveRecord::Base
     validates :green, :inclusion => {:in => [0, 1, 2]}
 
     # Filters
+    before_validation :update_popularity, :update_rating, :update_location
     before_validation :reverse_geocode
-    before_save :update_popularity, :update_rating, :update_location
     before_create :build_default_menu
 
     # Reverse geocoding
@@ -77,15 +77,20 @@ class Cart < ActiveRecord::Base
             recent_checkins = checkins.where(
                 created_at: (Time.now - 5.day)..Time.now).limit(20)
 
-            lat_lon = recent_checkins.each do |c|
-                if recent_checkins.within(0.1, origin: c).count\
+            new_lat = self.lat
+            new_lon = self.lon
+
+            recent_checkins.each do |c|
+                if recent_checkins.within(0.2, origin: c).count\
                         > recent_checkins.count / 2
-                    return [c.lat, c.lon]
+                    new_lat = c.lat
+                    new_lon = c.lon
+                    break
                 end
             end
 
-            self.lat = lat_lon[0]
-            self.lon = lat_lon[1]
+            self.lat = new_lat
+            self.lon = new_lon
         end
     end
 

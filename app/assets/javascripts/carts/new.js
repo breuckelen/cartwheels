@@ -68,14 +68,14 @@
         //Variables
         var watchId = navigator.geolocation.watchPosition(getPosition);
 
-        $('#img-input').change(function(e) {
+        controller.find('#img-input').change(function(e) {
             readUrl(this);
         });
 
-        $('#new_cart').submit(function(e) {
+        controller.find('#new_cart').submit(function(e) {
             e.preventDefault();
 
-            $('#new_cart').ajaxSubmit({
+            $(this).ajaxSubmit({
                 contentType: 'application/json',
                 complete: formComplete
             });

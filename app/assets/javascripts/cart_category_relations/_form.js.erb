@@ -1,0 +1,52 @@
+<% environment.context_class.instance_eval { include ApplicationHelper } %>
+
+(function() {
+    var controller;
+
+    var init = function() {
+        controller = $('form[data-model=cart_category_relation]').parent();
+    }
+
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+                if (substrRegex.test(str)) {
+                    // the typeahead jQuery plugin expects suggestions to a
+                    // JavaScript object, refer to typeahead docs for more info
+                    matches.push({ value: str });
+                }
+            });
+
+            cb(matches);
+        };
+    }
+
+    var ready = function() {
+        init();
+
+        if (controller.length === 0) return;
+
+        var categorySuggestions = _.map(<%= category_options.to_json %>, function(item) {return item[0];});
+
+        controller.find('.typeahead').typeahead({
+            minLength: 1,
+            highlight: true
+        }, {
+            name: 'categories',
+            source: substringMatcher(categorySuggestions)
+        });
+    }
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
+})();

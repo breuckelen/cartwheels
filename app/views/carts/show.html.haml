@@ -1,1 +1,8 @@
 -# Individual page for a cart
+#carts
+  =render(@cart)
+
+  .cart-links
+    %span= link_to 'Show', @cart
+    %span= link_to 'Edit', edit_cart_path(@cart)
+    %span= link_to 'Destroy', @cart, :method => :delete, :data => { :confirm => 'Are you sure?' }

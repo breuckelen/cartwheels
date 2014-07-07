@@ -1,0 +1,27 @@
+.directions-modal
+    .directions-panel
+        z-index: 0
+        position: absolute
+        width: 200px
+        height: 300px
+        margin: 0
+        top: 85px
+        right: 10px
+        overflow: auto
+
+        @include vendor(transition, all 0.4s ease 0s)
+
+    .directions-map
+        z-index: 1
+        display: inline-block
+        vertical-align: top
+        width: 550px
+        height: 300px
+        padding: 0
+        margin: 0
+
+        @include vendor(border-radius, 2px)
+        @include vendor(transition, all 0.4s ease 0s)
+
+        &.squeezed
+            width: 350px

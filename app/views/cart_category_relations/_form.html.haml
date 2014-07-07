@@ -1,0 +1,6 @@
+.wheels-form
+  =form_for ccr, remote: true, url: cart_cart_category_relations_path(cart), html: {'data-model' => 'cart_category_relation', :class => 'form-inline'} do |f|
+    .form-group
+      .row
+        =f.text_field :category_id, class: "form-input typeahead"
+        =f.submit "Submit", class: "btn btn-primary cart-btn"

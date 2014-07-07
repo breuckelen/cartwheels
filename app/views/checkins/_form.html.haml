@@ -1,10 +1,36 @@
-= form_for @checkin do |f|
-  - if @checkin.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@checkin.errors.count, "error")} prohibited this checkin from being saved:"
-      %ul
-        - @checkin.errors.full_messages.each do |msg|
-          %li= msg
+-content_for :head do
+  =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
+  =javascript_include_tag "gmaps.js"
 
-  .actions
-    = f.submit 'Save'
+#checkin-map
+
+#checkin-search
+  %input#address-input.form-input{placeholder: "Search for an address near the cart"}
+
+.wheels-form
+  .form-header="Checkin at #{cart.name}"
+
+  .form-desc
+    Have you been to this cart recently? Enjoyed the food or the owner's mustache? Checkin by pinning on the map where you visited and share your experience with the Cartwheels communitiy!
+
+  =form_for checkin, remote: true, url: cart_checkins_path(cart), html: {multipart: true, 'data-model' => 'checkin'} do |f|
+
+    .form-group.row
+      %span.btn.btn-secondary.form-btn.file-btn
+        .label
+          Upload Image
+        = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
+      .row
+        .help-block
+
+    .form-group
+      .row
+        =f.text_area :description, class: "form-control form-text-area", placeholder: "Share what you did, what you ordered, or anything else about your experience at this cart!"
+      .row
+        .help-block
+
+    .form-group.row
+      = f.submit "Submit", class: "btn btn-primary form-btn"
+
+    =f.hidden_field :lat, value: cart.lat
+    =f.hidden_field :lon, value: cart.lon
