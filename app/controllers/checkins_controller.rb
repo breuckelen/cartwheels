@@ -37,11 +37,14 @@ class CheckinsController < ApplicationController
             if @checkin.save
                 @checkin.cart.photos.create(user: current_user, image: image)
 
+                u = current_user
+                u ||= current_owner
+
                 format.json { render status: :created,
-                    location: last_path(current_user),
+                    location: last_path(u),
                     :json => { :success => true }}
                 format.js { render status: :created,
-                    location: last_path(current_user),
+                    location: last_path(u),
                     :json => { :success => true }}
             else
                 format.json { render status: :unprocessable_entity,

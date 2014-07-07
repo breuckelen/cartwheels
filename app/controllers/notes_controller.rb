@@ -19,7 +19,7 @@ class NotesController < ApplicationController
 
     def create
         @note = Note.new(note_params)
-        @note.menu_id = params[:menu_id]
+        @note.menu_item_id = params[:menu_item_id]
 
         respond_to do |format|
             if @note.save
