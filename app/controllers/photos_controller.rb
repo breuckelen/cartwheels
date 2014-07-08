@@ -20,7 +20,24 @@ class PhotosController < ApplicationController
 
     # create a new photo for a cart
     def create
-        @photo = current_user.photos.build(photo_params)
+        if photo_params[:encoded_image].empty?
+            @photo = current_user.photos.build(photo_params)
+        else
+            new_params = photo_params
+            decoded_file = Base64.decode64(new_params.delete(:encoded_image))
+
+            begin
+                file = Tempfile.new('temp_image', '.jpg')
+                file.binmode
+                file.write decoded_file
+                file.close
+                @photo = current_user.photos.build(new_params)
+                @photo.image = file
+            ensure
+                file.unlink
+            end
+        end
+
         if params[:cart_id]
             @photo.target = Cart.find(params[:cart_id])
         elsif params[:user_id]
@@ -95,7 +112,7 @@ class PhotosController < ApplicationController
     end
 
     def data_params
-        params.require(:photo).permit(:id, :user_id, :cart_id)
+        params.require(:photo).permit(:id, :user_id, :target_id, :target_type)
     end
 
     def search_params
@@ -105,7 +122,8 @@ class PhotosController < ApplicationController
     end
 
     def photo_params
-        params.require(:photo).permit(:image)
+        params.require(:photo).permit(:target_id, :target_type, :image, :encoded_image,
+            :caption)
     end
 
     def set_photo
