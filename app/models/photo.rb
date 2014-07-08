@@ -35,12 +35,10 @@ class Photo < ActiveRecord::Base
         begin
             file = Tempfile.new(['temp_image', '.jpg'])
             file.binmode
+            Rails.logger.info(Base64.decode64(data))
             file.write Base64.decode64(data)
             file.rewind
             self.image = file
-        rescue => e
-            Rails.logger.error(e.inspect)
-            Rails.logger.error(e.backtrace.join("\n"))
         ensure
             file.unlink
         end
