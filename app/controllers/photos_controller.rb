@@ -20,7 +20,7 @@ class PhotosController < ApplicationController
 
     # create a new photo for a cart
     def create
-        if photo_params[:encoded_image].empty?
+        if photo_params[:encoded_image].nil?
             @photo = current_user.photos.build(photo_params)
         else
             new_params = photo_params
