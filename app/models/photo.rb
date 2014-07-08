@@ -30,4 +30,17 @@ class Photo < ActiveRecord::Base
         options[:methods] ||= [:image_url, :image_url_small, :image_url_thumb]
         super(options)
     end
+
+    def decode_from_data(data)
+        begin
+            file = Tempfile.new(['temp_image', '.jpg'])
+            Rails.logger.error(file.inspect)
+            file.binmode
+            file.write Base64.decode64(data)
+            file.rewind
+            self.image = file
+        ensure
+            file.unlink
+        end
+    end
 end

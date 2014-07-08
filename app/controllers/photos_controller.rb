@@ -24,9 +24,9 @@ class PhotosController < ApplicationController
             @photo = current_user.photos.build(photo_params)
         else
             new_params = photo_params
-            decoded_file = StringIO.new(Base64.decode64(new_params.delete(:encoded_image)))
+            data = new_params.delete(:encoded_image)
             @photo = current_user.photos.build(new_params)
-            @photo.decode_from_data(decoded_file)
+            @photo.decode_from_data(data)
         end
 
         if params[:cart_id]
