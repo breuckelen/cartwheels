@@ -34,11 +34,13 @@ class Photo < ActiveRecord::Base
     def decode_from_data(data)
         begin
             file = Tempfile.new(['temp_image', '.jpg'])
-            Rails.logger.error(file.inspect)
             file.binmode
             file.write Base64.decode64(data)
             file.rewind
             self.image = file
+        rescue => e
+            Rails.logger.error(e.inspect)
+            Rails.logger.error(e.backtrace.join("\n"))
         ensure
             file.unlink
         end
