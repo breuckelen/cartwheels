@@ -76,7 +76,7 @@ class Cart < ActiveRecord::Base
     def update_location
         recent_checkins = checkins.where(
             created_at: (Time.now - 5.day)..Time.now)
-            .limit(20)
+            .limit(4)
             .order('created_at DESC')
 
         if recent_checkins.count > 2
