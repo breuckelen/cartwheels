@@ -9,7 +9,7 @@ class MenuItem < ActiveRecord::Base
     validates :price, numericality: true
 
     def as_json(options={})
-        options[:only] ||= [:id, :description, :price, :menu_id]
+        options[:only] ||= [:id, :name, :description, :price, :menu_id]
         options[:include] ||= {
             notes: { only: [:text, :user_id], include: {user: {only: [:name]}}},
             photo: { only: :null, methods: [:image_url, :image_url_large]}
