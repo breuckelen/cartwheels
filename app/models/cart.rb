@@ -12,9 +12,10 @@ class Cart < ActiveRecord::Base
     has_many :cart_category_relations
     has_many :categories, through: :cart_category_relations
     has_many :notifications
-    has_many :checkins
+    has_many :checkins, dependent: :destroy
     has_many :hours
-    has_and_belongs_to_many :owners, :uniq => true
+    has_many :cart_owner_relations
+    has_many :owners, through: :cart_owner_relations
 
     # Validations
     validates :name, :city, :permit_number, :zip_code, :address, :lat, :lon,
@@ -73,12 +74,12 @@ class Cart < ActiveRecord::Base
     end
 
     def update_location
-        if checkins.last
-            recent_checkins = checkins.where(
-                created_at: (Time.now - 5.day)..Time.now)
-                .limit(20)
-                .order('created_at DESC')
+        recent_checkins = checkins.where(
+            created_at: (Time.now - 5.day)..Time.now)
+            .limit(20)
+            .order('created_at DESC')
 
+        if recent_checkins.count > 2
             new_lat = self.lat
             new_lon = self.lon
 

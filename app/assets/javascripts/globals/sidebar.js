@@ -1,9 +1,23 @@
 (function() {
     var sidebar, content;
 
+    var search = function(inputs) {
+        str = '';
+        for(key in inputs) {
+            str += key + '=' + inputs[key] + '&';
+        }
+        str = str.slice(0, str.length - 1);
+
+        window.location.assign('/search?' + str);
+    }
+
     var ready = function(e) {
         sidebar = $('#sidebar-wrapper');
         content = $('#content-wrapper');
+
+        sidebar.find('.search-form').searchForm({
+            searchCallback: search
+        });
 
         sidebar.find('.glyphicon.glyphicon-remove-circle').on('click', function(e) {
             e.preventDefault();

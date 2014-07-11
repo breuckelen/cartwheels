@@ -18,7 +18,7 @@ class NotesController < ApplicationController
     end
 
     def create
-        @note = Note.new(note_params)
+        @note = current_user.notes.build(note_params)
         @note.menu_item_id = params[:menu_item_id]
 
         respond_to do |format|
@@ -27,9 +27,14 @@ class NotesController < ApplicationController
                 format.html { redirect_to @note }
                 format.json { render :show, status: :created,
                     json: {success: true}}
+                format.js { render :show, status: :created,
+                    json: {success: true}}
             else
+                Rails.logger.debug(@note.errors.inspect)
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
+                    json: {success: false, errors: @note.errors}}
+                format.js { render status: :unprocessable_entity,
                     json: {success: false, errors: @note.errors}}
             end
         end
@@ -41,18 +46,22 @@ class NotesController < ApplicationController
                 format.html { redirect_to @note, notice: 'Note was successfully updated.' }
                 format.json { render :show, status: :ok,
                     json: {success: true}}
+                format.js { render :show, status: :ok,
+                    json: {success: true}}
             else
                 format.html { render :edit }
                 format.json { render status: :unprocessable_entity,
+                    json: {success: false, errors: @note.errors}}
+                format.js { render status: :unprocessable_entity,
                     json: {success: false, errors: @note.errors}}
             end
         end
     end
 
     def destroy
-        @note.destroy
         respond_to do |format|
             if current_user == @note.user or current_user.has_role? :admin
+                @note.destroy
                 format.html { redirect_to notes_url, notice: 'Note was successfully destroyed.' }
                 format.json { render json: {success: true}}
             else

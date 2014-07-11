@@ -15,18 +15,23 @@ class Owners::SessionsController < Devise::SessionsController
         respond_to do |format|
             format.html { redirect_to home_path,
                 notice: "Logged in successfully"}
-            format.js { render status: :ok,
+            format.json { render status: :ok,
                 location: home_path,
                 :json => { :success => true }}
+            format.js { render "shared/concerns/login",
+                locals: { errors: nil, user: resource, redirect_path: last_path(resource)}}
         end
     end
 
     def failure
         respond_to do |format|
+            errors = {user: "Email and password combination is invalid"}
             format.html { render :new,
                 notice: "Login failed"}
-            format.js { render status: :unprocessable_entity,
+            format.json { render status: :unprocessable_entity,
                 :json => { :errors => ["Email and password combination is invalid"], :success => false }}
+            format.js { render "shared/concerns/login",
+                locals: { errors: errors }}
         end
     end
 end

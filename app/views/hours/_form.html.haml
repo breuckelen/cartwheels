@@ -1,10 +1,8 @@
-= form_for @hour do |f|
-  - if @hour.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@hour.errors.count, "error")} prohibited this hour from being saved:"
-      %ul
-        - @hour.errors.full_messages.each do |msg|
-          %li= msg
-
-  .actions
-    = f.submit 'Save'
+=form_for hour, remote: true, url: cart_hours_path(cart), html: {'data-model' => 'hour', :class => "form-inline"} do |f|
+  .form-group
+    .row
+      =f.select :day, options_for_select(day_options, 1), {}, {class: "form-control"}
+      =f.select :start, options_for_select(time_options, "0800"), {}, {class: "form-control"}
+      =f.select :end, options_for_select(time_options, "1700"), {}, {class: "form-control"}
+    .row
+      = f.submit "Submit", class: "btn btn-primary cart-btn"

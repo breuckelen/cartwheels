@@ -5,6 +5,7 @@ class Checkin < ActiveRecord::Base
 
     validates :user, :cart, :lat, :lon, presence: true
 
+    before_validation :check_user
     after_create :update_cart
 
     # For geospatial searches
@@ -13,6 +14,15 @@ class Checkin < ActiveRecord::Base
 
     def update_cart
         cart.save
+    end
+
+    def check_user
+        cs = Checkin.where(user: self.user, cart: self.cart,
+            created_at: (Time.now - 1.day)..Time.now)
+        if cs.count > 0
+            self.errors.add(:user,
+                "Can't checkin at a cart more than once a day")
+        end
     end
 
     def as_json(options={})
@@ -34,4 +44,6 @@ class Checkin < ActiveRecord::Base
             .order("created_at DESC")
         end
     end
+
+    private :check_user
 end

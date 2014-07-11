@@ -12,18 +12,19 @@
     / Collect the nav links, forms, and other content for toggling
     .navbar-collapse.collapse
       %ul.nav.navbar-nav.navbar-left
+        -if not user_signed_in? or owner_signed_in?
+          .login-link
+            =link_to "Sign Up", register_path
+          .login-link
+            =link_to "Log In", login_path
       .nav.navbar-nav
         %ul.navbar-center
-          %li
+          %li.active
             %a{href: "#about"} Map
-          %li
-            %a{href: "#services"} Social
-          %li
-            %a{href: "/carts"} Carts
           %li
             %a{href: "#about"} About
       %ul.nav.navbar-nav.navbar-right
-        %a.navbar-brand{href: "http://facebook.com"}
+        %a.navbar-brand{href: "https://www.facebook.com/cartwheelsUS"}
           =image_tag("fb-icon.png")
         %a.navbar-brand{href: "http://twitter.com"}
           =image_tag("tw-icon.png")
@@ -37,11 +38,12 @@
       .row-header Find Carts In Your Area
   #map-container.row
     #map-input
-      .input-block
-        %input.gmaps-input{placeholder: "Halal Guys, wafles and dinges, breakfast"}
-        %input.gmaps-input.input-hidden{placeholder: "10282, brooklyn, 456 allen st"}
-      %button.gmaps-button.btn.btn-primary
-        =image_tag("search.png")
+      %form.search-form
+        .input-block
+          %input.gmaps-input{name: "tq", placeholder: "Halal Guys, wafles and dinges, breakfast"}
+          %input.gmaps-input.location-input{name: "lq", placeholder: "10282, brooklyn, 456 allen st"}
+        %button.gmaps-button.btn.btn-primary{type: "submit"}
+          =image_tag("search.png")
       .more.hide
         %a{href: "#"}More
     #map-tags
@@ -49,24 +51,11 @@
         %a{href: "#"} Search For
 
       .form-group
-        .checkbox.tag
-          %label
-            %input{type: "checkbox"} Trucks
-        .checkbox.tag
-          %label
-            %input{type: "checkbox"} Halal
-        .checkbox.tag
-          %label
-            %input{type: "checkbox"} Hot Dog Stands
-        .checkbox.tag
-          %label
-            %input{type: "checkbox"} Dessert
-        .checkbox.tag
-          %label
-            %input{type: "checkbox"} Breakfast
-        .checkbox.tag
-          %label
-            %input{type: "checkbox"} Fruit
+        -Category.most_popular(5).each do |cat|
+          .checkbox.tag
+            %label
+              %input{type: "checkbox"}
+                =cat.name
         .checkbox.tag
           %label
             %input{type: "checkbox"} Other

@@ -1,36 +1,34 @@
--content_for :head do
-  =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
-  =javascript_include_tag "gmaps.js"
+.map-form
+  .map
+  .map-search
+    %form.search-form
+      %input.form-input.location-input#address-input{name: "lq", placeholder: "Search for an address near the cart"}
+      %button.hidden{type: "submit"}
 
-#checkin-map
+  .wheels-form
+    .form-header="Checkin at #{cart.name}"
 
-#checkin-search
-  %input#address-input.form-input{placeholder: "Search for an address near the cart"}
+    .form-desc
+      Have you been to this cart recently? Enjoyed the food or the owner's mustache? Checkin by pinning on the map where you visited and share your experience with the Cartwheels communitiy!
 
-.wheels-form
-  .form-header="Checkin at #{cart.name}"
+    =form_for checkin, remote: true, url: cart_checkins_path(cart), html: {multipart: true, 'data-model' => 'checkin'} do |f|
 
-  .form-desc
-    Have you been to this cart recently? Enjoyed the food or the owner's mustache? Checkin by pinning on the map where you visited and share your experience with the Cartwheels communitiy!
+      .form-group.row
+        %span.btn.btn-secondary.form-btn.file-btn
+          .label
+            Upload Image
+          = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
+        .row
+          .help-block
 
-  =form_for checkin, remote: true, url: cart_checkins_path(cart), html: {multipart: true, 'data-model' => 'checkin'} do |f|
+      .form-group
+        .row
+          =f.text_area :description, class: "form-control form-text-area", placeholder: "Share what you did, what you ordered, or anything else about your experience at this cart!"
+        .row
+          .help-block
 
-    .form-group.row
-      %span.btn.btn-secondary.form-btn.file-btn
-        .label
-          Upload Image
-        = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
-      .row
-        .help-block
+      .form-group.row
+        = f.submit "Submit", class: "btn btn-primary form-btn", disable_with: "Submitting..."
 
-    .form-group
-      .row
-        =f.text_area :description, class: "form-control form-text-area", placeholder: "Share what you did, what you ordered, or anything else about your experience at this cart!"
-      .row
-        .help-block
-
-    .form-group.row
-      = f.submit "Submit", class: "btn btn-primary form-btn"
-
-    =f.hidden_field :lat, value: cart.lat
-    =f.hidden_field :lon, value: cart.lon
+      =f.hidden_field :lat, value: cart.lat
+      =f.hidden_field :lon, value: cart.lon

@@ -1,1 +1,5 @@
+-content_for :head do
+  =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
+  =javascript_include_tag "gmaps.js"
+
 = render partial: 'checkins/form', locals: {cart: @cart, checkin: @checkin}

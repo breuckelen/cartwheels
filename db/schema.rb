@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140707034749) do
+ActiveRecord::Schema.define(version: 20140710154739) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -48,6 +48,14 @@ ActiveRecord::Schema.define(version: 20140707034749) do
     t.datetime "updated_at"
   end
 
+  create_table "cart_owner_relations", force: true do |t|
+    t.integer "cart_id"
+    t.integer "owner_id"
+  end
+
+  add_index "cart_owner_relations", ["cart_id"], name: "index_cart_owner_relations_on_cart_id"
+  add_index "cart_owner_relations", ["owner_id"], name: "index_cart_owner_relations_on_owner_id"
+
   create_table "cart_tag_relations", force: true do |t|
     t.integer  "cart_id"
     t.integer  "tag_id"
@@ -62,8 +70,8 @@ ActiveRecord::Schema.define(version: 20140707034749) do
     t.string   "name"
     t.string   "city"
     t.integer  "owner_secret"
-    t.integer  "permit_number"
-    t.integer  "zip_code"
+    t.string   "permit_number"
+    t.string   "zip_code"
     t.float    "lat"
     t.float    "lon"
     t.datetime "created_at"
@@ -84,18 +92,11 @@ ActiveRecord::Schema.define(version: 20140707034749) do
   add_index "carts", ["lat", "lon"], name: "index_carts_on_lat_and_lon"
   add_index "carts", ["permit_number"], name: "index_carts_on_permit_number"
 
-  create_table "carts_owners", force: true do |t|
-    t.integer "cart_id"
-    t.integer "owner_id"
-  end
-
-  add_index "carts_owners", ["cart_id"], name: "index_carts_owners_on_cart_id"
-  add_index "carts_owners", ["owner_id"], name: "index_carts_owners_on_owner_id"
-
   create_table "categories", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "count",      default: 0
   end
 
   create_table "checkins", force: true do |t|
@@ -131,7 +132,6 @@ ActiveRecord::Schema.define(version: 20140707034749) do
 
   create_table "menu_items", force: true do |t|
     t.text     "description"
-    t.string   "image_url"
     t.float    "price"
     t.integer  "menu_id"
     t.datetime "created_at"
@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(version: 20140707034749) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "count",      default: 0
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name"
@@ -277,7 +278,7 @@ ActiveRecord::Schema.define(version: 20140707034749) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "name"
-    t.integer  "zip_code"
+    t.string   "zip_code"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "provider"

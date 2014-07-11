@@ -1,0 +1,11 @@
+var $cart = $('#cart_' + <%= cart.id %>);
+$cart.find('.checkins-modal').on('hidden.bs.modal', function(e) {
+    if ($('#search-index').length > 0) {
+        $cart.html("<%= escape_javascript render partial: "carts/cart", locals: {cart: cart, small: true}%>");
+    }
+    else {
+        $cart.html("<%= escape_javascript render partial: "carts/cart", locals: {cart: cart, small: false}%>");
+    }
+    $cart.cart({'startTab': 'fourth'});
+});
+$cart.find('.checkins-modal').modal('hide');

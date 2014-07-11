@@ -1,0 +1,62 @@
+-content_for :head do
+  =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
+  =javascript_include_tag "gmaps.js"
+
+.map-form
+  .map
+  .map-search
+    %form.search-form
+      %input.form-input.location-input#address-input{name: "lq", placeholder: "Search for an address near the cart"}
+      %button.hidden{type: "submit"}
+
+  .wheels-form
+    .form-header.row
+      .col-lg-4
+        %a{href: "#"} Submit a cart
+
+    .form-desc
+      Are any of your favorite food carts not yet listed on the site? You can register them in a few clicks, and then begin adding reviews, images, and more!
+
+    =form_for cart, remote: true, html: {:multipart => true, 'data-model' => 'cart'} do |f|
+      .form-group
+        .row
+          .form-label Name
+        .row
+          = f.text_field :name, :class => 'form-input',
+              :placeholder => 'Name of the cart.'
+        .row
+          .help-block
+
+      .form-group
+        .row
+          .form-label Permit Number
+        .row
+          = f.text_field :permit_number, :class => 'form-input',
+              :placeholder => 'Check the side of the cart.  If unsure, leave blank.'
+        .row
+          .help-block
+
+      .form-group
+        .row
+          .form-label Is this an NYC Green Cart?
+        .row
+          = f.radio_button :green, 1
+          = label_tag(:age_false, "Yes")
+          = f.radio_button :green, 2
+          = label_tag(:age_false, "No")
+          = f.radio_button :green, 0
+          = label_tag(:age_true, "Not Sure")
+        .row
+          .help-block
+
+      .form-group.row
+        %span.btn.btn-secondary.form-btn.file-btn
+          .label
+            Upload Image
+          = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
+        = f.submit "Submit", class: "btn btn-primary form-btn"
+
+      = f.hidden_field :lat, value: 40.7820015
+      = f.hidden_field :lon, value: -73.8317032
+
+      .form-group.row

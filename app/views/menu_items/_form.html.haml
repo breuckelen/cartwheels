@@ -1,0 +1,28 @@
+.wheels-form
+  .form-header Add a menu item
+
+  =form_for menu_item, remote: true, url: menu_menu_items_path(cart), html: {multipart: true, 'data-model' => 'menu_item'} do |f|
+    .form-group.row
+      %span.btn.btn-secondary.form-btn.file-btn
+        .label
+          Upload Image
+        = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
+      .row
+        .help-block
+
+    .form-group
+      .row
+        = f.text_field :name, :class => 'form-input',
+            :placeholder => 'Name of the menu item'
+      .row
+        .help-block
+
+    .form-group
+      .row
+        = f.text_field :price, :class => 'form-input',
+            :placeholder => 'Price of the menu item'
+      .row
+        .help-block
+
+    .form-group.row
+      = f.submit "Submit", class: "btn btn-primary form-btn"

@@ -18,26 +18,38 @@ class MenuItemsController < ApplicationController
     end
 
     def create
-        @menu_item = MenuItem.new(menu_item_params)
-        cart = Cart.find_by_id(params[:id])
-        @menu_item.menu = cart.menu
+        user = current_user
+        user ||= current_owner
+
+        cart = Cart.find(params[:id])
+        @menu_item = cart.menu.menu_items.build(menu_item_params)
 
         if image = params[:menu_item][:image]
-            @menu_item.photos.build(user: current_user, image: image)
+            @menu_item.build_photo(user: user, image: image)
         end
 
-        respond_to do |format|
+        if request.xhr? || remotipart_submitted?
             if @menu_item.save
-                format.html { redirect_to cart,
-                    notice: 'Menu item was succesfully created.' }
-                format.json { render :show, status: :created,
-                    location: @menu_item,
-                    :json => { :success => true }}
+                render locals: {cart: @menu_item.menu.cart, errors: nil},
+                    status: :created
             else
-                format.html { render :new }
-                format.json { render json: @menu_item.errors,
-                    status: :unprocessable_entity,
-                    :json => { :success => false }}
+                render locals: {cart: @menu_item.menu.cart,
+                    errors: @menu_item.errors }, status: :unprocessable_entity
+            end
+        else
+            respond_to do |format|
+                if @menu_item.save
+                    format.html { redirect_to cart,
+                        notice: 'Menu item was succesfully created.' }
+                    format.json { render status: :created,
+                        location: @menu_item,
+                        :json => { :success => true }}
+                else
+                    format.html { render :new }
+                    format.json { render json: @menu_item.errors,
+                        status: :unprocessable_entity,
+                        :json => { :success => false }}
+                end
             end
         end
     end
@@ -87,7 +99,7 @@ class MenuItemsController < ApplicationController
 
     respond_to :json
     def data
-        if params[:menu_item].empty?
+        if params[:menu_item].nil? or params[:menu_item].empty?
             @menu_items = MenuItem.limit(search_params["limit"].to_i)
                 .offset(search_params["offset"].to_i)
         else
@@ -117,7 +129,7 @@ class MenuItemsController < ApplicationController
     end
 
     def data_params
-        params.require(:menu_item).permit(:id, :price, :cart_id)
+        params.require(:menu_item).permit(:id, :price, :cart_id, :name)
     end
 
     def search_params
@@ -127,7 +139,7 @@ class MenuItemsController < ApplicationController
     end
 
     def menu_item_params
-        params.require(:menu_item).permit(:description, :price)
+        params.require(:menu_item).permit(:description, :price, :name)
     end
 
     def set_menu_item

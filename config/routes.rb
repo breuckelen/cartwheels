@@ -94,8 +94,7 @@ Rails.application.routes.draw do
     end
 
     # Other public routes
-    resources :photos, only: [:show, :edit, :update, :destroy],
-        concerns: [:data]
+    resources :photos, concerns: [:data]
 
     resources :reviews, only: [:show, :edit, :update, :destroy],
         concerns: [:data, :search]

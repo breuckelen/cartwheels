@@ -21,40 +21,39 @@
         });
     }
 
-    var initDirections = function(modalMap) {
+    var initDirections = function($container) {
+        var $modalMap = $container.find('.directions-map');
         var directionsDisplay = new google.maps.DirectionsRenderer(),
             directionsService = new google.maps.DirectionsService();
-        var lat = modalMap.attr('data-latitude'),
-            lon = modalMap.attr('data-longitude');
+        var lat = $modalMap.attr('data-latitude'),
+            lon = $modalMap.attr('data-longitude');
         var end = new google.maps.LatLng(lat, lon);
         var directionsMap = new GMaps({
-            div: modalMap.get(0),
+            div: $modalMap.get(0),
             zoom: 13,
             lat: lat,
             lng: lon,
             scrollwheel: false
         });
-        var rawMap = new google.maps.Map(modalMap.get(0));
-        var $container = modalMap.parent();
 
+        directionsMap.refresh();
         directionsMap.removeMarkers();
         directionsMap.addMarker({
             lat: lat,
             lng: lon,
         });
-        directionsDisplay.setMap(rawMap);
-        directionsDisplay.setPanel($container.find('.directions-panel').get(0));
+        directionsDisplay.setMap(directionsMap.map);
+        directionsDisplay.setPanel($container.find('.directions-panel .container').get(0));
 
-        $container.find('#address').on('keypress', function(e) {
-            if(e.which === 13) {
+        $container.find('.search-form').searchForm({
+            searchCallback: function(inputs) {
                 GMaps.geocode({
-                    address: $container.find('#address').val(),
+                    address: inputs.lq,
                     callback: function(results, status) {
                         if(status == 'OK') {
                             var start = results[0].geometry.location;
 
-                            modalMap.addClass('squeezed');
-                            modalMap.resize();
+                            directionsMap.removeMarkers();
                             getRoute(start, end, directionsDisplay, directionsService);
                         }
                     }
@@ -68,10 +67,8 @@
 
         if (controller.length === 0) return;
 
-        controller.on('shown.bs.modal', function() {
-            var modalMap = $(this).find('.directions-map');
-
-            initDirections(modalMap);
+        controller.on('shown.bs.modal', function(e) {
+            initDirections($(this));
         });
     }
 

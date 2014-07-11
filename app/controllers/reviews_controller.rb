@@ -27,13 +27,15 @@ class ReviewsController < ApplicationController
             if @review.save
                 flash[:notice] = "Review was successfully created."
                 format.html { redirect_to @review }
-                format.json { render :show, status: :created,
+                format.json { render status: :created,
                     location: @review,
                     :json => { :success => true }}
+                format.js { render locals: {cart: @review.cart, errors: nil}}
             else
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
                     :json => { :success => false, :errors => @review.errors}}
+                format.js { render locals: {cart: @review.cart, errors: @review.errors}}
             end
         end
     end

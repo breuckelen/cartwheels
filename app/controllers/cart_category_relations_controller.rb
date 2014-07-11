@@ -17,20 +17,38 @@ class CartCategoryRelationsController < ApplicationController
 
     # create a new review for a cart
     def create
-        @ccr = CartCategoryRelation.new(ccr_params)
-        @ccr.cart_id = params[:cart_id]
+        new_params = ccr_params
 
         respond_to do |format|
-            if @ccr.save
-                format.html { redirect_to @ccr.cart,
-                    notice: 'You successfully added a category to this cart.' }
-                format.json { render :show, status: :created,
-                    location: @ccr,
-                    :json => { :success => true }}
+            if c = Category.find_by_name(new_params[:category_id])
+                new_params[:category_id] = c.id
+
+                @ccr = CartCategoryRelation.new(new_params)
+                @ccr.cart_id = params[:cart_id]
+
+                if @ccr.save
+                    format.html { redirect_to @ccr.cart,
+                        notice: 'You successfully added a category to this cart.' }
+                    format.json { render status: :created,
+                        location: last_path(current_user),
+                        :json => { :success => true }}
+                    format.js { render locals: {cart: @ccr.cart, errors: nil}}
+                else
+                    format.html { render :new }
+                    format.json { render status: :unprocessable_entity,
+                        :json => { :success => false, :errors => @ccr.errors }}
+                    format.js { render locals: {cart: @ccr.cart,
+                        errors: @ccr.errors }}
+                end
             else
+                cart = Cart.find(params[:cart_id])
+                errors = { category_id: "This category does not exist."}
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
-                    :json => { :success => false, :errors => @ccr.errors}}
+                    :json => { :success => false, errors: errors}}
+                format.js { render locals: {cart: cart,
+                    errors: errors }}
+
             end
         end
     end

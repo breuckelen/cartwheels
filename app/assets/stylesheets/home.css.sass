@@ -13,6 +13,81 @@ $mapHeight: 600px
     height: 100%
     width: 100%
 
+    .navbar
+        margin-bottom: 0
+        @include scale-property(margin-top, $posterHeight)
+        @include scale-property(height, $navHeight)
+
+        @include vendor(border-radius, 0)
+
+        .container
+            font-weight: bold
+            font-size: 1.6em
+            text-align: center
+
+            width: 100%
+            height: inherit
+
+    .navbar-brand
+        @include scale-property(padding-left, 18px)
+        @include scale-property(padding-right, 15px)
+
+    .navbar-nav
+        width: 40%
+        text-align: center
+
+        .navbar-center
+            float: none
+            padding: 0
+            @include scale-property(margin-top, 35px)
+
+            > li
+                display: inline-block
+                padding-left: 10px
+                padding-right: 10px
+
+                &.active
+                    @include highlight(default)
+                    @include underline(default)
+
+                &:hover
+                    @include highlight(default)
+                    @include underline(default)
+
+                > a
+                    display: inline-block
+                    color: #eee
+
+                    padding-bottom: 3px
+
+                    &:hover
+                        text-decoration: none
+
+        &.navbar-left
+            width: 30%
+            @include scale-property(margin-top, 34px)
+
+            .login-link
+                font-size: 1.1em
+                display: inline-block
+                padding-left: 10px
+                padding-right: 10px
+
+                @extend .highlight-blue
+
+        &.navbar-right
+            padding-left: 10%
+            width: 30%
+            @include scale-property(margin-top, 12px)
+
+            > li > a
+                &:hover
+                    border-bottom: none
+
+        img
+            @include scale-property(width, 40px, 0.8, 0.7, 0.5, 0.4)
+
+
 #poster
     position: absolute
     width: 100%
@@ -40,69 +115,6 @@ $mapHeight: 600px
 
                 line-height: normal
                 vertical-align: middle
-
-.navbar
-    margin-bottom: 0
-    @include scale-property(margin-top, $posterHeight)
-    @include scale-property(height, $navHeight)
-
-    @include vendor(border-radius, 0)
-
-    .container
-        font-weight: bold
-        font-size: 1.6em
-        text-align: center
-
-        width: 100%
-        height: inherit
-
-.navbar-brand
-    @include scale-property(padding-left, 18px)
-    @include scale-property(padding-right, 15px)
-
-.navbar-nav
-    width: 40%
-    text-align: center
-
-    .navbar-center
-        float: none
-        padding: 0
-        @include scale-property(margin-top, 35px)
-
-        > li
-            display: inline-block
-            padding-left: 10px
-            padding-right: 10px
-
-            &:hover
-                @include highlight(default)
-                @include underline(default)
-
-            > a
-                display: inline-block
-                color: #eee
-
-                padding-bottom: 3px
-
-                &:hover
-                    text-decoration: none
-
-    &.navbar-left
-        width: 30%
-        @include scale-property(margin-top, 20px)
-
-    &.navbar-right
-        padding-left: 10%
-        width: 30%
-        @include scale-property(margin-top, 12px)
-
-        > li > a
-            &:hover
-                border-bottom: none
-
-        img
-            @include scale-property(width, 40px, 0.8, 0.7, 0.5, 0.4)
-
 #home-index #main-content
     width: 100%
     height: 100%
@@ -147,7 +159,6 @@ $mapHeight: 600px
         width: 100%
         top: 3%
         left: 8%
-
 
         .input-block
             display: inline-block

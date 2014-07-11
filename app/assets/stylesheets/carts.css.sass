@@ -1,4 +1,5 @@
 /* Stylesheet for the cart page */
+$sectionWidth: 740px
 
 #carts-new, #carts-edit, #carts-create, #carts-update
     width: 100%
@@ -8,6 +9,10 @@
         width: 60%
         margin-left: auto
         height: 100%
+
+        .form-header
+            a
+                color: white
 
 #carts-index, #carts-show
     width: 100%
@@ -35,18 +40,282 @@
                     margin: 5px
 
 #carts-new, #carts-edit, #carts-create, #carts-update
+    width: 100%
+    height: 100%
     font-size: 1em
 
+    padding-left: 10%
+    overflow-x: hidden
+
+    background: getColor(default)
+
     #content-wrapper
-        padding-left: 10%
-        padding-top: 5%
-        overflow-x: hidden
+        position: relative
+        width: 60%
+        height: 100%
+        margin-left: auto
 
         background: #222
         box-shadow: 0px 4px 12px #222
 
-        .wheels-form
-            .img-preview
+        .img-preview
+            display: none
+
+        .form-btn
+            @include scale-property(margin-right, 10px)
+
+#carts-show
+    width: 100%
+    height: 100%
+
+    .slide-icon
+        display: none
+
+    .checkin-btn
+        margin-bottom: 10px
+        margin-left: 10px
+
+    //Carts
+    .cart .container
+        font-family: OpenSans
+
+        display: inline-block
+        padding-left: 2%
+        padding-right: 2%
+        padding-bottom: 2%
+        padding-top: 1%
+        margin-bottom: 20px
+
+        position: relative
+        overflow: hidden
+
+    //Content
+    .content
+        height: 100%
+
+        @include vendor(transition, all 0.7s ease 0s)
+
+        &.first
+            left: 0
+
+        &.second
+            left: -100%
+
+        &.third
+            left: -200%
+
+        &.fourth
+            left: -300%
+
+        .section
+            display: block
+            width: $sectionWidth
+            height: 250px
+            padding-top: 10px
+            margin-top: 10px
+
+        .form-section
+            width: $sectionWidth
+
+    //Sections
+    .info
+        .photo
+            width: 100px
+            height: 100px
+
+            img
+                width: 100px
+                @include vendor(border-radius, 2px)
+
+        .categories
+            margin-top: 10px
+            height: 25px
+            @include vendor(transition, all 0.4s ease 0s)
+
+            .item
+                display: inline-block
+                padding: 3px
+                margin-bottom: 2px
+
+                background: getColor(red)
+                @include vendor(border-radius, 2px)
+
+                &:hover
+                    opacity: 0.8
+
+                a
+                    color: white
+
+        .location
+            .map
+                img
+                    @include vendor(border-radius, 2px)
+
+            .address
+                margin-top: 5px
+
+                .address-heading
+                    font-size: 13px
+                    font-weight: bold
+
+                    display: inline-block
+
+        .hours
+            padding: 0
+
+            .hours-heading
+                font-size: 1.4em
+                font-weight: bold
+                color: getColor(default)
+
+
+            .item
+                font-size: 1em
+
+            .start, .end
+                padding: none
+
+            .day, .bridge
+                font-weight: 600
+
+            .day
+                display: inline-block
+                width: 28% !important
+
+            .bridge
+                width: 10px
+                padding: 0
+
+            .add-hours
+                margin-top: 10px
+
+            .form-control
+                font-family: OpenSans
+                font-size: 0.8em
+
+                width: 75px
+                height: 20px
+                padding: 0
+
+    .menu
+        .notes
+            .item
                 display: none
-                text-align: left
+                font-family: "OpenSans Italic"
+
+                margin: 10px
+                font-size: 1.1em
+
+                .user
+                    font-family: OpenSans
+                    font-weight: bold
+
+        .add-note
+            .form-text-area
+                font-size: 0.9em
+                width: 230px
+
+        .notes-left
+            padding-left: 20%
+
+        .notes-right
+            padding-right: 20%
+
+        .carousel
+            width: 250px
+            height: 220px
+
+            .carousel-indicators
+                li
+                    background: getColor(default)
+
+                    &.active
+                        background: getColor(red)
+
+                        width: 13px
+                        height: 13px
+
+            .carousel-inner
+                width: 100%
+                height: 100%
+
+                .item
+                    width: 100%
+                    height: 100%
+                    text-align: center
+
+                    .name
+                        font-family: Roboto
+                        font-size: 15px
+
+                        margin: 0 auto
+
+                    img
+                        margin: 0 auto
+                        margin-top: 15px
+                        height: 110px
+
+                        @include vendor(border-radius, 2px)
+
+                    .price
+                        font-weight: bold
+
+                    .content-popover
+                        display: none
+
+            .carousel-caption
+                color: #222
+                text-shadow: none
+
+            .carousel-control
+                color: #222
+
+                vertical-align: middle
+
+                background: none
+
+    .reviews
+        vertical-align: top
+        height: 100%
+        padding-bottom: 30px
+        overflow-y: scroll
+
+        .item
+            padding-bottom: 20px
+
+            .user
+                font-family: Roboto
+                font-size: 1.2em
+
+            .date
+                color: #666
+
+            .text
+                width: 80%
+                margin: 0 auto
+                margin-top: 10px
+                padding-top: 10px
+                padding-left: 20px
+                padding-bottom: 20px
+
+                border-left: 1px solid getColor(default)
+
+                @include vendor(transition, all 0.2s ease 0s)
+
+                &:hover
+                    @include vendor(transform, scale(1.2))
+
+    .checkins
+        vertical-align: top
+
+        width: 105%
+        height: 100%
+
+        .item
+            display: inline-block
+            margin: 2px
+
+            .photo
+                img
+                    @include vendor(border-radius, 2px)
 

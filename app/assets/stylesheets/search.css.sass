@@ -1,8 +1,9 @@
 // Place all the styles related to the Search controller here.
 // They will automatically be included in application.css.
 // You can use Sass here: http://sass-lang.com/
+$sectionWidth: 740px
 
-#search-index
+#search-index, #carts-index
     width: 100%
     height: 100%
 
@@ -14,6 +15,39 @@
             height: 100px
             background: getColor(default)
 
+            .navbar
+                z-index: 1
+
+            .padded
+                padding-top: 10px
+                padding-left: 40px
+
+            .nav-btn
+                margin-bottom: 7px
+                @include vendor(border-radius, 2px)
+
+            .form-input
+                border: none
+
+            .home-link
+                font-family: "Bebas Regular"
+                font-size: 25px
+
+                @extend .highlight-default
+
+            #search-bar
+                background: #333
+                padding-top: 12px
+                padding-bottom: 12px
+                top: -500px
+
+                border: none
+                @include vendor(transition, all 0.4s ease 0s)
+
+            #loc
+                width: 300px
+
+
         #main-content
             height: 100%
             background: white
@@ -23,21 +57,306 @@
             margin: 0
             margin-bottom: 10px
 
-            background: #333
+            background: getColor(default)
+            border-bottom: 2px solid #222
 
             .column-header
                 font-family: "Bebas Regular"
                 font-size: 25px
-                color: #eee
 
                 padding-left: 20%
                 padding-bottom: 10px
                 padding-top: 10px
 
-                @extend .highlight-blue
+                @extend .highlight-black
 
         .column-center
         .column-left
 
         .column-right
+
+    //Carts
+    .cart .container
+        font-family: OpenSans
+
+        display: inline-block
+        padding-left: 2%
+        padding-right: 2%
+        padding-bottom: 2%
+        padding-top: 1%
+        margin-bottom: 20px
+
+        position: relative
+        overflow: hidden
+
+        @include vendor(border-radius, 2px)
+        @include vendor(transition, all 0.7s ease 0s)
+
+        &.size-xs
+            width: $sectionWidth
+            height: 280px
+
+        &.size-md
+            width: $sectionWidth
+            height: 350px
+
+        &.size-lg
+            width: $sectionWidth
+            height: 450px
+
+        > .name
+            font-size: 20px
+            display: inline-block
+            width: 100%
+
+            a
+                color: #222
+
+            > .subname
+                font-family: "Bebas Regular"
+                font-size: 17px
+                letter-spacing: 2px
+
+                margin-left: 20px
+                display: inline-block
+
+                a
+                    color: #222
+
+                @extend .highlight-darkblue
+
+                &.active
+                    @include highlight(darkblue)
+
+            > .checkin-btn
+                display: inline-block
+                float: right
+
+    //Content
+    .content
+        position: absolute
+        width: 410%
+        height: 100%
+
+        @include vendor(transition, all 0.7s ease 0s)
+
+        &.first
+            left: 0
+
+        &.second
+            left: -100%
+
+        &.third
+            left: -200%
+
+        &.fourth
+            left: -300%
+
+        .section
+            display: inline-block
+            width: $sectionWidth
+            height: 100%
+            padding-top: 10px
+
+    //Sections
+    .info
+        .photo
+            width: 100px
+            height: 100px
+
+            img
+                width: 100px
+                @include vendor(border-radius, 2px)
+
+        .categories
+            margin-top: 10px
+            height: 25px
+            @include vendor(transition, all 0.4s ease 0s)
+
+            .item
+                display: inline-block
+                padding: 3px
+                margin-bottom: 2px
+
+                background: getColor(red)
+                @include vendor(border-radius, 2px)
+
+                &:hover
+                    opacity: 0.8
+
+                a
+                    color: white
+
+        .location
+            .map
+                img
+                    @include vendor(border-radius, 2px)
+
+            .address
+                margin-top: 5px
+
+                .address-heading
+                    font-size: 13px
+                    font-weight: bold
+
+                    display: inline-block
+
+        .hours
+            padding: 0
+
+            .hours-heading
+                font-size: 1.4em
+                font-weight: bold
+                color: getColor(default)
+
+
+            .item
+                font-size: 1em
+
+            .start, .end
+                padding: none
+
+            .day, .bridge
+                font-weight: 600
+
+            .day
+                display: inline-block
+                width: 28% !important
+
+            .bridge
+                width: 10px
+                padding: 0
+
+            .add-hours
+                margin-top: 10px
+
+            .form-control
+                font-family: OpenSans
+                font-size: 0.8em
+
+                width: 75px
+                height: 20px
+                padding: 0
+
+    .menu
+        .notes
+            .item
+                display: none
+                font-family: "OpenSans Italic"
+
+                margin: 10px
+                font-size: 1.1em
+
+                .user
+                    font-family: OpenSans
+                    font-weight: bold
+
+        .add-note
+            .form-text-area
+                font-size: 0.9em
+                width: 230px
+
+        .notes-left
+            padding-left: 20%
+
+        .notes-right
+            padding-right: 20%
+
+        .carousel
+            width: 250px
+            height: 220px
+
+            .carousel-indicators
+                li
+                    background: getColor(default)
+
+                    &.active
+                        background: getColor(red)
+
+                        width: 13px
+                        height: 13px
+
+            .carousel-inner
+                width: 100%
+                height: 100%
+
+                .item
+                    width: 100%
+                    height: 100%
+                    text-align: center
+
+                    .name
+                        font-family: Roboto
+                        font-size: 15px
+
+                        margin: 0 auto
+
+                    img
+                        margin: 0 auto
+                        margin-top: 15px
+                        height: 110px
+
+                        @include vendor(border-radius, 2px)
+
+                    .price
+                        font-weight: bold
+
+                    .content-popover
+                        display: none
+
+            .carousel-caption
+                color: #222
+                text-shadow: none
+
+            .carousel-control
+                color: #222
+
+                vertical-align: middle
+
+                background: none
+
+    .reviews
+        vertical-align: top
+        height: 100%
+        padding-bottom: 30px
+        overflow-y: scroll
+
+        .item
+            padding-bottom: 20px
+
+            .user
+                font-family: Roboto
+                font-size: 1.2em
+
+            .date
+                color: #666
+
+            .text
+                width: 80%
+                margin: 0 auto
+                margin-top: 10px
+                padding-top: 10px
+                padding-left: 20px
+                padding-bottom: 20px
+
+                border-left: 1px solid getColor(default)
+
+                @include vendor(transition, all 0.2s ease 0s)
+
+                &:hover
+                    @include vendor(transform, scale(1.2))
+
+    .checkins
+        vertical-align: top
+
+        width: 105%
+        height: 100%
+
+        .item
+            display: inline-block
+            margin: 2px
+
+            .photo
+                img
+                    @include vendor(border-radius, 2px)
 

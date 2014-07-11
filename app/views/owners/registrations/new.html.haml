@@ -4,7 +4,7 @@
     .col-lg-4
       %a{href: "#"} Sign Up
 
-  = form_for @owner, remote: true, url: registration_path("owner"), html: {'data-model' => 'owner'} do |f|
+  = form_for @owner, remote: true, authenticity_token: true, url: registration_path("owner"), html: {'data-model' => 'owner'} do |f|
     - if @owner.errors.any?
       .error_messages
         %ul

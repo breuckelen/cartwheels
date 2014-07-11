@@ -17,9 +17,6 @@
 
     margin-bottom: 2%
 
-    @extend .highlight-blue
-    @extend .underline-blue
-
 .form-desc
     font-family: "Helvetica Neue"
     font-size: 1.2em
@@ -73,6 +70,12 @@
 
 .form-text-area
     width: 80%
+
+textarea
+    &.no-resize
+        resize: none
+        padding: none !important
+        margin: none !important
 
 .form-btn
     font-size: 1.2em
@@ -131,3 +134,8 @@ input[type=readonly]
 
     .has-error &
         height: 20px
+
+.popover-input
+    font-size: 11px
+    width: 150px
+    height: 60px

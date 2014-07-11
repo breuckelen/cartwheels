@@ -5,7 +5,7 @@ class MenuItem < ActiveRecord::Base
     has_many :notes
 
     # Validations
-    validates :name, :description, :price, :menu, presence: true
+    validates :name, :price, :menu, presence: true
     validates :price, numericality: true
 
     def as_json(options={})

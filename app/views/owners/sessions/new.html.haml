@@ -4,13 +4,7 @@
     .col-lg-4
       %a{href: "#"} Sign In
 
-  = form_for @owner, remote: true, url: session_path("owner"), html: {'data-model' => 'owner'} do |f|
-    - if @owner.errors.any?
-      .error_messages
-        %ul
-          - for m in @owner.errors.full_messages
-            %li= m
-
+  = form_for Owner.new, remote: true, authenticity_token: true, url: session_path("owner"), html: {'data-model' => 'owner'} do |f|
     .form-group.row
       .col-lg-1.col-md-1.col-sm-1.col-xs-1
       .help-block

@@ -1,7 +1,8 @@
 class Owner < ActiveRecord::Base
     # Relations
-    has_many :checkins, as: :user
-    has_and_belongs_to_many :carts, :uniq => true
+    has_many :checkins, as: :user, dependent: :destroy
+    has_many :cart_owner_relations
+    has_many :carts, through: :cart_owner_relations
 
     # Validations
     validates :email, :password, presence: true
@@ -16,6 +17,7 @@ class Owner < ActiveRecord::Base
         []
     end
 
+    before_validation :verify_email
     before_save :ensure_authentication_token
 
     def ensure_authentication_token
@@ -31,6 +33,13 @@ class Owner < ActiveRecord::Base
         end
     end
 
+    def verify_email
+        if User.where(email: self.email).count > 0
+            self.errors.add(:email,
+                "Email is already taken.")
+        end
+    end
+
     def as_json(options={})
         options[:only] ||= [:id, :email, :name, :zip_code, :created_at, :updated_at]
         options[:include] ||= {
@@ -41,4 +50,5 @@ class Owner < ActiveRecord::Base
     end
 
     private :generate_authentication_token
+    private :verify_email
 end

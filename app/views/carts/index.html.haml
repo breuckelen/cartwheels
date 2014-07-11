@@ -9,9 +9,4 @@
 
 #carts
   -@carts.each do |cart|
-    =render(cart)
-
-    .cart-links
-      %span= link_to 'Show', cart
-      %span= link_to 'Edit', edit_cart_path(cart)
-      %span= link_to 'Destroy', cart, :method => :delete, :data => { :confirm => 'Are you sure?' }
+    =render partial: "carts/cart", locals: {cart: cart, small: true}

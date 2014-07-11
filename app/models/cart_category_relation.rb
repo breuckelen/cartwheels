@@ -5,6 +5,8 @@ class CartCategoryRelation < ActiveRecord::Base
 
     # Validations
     validates :category, :cart, presence: true
+    validates :category_id, uniqueness: {:scope => :cart_id,
+        :message => "Category may only belong to cart once."}
 
     def as_json(options={})
         options[:only] ||= [:id, :category_id, :cart_id]

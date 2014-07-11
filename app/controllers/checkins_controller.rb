@@ -21,36 +21,36 @@ class CheckinsController < ApplicationController
 
     # create a new checkin for a cart
     def create
-        if current_user != nil
-            @checkin = current_user.checkins.build(checkin_params)
-        elsif current_owner != nil
-            @checkin = current_owner.checkins.build(checkin_params)
-        end
+        user = current_user
+        user ||= current_owner
 
+        @checkin = user.checkins.build(checkin_params)
         @checkin.cart_id = params[:cart_id]
 
         if image = params[:checkin][:image]
-            @checkin.photos.build(user: current_user, image: image)
+            @checkin.photos.build(user: user, image: image)
         end
 
-        respond_to do |format|
+        if request.xhr? || remotipart_submitted?
             if @checkin.save
-                @checkin.cart.photos.create(user: current_user, image: image)
+                @checkin.cart.photos.create(user: user, image: image)
 
-                u = current_user
-                u ||= current_owner
-
-                format.json { render status: :created,
-                    location: last_path(u),
-                    :json => { :success => true }}
-                format.js { render status: :created,
-                    location: last_path(u),
-                    :json => { :success => true }}
+                render locals: {cart: @checkin.cart }, status: :created
             else
-                format.json { render status: :unprocessable_entity,
-                    :json => { :success => false, :errors => @checkin.errors}}
-                format.js { render status: :unprocessable_entity,
-                    :json => { :success => false, :errors => @checkin.errors}}
+                render locals: {cart: @checkin.cart }, status: :unprocessable_entity
+            end
+        else
+            respond_to do |format|
+                if @checkin.save
+                    @checkin.cart.photos.create(user: user, image: image)
+
+                    format.json { render status: :created,
+                        location: last_path(user),
+                        :json => { :success => true }}
+                else
+                    format.json { render status: :unprocessable_entity,
+                        :json => { :success => false, :errors => @checkin.errors}}
+                end
             end
         end
     end
@@ -80,7 +80,7 @@ class CheckinsController < ApplicationController
 
         respond_to do |format|
             if (current_user == @checkin.user or current_owner == @checkin.user)\
-                    or current_user.has_role? :admin
+                or current_user.has_role? :admin
                 @checkin.destroy
 
                 format.html { redirect_to cart,
@@ -101,11 +101,11 @@ class CheckinsController < ApplicationController
     def data
         if params[:checkin].empty?
             @checkins = Checkin.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
+            .offset(search_params["offset"].to_i)
         else
             @checkins = Checkin.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
+            .limit(search_params["limit"].to_i)
+            .offset(search_params["offset"].to_i)
         end
 
         render :status => 200,
@@ -114,8 +114,8 @@ class CheckinsController < ApplicationController
 
     def search
         @checkins = Checkin.search(search_params["tq"], search_params["lq"])
-            .limit(search_params["limit"].to_i)
-            .offset(search_params["offset"].to_i)
+        .limit(search_params["limit"].to_i)
+        .offset(search_params["offset"].to_i)
 
         render :status => 200, :json => { :success => true,
             :data => @checkins }

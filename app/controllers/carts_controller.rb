@@ -42,20 +42,25 @@ class CartsController < ApplicationController
             @cart.photos.build(user: current_user, image: image)
         end
 
-        respond_to do |format|
+        if request.xhr? || remotipart_submitted?
             if @cart.save
                 flash[:notice] = "Cart was successfully created."
-                format.json { render status: :created,
-                    location: carts_path,
-                    :json => { :success => true }}
-                format.js { render status: :created,
-                    location: carts_path,
-                    :json => { :success => true }}
+                render locals: {errors: nil, redirect_path: cart_path(@cart)},
+                    status: :created
             else
-                format.json { render status: :unprocessable_entity,
-                    :json => { :errors => @cart.errors, :success => false }}
-                format.js { render status: :unprocessable_entity,
-                    :json => { :errors => @cart.errors, :success => false }}
+                render locals: {errors: @cart.errors}, status: :unprocessable_entity
+            end
+        else
+            respond_to do |format|
+                if @cart.save
+                    flash[:notice] = "Cart was successfully created."
+                    format.json { render status: :created,
+                        location: carts_path,
+                        :json => { :success => true }}
+                else
+                    format.json { render status: :unprocessable_entity,
+                        :json => { :errors => @cart.errors, :success => false }}
+                end
             end
         end
     end

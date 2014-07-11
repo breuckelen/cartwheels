@@ -6,8 +6,10 @@ class Tag < ActiveRecord::Base
     # Validations
     validates :name, presence: true
 
-    def count
-        return CartTagRelation.where(tag_id: self.id).count
+    before_validation :update_count
+
+    def update_count
+        self.count = CartTagRelation.where(tag_id: self.id).count
     end
 
     def as_json(options={})
