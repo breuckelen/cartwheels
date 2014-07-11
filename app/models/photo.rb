@@ -16,6 +16,10 @@ class Photo < ActiveRecord::Base
         image.url(:medium)
     end
 
+    def image_url_large
+        image.url(:original)
+    end
+
     def image_url_small
         image.url(:small)
     end
@@ -27,7 +31,8 @@ class Photo < ActiveRecord::Base
     def as_json(options={})
         options[:only] ||= [:id, :caption, :target_id, :target_type, :created_at,
             :updated_at, :user_id]
-        options[:methods] ||= [:image_url, :image_url_small, :image_url_thumb]
+        options[:methods] ||= [:image_url, :image_url_large, :image_url_small,
+            :image_url_thumb]
         super(options)
     end
 
