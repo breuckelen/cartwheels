@@ -11,7 +11,8 @@ class MenuItem < ActiveRecord::Base
     def as_json(options={})
         options[:only] ||= [:id, :description, :price, :menu_id]
         options[:include] ||= {
-            notes: { only: [:text, :user_id], include: {user: {only: [:name]}}}
+            notes: { only: [:text, :user_id], include: {user: {only: [:name]}}},
+            photos: { only: :null, methods: [:image_url, :image_url_large]}
         }
         super(options)
     end
