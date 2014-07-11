@@ -7,7 +7,10 @@
   .container.size-xs
     -if small
       .name
-        =link_to cart.name, cart
+        -if cart.name.length < 28
+          =link_to cart.name, cart
+        -else
+          =link_to "#{cart.name[0..28]}...", cart
         .subname.active
           %a{href: "#", "data-target-class" => "first"} Info
         .subname
@@ -21,6 +24,11 @@
             %button.btn.btn-warning{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
               %span.glyphicon.glyphicon-ok
               Checkin
+        -if cart.green == 1
+          .green-btn
+            %button.btn.btn-success{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
+              %span.glyphicon.glyphicon-leaf
+              green cart
 
     -if not small
       -if user_signed_in?
@@ -47,7 +55,8 @@
           -if cart.categories.count > 3
             =link_to "#{cart.categories[3..-1].count} more", "#", {"data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
           -else
-            =link_to "Add a category", "#", {"data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
+            %a{href: "#", "data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
+              Add a category
           .modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
             .modal-dialog
               .modal-content
@@ -61,21 +70,32 @@
                     -cart.categories.each do |item|
                       .item
                         =link_to item.name, "#"
+                  -if user_signed_in?
+                    .links
+                      =link_to "Add a new category", new_category_path
 
                   -if user_signed_in?
                     =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
         .col-lg-5
           .location
-            .map
-              = image_tag "http://maps.google.com/maps/api/staticmap?size=250x200&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
-
-            .meta
-              //Find a way to specify what's streets between
-              .address
-                .col-lg-2
-                  .address-heading Near
-                .col-lg-9
-                  =link_to cart.address, "#", {"data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}", class: "directions-link"}
+            -if cart.moved
+              .moved-notice
+                .warning This cart has moved recently
+                Checkin to update it's location
+            -else
+              .map
+                = image_tag "http://maps.google.com/maps/api/staticmap?size=250x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
+              .meta
+                //Find a way to specify what's streets between
+                .address
+                  .col-lg-2
+                    .address-heading Near
+                  .col-lg-9
+                    =link_to cart.address, "#", {"data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}", class: "directions-link"}
+                .mark-as-moved
+                  %a{href: "#"}
+                    Mark as Moved
+                    %span.glyphicon.glyphicon-flag
 
           .modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
             .modal-dialog
@@ -101,7 +121,8 @@
 
         .col-lg-4.hours
           -if cart.hours.first
-            .hours-heading Hours
+            .hours-heading
+              Hours
             -cart.hours.order(:day).each do |item|
               .item.row
                 .col-lg-4.day=n_to_day(item.day)
@@ -116,73 +137,79 @@
                 =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
 
       //Slideshow form default, list form when expands
-      .menu.section
-        .row
-          -if cart.menu.menu_items.first
-            .col-lg-4
-              .notes.notes-left
-            .col-lg-2.carousel.slide{id: "menu-carousel-#{cart.id}", "data-ride" => "carousel", "data-interval" => "false"}
-              %ol.carousel-indicators
-                -(0...cart.menu.menu_items.count).each do |i|
-                  -if i == 0
-                    %li.active{"data-slide-to" => "0", "data-target" => "#menu-carousel-#{cart.id}"}
-                  -else
-                    %li{"data-slide-to" => "#{i}", "data-target" => "#menu-carousel-#{cart.id}"}
-              .carousel-inner
-                -cart.menu.menu_items.each do |item|
-                  -if item == cart.menu.menu_items.first
-                    .item.active{id: "#{item.id}"}
-                      .name=item.name
-                      %a.pop-image.pop-input{href: "#"}
+      -if small or cart.menu.menu_items.first
+        .menu.section
+          .row
+            -if cart.menu.menu_items.first
+              .col-lg-4
+                .notes.notes-left
+              .col-lg-2.carousel.slide{id: "menu-carousel-#{cart.id}", "data-ride" => "carousel", "data-interval" => "false"}
+                %ol.carousel-indicators
+                  -(0...cart.menu.menu_items.count).each do |i|
+                    -if i == 0
+                      %li.active{"data-slide-to" => "0", "data-target" => "#menu-carousel-#{cart.id}"}
+                    -else
+                      %li{"data-slide-to" => "#{i}", "data-target" => "#menu-carousel-#{cart.id}"}
+                .carousel-inner
+                  -cart.menu.menu_items.each do |item|
+                    -if item == cart.menu.menu_items.first
+                      .item.active{id: "#{item.id}"}
+                        .name=item.name
+                        %a.pop-image.pop-input{href: "#"}
+                          -if item.photo
+                            =image_tag(item.photo.image_url_small)
+                          -else
+                            =image_tag(asset_path("cw-logo-no-text.jpg"))
+                        .carousel-caption
+                          .price="$#{item.price}"
+                        -if user_signed_in?
+                          .content-popover
+                            =render partial: "notes/form", locals: {menu_item: item, note: Note.new}
+                    -else
+                      .item{id: "#{item.id}"}
+                        .name=item.name
                         -if item.photo
                           =image_tag(item.photo.image_url_small)
                         -else
                           =image_tag(asset_path("cw-logo-no-text.jpg"))
-                      .carousel-caption
-                        .price="$#{item.price}"
-                      -if user_signed_in?
-                        .content-popover
-                          =render partial: "notes/form", locals: {menu_item: item, note: Note.new}
-                  -else
-                    .item{id: "#{item.id}"}
-                      .name=item.name
-                      -if item.photo
-                        =image_tag(item.photo.image_url_small)
-                      -else
-                        =image_tag(asset_path("cw-logo-no-text.jpg"))
-                      .carousel-caption
-                        .price="$#{item.price}"
-              %a.left.carousel-control{"data-slide" => "prev", href: "#menu-carousel-#{cart.id}", role: "button"}
-                %span.glyphicon.glyphicon-circle-arrow-left
-              %a.right.carousel-control{"data-slide" => "next", href: "#menu-carousel-#{cart.id}", role: "button"}
-                %span.glyphicon.glyphicon-circle-arrow-right
-            .col-lg-4
-              .notes.notes-right
-          -elsif small
-            .col-lg-4
-            .col-lg-4
-              .no-results-header
-                =link_to "Add a menu item", cart
-            .col-lg-4
+                        .carousel-caption
+                          .price="$#{item.price}"
+                %a.left.carousel-control{"data-slide" => "prev", href: "#menu-carousel-#{cart.id}", role: "button"}
+                  %span.glyphicon.glyphicon-circle-arrow-left
+                %a.right.carousel-control{"data-slide" => "next", href: "#menu-carousel-#{cart.id}", role: "button"}
+                  %span.glyphicon.glyphicon-circle-arrow-right
+              .col-lg-4
+                .notes.notes-right
+            -else
+              .col-lg-4
+              .col-lg-4
+                .no-results-header
+                  %a{href: cart_path(cart)}
+                    Add a menu item
+                    %span.glyphicon.glyphicon-list-alt
+                  .col-lg-4
 
       -if not small and user_signed_in?
         .form-section
           =render partial: "menu_items/form", locals: {cart: cart, menu_item: MenuItem.new}
 
-      .reviews.section
-        -if cart.reviews.first
-          -cart.reviews[0..7].each do |review|
-            .item
-              .rating{'data-score' => review.rating}
-              .user=review.user.name
-              .date=time_ago_in_words(review.updated_at) + " ago"
-              .text=review.text
-        -elsif small
-          .col-lg-4
-          .col-lg-4
-            .no-results-header
-              =link_to "Add a review", cart
-          .col-lg-4
+      -if small or cart.reviews.first
+        .reviews.section
+          -if cart.reviews.first
+            -cart.reviews[0..7].each do |review|
+              .item
+                .rating{'data-score' => review.rating}
+                .user=review.user.name
+                .date=time_ago_in_words(review.updated_at) + " ago"
+                .text=review.text
+          -else
+            .col-lg-4
+            .col-lg-4
+              .no-results-header
+                %a{href: cart_path(cart)}
+                  Add a review
+                  %span.glyphicon.glyphicon-pencil
+            .col-lg-4
 
       -if not small and user_signed_in?
         .form-section

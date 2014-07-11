@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710154739) do
+ActiveRecord::Schema.define(version: 20140711164235) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20140710154739) do
     t.float    "rating"
     t.string   "address"
     t.string   "description",   default: ""
+    t.boolean  "moved",         default: false
   end
 
   add_index "carts", ["created_at", "city"], name: "index_carts_on_created_at_and_city"

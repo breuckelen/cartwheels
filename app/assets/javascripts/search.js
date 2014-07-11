@@ -6,7 +6,7 @@
     }
 
     var search = function(inputs) {
-        str = '';
+        var str = '';
         for(key in inputs) {
             str += key + '=' + inputs[key] + '&';
         }
@@ -20,10 +20,11 @@
 
         if(controller.length === 0) return;
 
-        controller.find('#search-bar').css({'top': '0px'});
-
-        controller.find('#top-content .search-form').searchForm({
-            searchCallback: search
+        controller.find('.pagination a').click(function(e) {
+            var str = window.location.search.split('&').slice(0, 2)
+                .join('&');
+            str += '&offset=' + parseInt($(this).attr('data-page')) * 20;
+            window.location.assign(str);
         });
     }
 

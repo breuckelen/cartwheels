@@ -1,8 +1,9 @@
 class CartsController < ApplicationController
     skip_before_filter :verify_authenticity_token,
         :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_filter :authenticate_user!, only: [:new]
-    before_action :set_cart, only: [:show, :edit, :update, :destroy, :claim]
+    before_filter :authenticate_user!, only: [:new, :mark_as_moved]
+    before_action :set_cart, only: [:show, :edit, :update, :destroy, :claim,
+        :mark_as_moved]
 
     # show cart owners
     def index
@@ -155,13 +156,30 @@ class CartsController < ApplicationController
             if params[:permit_number].to_i == @cart.permit_number
                 @cart.owners << current_owner
 
-                format.html { redirect_to carts_path,
+                format.html { redirect_to @cart,
                     notice: 'Cart successfully claimed.' }
                 format.json { render json: {
                     success: true } }
             else
                 format.html { redirect_to @cart,
                     notice: 'You do not have permission to perform this action.' }
+                format.json { render json: {
+                    success: false }
+                }
+            end
+        end
+    end
+
+    def mark_as_moved
+        respond_to do |format|
+            if @cart.update_attributes(moved: params[:moved])
+                format.html { redirect_to @cart,
+                    notice: 'Cart marked as moved' }
+                format.json { render json: {
+                    success: true } }
+            else
+                format.html { redirect_to @cart,
+                    notice: 'Failed to mark cart' }
                 format.json { render json: {
                     success: false }
                 }

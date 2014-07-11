@@ -3,7 +3,6 @@
   =javascript_include_tag "gmaps.js"
 
 #carts
-
   #top-content
     %nav#search-bar.navbar.navbar-inverse.navbar-fixed-top{role: "navigation"}
       .collapse.navbar-collapse.row
@@ -31,9 +30,19 @@
 
     #featured-bar.col-lg-2.column.column-left
 
-    #carts.col-lg-7.column.column-center
+    #search-results.col-lg-7.column.column-center
       .column-content
         -@carts.each do |cart|
           =render partial: "carts/cart", locals: {cart: cart, small: true}
+        -if @total > 20
+          .page-numbers
+            %ul.pagination
+              %li
+                %a{"data-page" => @offset / 20 - 1} &laquo;
+                -((@total + 20) / 20).times do |i|
+                  %li
+                    %a{"data-page" => i}=i + 1
+              %li
+                %a{"data-page" => @offset / 20 + 1} &raquo;
 
     #other-results.col-lg-3.column.column-right

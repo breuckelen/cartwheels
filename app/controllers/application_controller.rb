@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
         :if => Proc.new { |c| c.request.format == 'application/json' }
 
     before_filter :authenticate_user_from_token,
-        only: [:create, :update, :destroy, :claim],
+        only: [:create, :update, :destroy, :claim, :mark_as_moved],
         :if => Proc.new { |c| c.request.format == 'application/json' }
 
     before_filter :authenticate_user!, only: [:create, :update, :destroy]

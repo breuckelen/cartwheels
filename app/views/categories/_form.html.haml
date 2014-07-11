@@ -1,0 +1,11 @@
+.wheels-form
+  .form-header Add a category
+  .form-desc Think that Cartwheels should add a category of mobile food? Submit one here.
+
+  =form_for category, remote: true, html: {'data-model' => 'category', :class => 'form-inline'} do |f|
+    .form-group
+      .row
+        =f.text_field :name, class: "form-input"
+        =f.submit "Submit", class: "btn btn-primary form-btn"
+      .row
+        .help-block

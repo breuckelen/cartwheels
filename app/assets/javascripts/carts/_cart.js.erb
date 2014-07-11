@@ -12,7 +12,7 @@
         this.$el = element;
         var $cart = this;
 
-        this.$el.find('.container .rating').raty({
+        this.$el.find('.info .rating').raty({
             starOff: "<%= asset_path("star-off.png") %>",
             starOn: "<%= asset_path("star-on.png") %>",
             starHalf: "<%= asset_path("star-half.png") %>",
@@ -206,6 +206,17 @@
             }
         });
     }
+
+    var search = function(inputs) {
+        var str = '';
+        for(key in inputs) {
+            str += key + '=' + inputs[key] + '&';
+        }
+        str = str.slice(0, str.length - 1);
+
+        window.location.assign('/search?' + str);
+    }
+
     var ready = function() {
         init();
 
@@ -218,6 +229,20 @@
 
             $(this).ajaxSubmit({
                 contentType: 'application/json'
+            });
+        });
+
+        controller.find('#search-bar').css({'top': '0px'});
+
+        controller.find('#top-content .search-form').searchForm({
+            searchCallback: search
+        });
+
+        controller.find('.mark-as-moved a').click(function(e) {
+            var cartId = $(this).parents('.cart').attr('data-cart-id');
+
+            $.getJSON('/carts/' + cartId + '/mark_as_moved', {moved: true}, function(data) {
+                window.location.reload();
             });
         });
     }

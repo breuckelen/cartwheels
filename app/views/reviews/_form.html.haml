@@ -4,15 +4,12 @@
   = form_for review, remote: true, url: cart_reviews_path(cart), html: {'data-model' => 'review'} do |f|
     .form-group
       .row
-        = f.text_area :text, :class => 'form-control form-text-area',
-            :placeholder => 'Text of the review'
-      .row
-        .help-block
+        .rating
 
     .form-group
       .row
-        = f.text_field :rating, :class => 'form-input',
-            :placeholder => 'Value of the rating.'
+        = f.text_area :text, :class => 'form-control form-text-area',
+            :placeholder => 'Text of the review'
       .row
         .help-block
 

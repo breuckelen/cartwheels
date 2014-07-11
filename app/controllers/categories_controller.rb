@@ -17,6 +17,9 @@ class CategoriesController < ApplicationController
 
     # create a new review for a cart
     def create
+        user = current_user
+        user ||= current_owner
+
         @category = Category.new(category_params)
         @category.count = 0
 
@@ -27,10 +30,14 @@ class CategoriesController < ApplicationController
                 format.json { render :show, status: :created,
                     location: @ucr,
                     :json => { :success => true }}
+                format.js {render "shared/concerns/login",
+                    locals: {errors: nil, redirect_path: last_path(user)}}
             else
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
                     :json => { :success => false, :errors => @category.errors}}
+                format.js {render "shared/concerns/login",
+                    locals: {errors: @category.errors}}
             end
         end
     end

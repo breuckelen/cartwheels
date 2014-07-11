@@ -1,5 +1,71 @@
 $sectionWidth: 740px
 
+#search-index, #carts-show
+    #top-content
+        height: 100px
+        background: getColor(default)
+
+        .navbar
+            z-index: 1
+
+        .padded
+            padding-top: 10px
+            padding-left: 40px
+
+        .nav-btn
+            margin-bottom: 7px
+            @include vendor(border-radius, 2px)
+
+        .form-input
+            border: none
+
+        .home-link
+            font-family: "Bebas Regular"
+            font-size: 25px
+
+            @extend .highlight-default
+
+        #search-bar
+            background: #333
+            padding-top: 12px
+            padding-bottom: 12px
+            top: -500px
+
+            border: none
+            @include vendor(transition, all 0.4s ease 0s)
+
+        #loc
+            width: 300px
+
+
+    #main-content
+        height: 100%
+        background: white
+
+    #title-bar
+        padding: 0px
+        margin: 0
+        margin-bottom: 10px
+
+        background: getColor(default)
+        border-bottom: 2px solid #222
+
+        .column-header
+            font-family: "Bebas Regular"
+            font-size: 25px
+
+            padding-left: 20%
+            padding-bottom: 10px
+            padding-top: 10px
+
+            @extend .highlight-black
+
+    .column-center
+    .column-left
+
+    .column-right
+
+
 #carts
     //Links and icons
     .slide-icon
@@ -42,6 +108,19 @@ $sectionWidth: 740px
 
         a
             color: getColor(red)
+
+    .location
+        .mark-as-moved
+            display: block
+            font-size: 0.8em
+            padding-left: 5%
+
+            a
+                color: getColor(red)
+
+    .moved-notice
+        font-size: 1.5em
+        line-height: 50px
 
     .form-section
         width: 100%

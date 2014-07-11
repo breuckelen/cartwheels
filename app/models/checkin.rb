@@ -13,6 +13,7 @@ class Checkin < ActiveRecord::Base
         :lng_column_name => :lon
 
     def update_cart
+        cart.moved = false
         cart.save
     end
 

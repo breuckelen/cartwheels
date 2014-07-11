@@ -45,8 +45,9 @@ Rails.application.routes.draw do
         get :search, on: :collection
     end
 
-    concern :claim do
+    concern :cart_concerns do
         get :claim, on: :member
+        get :mark_as_moved, on: :member
     end
 
     # Collection routes
@@ -84,7 +85,7 @@ Rails.application.routes.draw do
 
     # Cart routes
     resources :carts, concerns: [:photos, :reviews, :checkins, :hours, :data, :search,
-            :claim, :ads, :user_cart_relations, :cart_tag_relations,
+            :cart_concerns, :ads, :user_cart_relations, :cart_tag_relations,
             :cart_category_relations] do
         member do
             resource :menu do

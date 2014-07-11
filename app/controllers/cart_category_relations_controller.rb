@@ -17,13 +17,9 @@ class CartCategoryRelationsController < ApplicationController
 
     # create a new review for a cart
     def create
-        new_params = ccr_params
-
         respond_to do |format|
-            if c = Category.find_by_name(new_params[:category_id])
-                new_params[:category_id] = c.id
-
-                @ccr = CartCategoryRelation.new(new_params)
+            if Category.find(ccr_params[:category_id])
+                @ccr = CartCategoryRelation.new(ccr_params)
                 @ccr.cart_id = params[:cart_id]
 
                 if @ccr.save
