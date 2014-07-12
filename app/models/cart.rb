@@ -134,8 +134,8 @@ class Cart < ActiveRecord::Base
                 categories = Category.arel_table
 
                 return joins(cart_category_relations: :category)
-                        .merge(where(carts[:name].matches(tq)
-                                    .or(categories[:name].eq(text_query))))
+                        .where(carts[:name].matches(tq)
+                            .or(categories[:name].eq(text_query)))
                     .order("#{sort_by} DESC, created_at DESC")
             else
                 tq = "%#{text_query}%"
@@ -144,8 +144,8 @@ class Cart < ActiveRecord::Base
 
                 return by_distance(origin: location_query)
                     .joins(cart_category_relations: :category)
-                        .merge(where(carts[:name].matches(tq)
-                                    .or(categories[:name].eq(text_query))))
+                        .where(carts[:name].matches(tq)
+                            .or(categories[:name].eq(text_query)))
                     .order("#{sort_by} DESC, created_at DESC")
             end
         else
@@ -159,13 +159,13 @@ class Cart < ActiveRecord::Base
                 if text_query.blank?
                     return in_bounds(box).by_distance(origin: location_query)
                         .joins(cart_category_relations: :category)
-                        .merge(where(categories[:name].eq_any(cats)))
+                            .where(categories[:name].eq_any(cats))
                 else
-                    res =  in_bounds(box).by_distance(origin: location_query)
+                    return in_bounds(box).by_distance(origin: location_query)
                         .joins(cart_category_relations: :category)
-                        .merge(where(carts[:name].matches(tq)))
-                    Rails.logger.info res.to_sql
-                    return res
+                            .where(carts[:name].matches(tq)
+                                .or(categories[:name].eq(text_query)
+                                .or(categories[:name].eq_any(cats))))
                 end
             end
         end
