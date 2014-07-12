@@ -1,11 +1,12 @@
 class OwnersController < ApplicationController
+    before_filter :authenticate_owner!, only: [:show, :edit, :update]
+
     def show
-        if params.has_key? :id
-            begin
-                @owner = Owner.find(params[:id])
-            rescue
-                return redirect_to :home, :notice => "This owner does not exist."
-            end
+        if current_owner.id == params[:id].to_i
+            @owner = current_owner
+        else
+            return redirect_to home_path,
+                notice: "You do not have access to this page."
         end
     end
 

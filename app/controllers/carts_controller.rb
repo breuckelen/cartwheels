@@ -2,6 +2,7 @@ class CartsController < ApplicationController
     skip_before_filter :verify_authenticity_token,
         :if => Proc.new { |c| c.request.format == 'application/json' }
     before_filter :authenticate_user!, only: [:new, :mark_as_moved]
+    before_filter :authenticate_owner!, only: [:edit]
     before_action :set_cart, only: [:show, :edit, :update, :destroy, :claim,
         :mark_as_moved]
 
@@ -40,7 +41,7 @@ class CartsController < ApplicationController
         @cart.user_cart_relations.build(user: current_user, relation_type: 0)
 
         if image = params[:cart][:image]
-            @cart.photos.build(user: current_user, image: image)
+            @cart.photos.build(author: current_user, image: image)
         end
 
         if request.xhr? || remotipart_submitted?
@@ -67,13 +68,12 @@ class CartsController < ApplicationController
     end
 
     def update
-        if image = params[:cart][:image]
-            @cart.photos.build(user: current_user, image: image)
-        end
+        if current_owner.in? @cart.owners or current_user.has_role? :admin
+            if image = params[:cart][:image]
+                @cart.photos.build(author: current_user, image: image)
+            end
 
-        respond_to do |format|
-            if (current_user and (current_user == @cart.uploader or current_user.has_role? :admin))\
-                    or (current_owner.in? @cart.owners)
+            if request.xhr? || remotipart_submitted?
                 Cart.skip_callback(:validation, :before, :update_popularity)
                 Cart.skip_callback(:validation, :before, :update_rating)
                 Cart.skip_callback(:validation, :before, :update_location)
@@ -83,21 +83,51 @@ class CartsController < ApplicationController
                     Cart.set_callback(:validation, :before, :update_rating)
                     Cart.set_callback(:validation, :before, :update_location)
 
-                    format.html { redirect_to carts_path,
-                        notice: 'Cart was succesfully updated.' }
-                    format.json { render :show, status: :ok,
-                        location: @cart,
-                        :json => { :success => true }}
+                    flash[:notice] = "Cart was successfully updated."
+                    render "shared/concerns/login",
+                        locals: {errors: nil, redirect_path: cart_path(@cart)},
+                        status: :created
                 else
                     Cart.set_callback(:validation, :before, :update_popularity)
                     Cart.set_callback(:validation, :before, :update_rating)
                     Cart.set_callback(:validation, :before, :update_location)
 
-                    format.html { render :edit }
-                    format.json { render status: :unprocessable_entity,
-                        :json => { :errors => @cart.errors, :success => false }}
+                    render "shared/concerns/login",
+                        locals: {errors: @cart.errors}, status: :unprocessable_entity
                 end
             else
+                respond_to do |format|
+                    Cart.skip_callback(:validation, :before, :update_popularity)
+                    Cart.skip_callback(:validation, :before, :update_rating)
+                    Cart.skip_callback(:validation, :before, :update_location)
+
+                    if @cart.update(cart_params)
+                        Cart.set_callback(:validation, :before, :update_popularity)
+                        Cart.set_callback(:validation, :before, :update_rating)
+                        Cart.set_callback(:validation, :before, :update_location)
+
+                        format.html { redirect_to carts_path,
+                            notice: 'Cart was succesfully updated.' }
+                        format.json { render :show, status: :ok,
+                            location: @cart,
+                            :json => { :success => true }}
+                        format.js {render "shared/concerns/login", locals: {errors: nil,
+                            redirect_path: last_path(current_owner)}}
+                    else
+                        Cart.set_callback(:validation, :before, :update_popularity)
+                        Cart.set_callback(:validation, :before, :update_rating)
+                        Cart.set_callback(:validation, :before, :update_location)
+
+                        format.html { render :edit }
+                        format.json { render status: :unprocessable_entity,
+                            :json => { :errors => @cart.errors, :success => false }}
+                        format.js {render "shared/concerns/login",
+                            locals: {errors: @cart.errors}}
+                    end
+                end
+            end
+        else
+            respond_to do |format|
                 format.html { redirect_to @cart,
                     notice: 'You do not have permission to perform this action.' }
                 format.json { render json: {
@@ -154,7 +184,7 @@ class CartsController < ApplicationController
 
     def claim
         respond_to do |format|
-            if params[:permit_number].to_i == @cart.permit_number
+            if params[:permit_number] == @cart.permit_number
                 @cart.owners << current_owner
 
                 format.html { redirect_to @cart,

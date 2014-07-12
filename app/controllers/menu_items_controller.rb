@@ -25,7 +25,7 @@ class MenuItemsController < ApplicationController
         @menu_item = cart.menu.menu_items.build(menu_item_params)
 
         if image = params[:menu_item][:image]
-            @menu_item.build_photo(user: user, image: image)
+            @menu_item.build_photo(author: user, image: image)
         end
 
         if request.xhr? || remotipart_submitted?

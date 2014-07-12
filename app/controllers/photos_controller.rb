@@ -20,12 +20,14 @@ class PhotosController < ApplicationController
 
     # create a new photo for a cart
     def create
+        user = current_user
+        user ||= current_owner
         if photo_params[:encoded_image].nil?
-            @photo = current_user.photos.build(photo_params)
+            @photo = user.photos.build(photo_params)
         else
             new_params = photo_params
             data = new_params.delete(:encoded_image)
-            @photo = current_user.photos.build(new_params)
+            @photo = user.photos.build(new_params)
             @photo.decode_from_data(data)
         end
 
@@ -70,7 +72,7 @@ class PhotosController < ApplicationController
         cart = @photo.cart
 
         respond_to do |format|
-            if current_user == @photo.user or current_user.has_role? :admin
+            if current_user == @photo.author or current_user.has_role? :admin
                 @photo.destroy
 
                 format.html { redirect_to cart,
