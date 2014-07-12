@@ -121,7 +121,7 @@ class Cart < ActiveRecord::Base
         super(options)
     end
 
-    def self.search(sort_by, text_query, location_query, categories, box)
+    def self.search(sort_by, text_query, location_query, cats, box)
         if box.empty?
             if text_query.blank? and location_query.blank?
                 return order("#{sort_by} DESC, created_at DESC")
@@ -149,17 +149,24 @@ class Cart < ActiveRecord::Base
                     .order("#{sort_by} DESC, created_at DESC")
             end
         else
-            if "all".in? categories
+            if "all".in? cats
                 return in_bounds(box).by_distance(origin: location_query)
             else
                 tq = "%#{text_query}%"
                 carts = Cart.arel_table
                 categories = Category.arel_table
 
-                return in_bounds(box).by_distance(origin: location_query)
-                    .joins(cart_category_relations: :category)
-                    .merge(where(carts[:name].matches(tq)
-                                .or(categories[:name].eq(text_query))))
+                if text_query.blank?
+                    return in_bounds(box).by_distance(origin: location_query)
+                        .joins(cart_category_relations: :category)
+                        .merge(where(categories[:name].eq_any(cats)))
+                else
+                    return in_bounds(box).by_distance(origin: location_query)
+                        .joins(cart_category_relations: :category)
+                        .merge(where(carts[:name].matches(tq)
+                                    .or(categories[:name].eq(text_query))
+                                    .or(categories[:name].eq_any(cats))))
+                end
             end
         end
     end
