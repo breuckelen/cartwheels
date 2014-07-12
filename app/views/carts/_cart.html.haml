@@ -38,8 +38,7 @@
         .col-lg-3
           .photo
             -if cart.photos.first
-              =image_tag(asset_path("cw-logo-no-text.jpg"))
-              //=image_tag(cart.photos.first.image_url_large)
+              =image_tag(cart.photos.first.image_url_large)
             -else
               =image_tag(asset_path("cw-logo-no-text.jpg"))
           .rating{"data-score" => cart.rating }
@@ -66,11 +65,11 @@
                     -cart.categories.each do |item|
                       .item
                         =link_to item.name, "#"
-                  -if user_signed_in?
+                  -if user_signed_in? or owner_signed_in?
                     .links
                       =link_to "Add a new category", new_category_path
 
-                  -if user_signed_in?
+                  -if user_signed_in? or owner_signed_in?
                     =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
         .col-lg-5
           .location
@@ -128,7 +127,7 @@
           -else
             .hours-heading.warning No hours available
           -if cart.hours.count < 7
-            -if user_signed_in?
+            -if user_signed_in? or owner_signed_in?
               .add-hours.wheels-form
                 =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
 
@@ -192,7 +191,7 @@
                     %span.glyphicon.glyphicon-list-alt
                   .col-lg-4
 
-      -if not small and user_signed_in?
+      -if not small and (user_signed_in? or owner_signed_in?)
         .form-section
           =render partial: "menu_items/form", locals: {cart: cart, menu_item: MenuItem.new}
 
@@ -217,7 +216,7 @@
                   %span.glyphicon.glyphicon-pencil
             .col-lg-4
 
-      -if not small and user_signed_in?
+      -if not small and (user_signed_in? or owner_signed_in?)
         .form-section
           =render partial: "reviews/form", locals: {cart: cart, review: Review.new}
 
