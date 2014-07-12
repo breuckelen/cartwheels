@@ -88,7 +88,6 @@
         });
         data['box'] = [sw.lat() + " " + sw.lng(), ne.lat() + " " + ne.lng()];
         data['lq'] = center.lat() + " " + center.lng();
-        console.log(data['tq']);
 
         $.getJSON('/carts/search', data, renderMap);
     }
