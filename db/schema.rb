@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140711235628) do
+ActiveRecord::Schema.define(version: 20140712000358) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -94,6 +94,8 @@ ActiveRecord::Schema.define(version: 20140711235628) do
   add_index "carts", ["permit_number"], name: "index_carts_on_permit_number"
 
   create_table "carts_owners", force: true do |t|
+    t.integer "cart_id"
+    t.integer "owner_id"
   end
 
   create_table "categories", force: true do |t|
