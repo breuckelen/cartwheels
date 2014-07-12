@@ -31,9 +31,10 @@
     }
 
     var readUrl = function(input) {
+        var $container = $(input).parents('form');
         if (input.files && input.files[0]) {
             var label = input.files[0].name;
-            controller.find('.file-btn .label').text(label);
+            $container.find('.file-btn .label').text(label);
         }
     }
 

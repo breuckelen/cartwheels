@@ -121,19 +121,27 @@ class Cart < ActiveRecord::Base
         super(options)
     end
 
-    def self.search(sort_by, text_query, location_query)
-        if text_query.blank? and location_query.blank?
-            order("#{sort_by} DESC, created_at DESC")
-        elsif text_query.blank?
-            within(1,
-                origin: location_query).order("#{sort_by} DESC, created_at DESC")
-        elsif location_query.blank?
-            tq = "%#{text_query}%"
-            where("name like ?", tq).order("#{sort_by} DESC, created_at DESC")
+    def self.search(sort_by, text_query, location_query, categories, box)
+        if box.empty?
+            if text_query.blank? and location_query.blank?
+                order("#{sort_by} DESC, created_at DESC")
+            elsif text_query.blank?
+                by_distance(origin: location_query)
+                    .order("#{sort_by} DESC, created_at DESC")
+            elsif location_query.blank?
+                tq = "%#{text_query}%"
+                where("name like ?", tq)
+                    .order("#{sort_by} DESC, created_at DESC")
+            else
+                tq = "%#{text_query}%"
+                by_distance(origin: location_query).where("name like ?", tq)
+                    .order("#{sort_by} DESC, created_at DESC")
+            end
         else
-            tq = "%#{text_query}%"
-            within(1, origin: location_query).where("name like ?", tq)
-                .order("#{sort_by} DESC, created_at DESC")
+            in_bounds(box).joins(cart_category_relations: :category)
+                .merge(
+                    Category.where("name like ?", categories[0])
+                )
         end
     end
 

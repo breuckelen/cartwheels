@@ -157,8 +157,8 @@
         var $menuItem = $container.find('.item.active');
 
         $container.find('.notes').find('.item').fadeOut(function(e) {
-            $container.find('.notes').html('');
-        })
+            $(this).remove();
+        });
 
         $.getJSON('/menu_items/data', {'menu_item': {'id': $menuItem.attr('id') } }, function(data) {
             var notes = [], index = 0;

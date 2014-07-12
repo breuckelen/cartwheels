@@ -1,6 +1,10 @@
 (function() {
     var controller, cartMap;
     var lastVertPos, searchOffset, searchLimit;
+    var infoTemplate = "\
+        <div class'marker-header'><a href='/carts/{{id}}'>{{name}}</a></div>\
+        <div class='rating' data-score='{{rating}}' style='width: 100px; height: 20px;'></div>\
+        ";
 
     var init = function() {
         controller = $('#home-index #content-wrapper');
@@ -27,12 +31,34 @@
             var latlng = new google.maps.LatLng(d.lat, d.lon);
             bounds.push(latlng);
 
+            var infoWindow = new google.maps.InfoWindow({
+                content: infoTemplate.replace(/{{name}}/, d.name)
+                    .replace(/{{id}}/, d.id)
+                    .replace(/{{rating}}/, d.rating)
+            });
+            google.maps.event.addListener(infoWindow, 'domready', function(e) {
+                console.log(controller.find('.rating'));
+                controller.find('.rating').raty({
+                    starOff: "<%= asset_path("star-off.png") %>",
+                    starOn: "<%= asset_path("star-on.png") %>",
+                    starHalf: "<%= asset_path("star-half.png") %>",
+                    readOnly: true,
+                    size: 4,
+                    score: function() {
+                        return $(this).attr('data-score');
+                    }
+                });
+            });
+
             //Add a marker
             cartMap.addMarker({
                 lat: d.lat,
                 lng: d.lon,
                 title: d.name,
-                animation: google.maps.Animation.DROP
+                infoWindow: infoWindow,
+                click: function(e) {
+                    cartMap.setCenter(d.lat, d.lon);
+                }
             });
 
             //Center on the last data point
@@ -49,11 +75,13 @@
         } else {
             searchOffset = 0;
         }
-
-        $('.more').removeClass('hide');
     }
 
     var loadResults = function(inputs) {
+        //Set map center to geocoded address
+        //Get map bounds
+        //Get checked categories
+        //Search with query, map bounds, and categories
         var data = {
             'tq': inputs.tq,
             'lq': inputs.lq,

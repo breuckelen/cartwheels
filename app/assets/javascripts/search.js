@@ -5,16 +5,6 @@
         controller = $('#search-index');
     }
 
-    var search = function(inputs) {
-        var str = '';
-        for(key in inputs) {
-            str += key + '=' + inputs[key] + '&';
-        }
-        str = str.slice(0, str.length - 1);
-
-        window.location.assign('/search?' + str);
-    }
-
     var ready = function() {
         init();
 
