@@ -145,9 +145,8 @@ class CartsController < ApplicationController
         @carts = Cart.search("popularity", search_params["tq"],
                 search_params["lq"], search_params["categories"],
                 search_params["box"])
-            .limit(20)
-            .offset(0)
-        Rails.logger.info @carts.inspect
+            .limit(search_params["limit"])
+            .offset(search_params["offset"])
 
         render :status => 200, :json => { :success => true,
             :data => @carts }
