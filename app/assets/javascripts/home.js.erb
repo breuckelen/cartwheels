@@ -72,8 +72,6 @@
             controller.find('.more').removeClass('hide');
         }
         else {
-            console.log(data.data.length);
-            console.log(searchLimit);
             controller.find('.more').addClass('hide');
         }
     }
@@ -89,6 +87,7 @@
         var sw = bounds.getSouthWest(),
             ne = bounds.getNorthEast();
 
+        controller.find('.more').removeClass('hide');
         searchLimit = 20;
         data['limit'] = searchLimit;
         data['categories'] = _.map(controller.find(':checked'), function(d) {
