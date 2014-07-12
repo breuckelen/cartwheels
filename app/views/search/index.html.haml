@@ -6,11 +6,11 @@
   #top-content
     %nav#search-bar.navbar.navbar-inverse.navbar-fixed-top{role: "navigation"}
       .collapse.navbar-collapse.row
-        .col-lg-4
+        .col-lg-4.col-md-4.col-sm-4.col-xs-4
           .nav.navbar-nav.padded
             .home-link
               =link_to "Cartwheels", home_path
-        %form.navbar-form.search-form.col-lg-8{role: "search", action: "/search"}
+        %form.navbar-form.search-form.col-lg-8.col-md-8.col-sm-8.col-xs-8{role: "search", action: "/search"}
           .form-group
             %input.form-control.form-input#food{type: "text", name: "tq", placeholder: "Food", value: @tq}
             %input.form-control.form-input.location-input#loc{type: "text", name: "lq", placeholder: "Location", value: @lq}
@@ -18,19 +18,19 @@
 
   #main-content
     #title-bar.row
-      .col-lg-2
-        .column-header
+      .col-lg-2.l-md-2.l-sm-2.l-xs-2
+        %span.column-header
           =link_to "Featured Carts", "#"
-      .col-lg-7
-        .column-header
+      .col-lg-7.col-md-7.col-sm-7.col-xs-7
+        %span.column-header
           =link_to "Search Results", "#"
-      .col-lg-3
-        .column-header
+      .col-lg-3.col-md-3.col-sm-3.col-xs-3
+        %span.column-header
           =link_to "Reviews", "#"
 
-    #featured-bar.col-lg-2.column.column-left
+    #featured-bar.col-lg-2.col-md-2.col-sm-2.col-xs-2.column.column-left
 
-    #search-results.col-lg-7.column.column-center
+    #search-results.col-lg-7.col-md-7.col-sm-7.col-xs-7.column.column-center
       .column-content
         -@carts.each do |cart|
           =render partial: "carts/cart", locals: {cart: cart, small: true}
@@ -45,4 +45,4 @@
               %li
                 %a{"data-page" => @offset / 20 + 1} &raquo;
 
-    #other-results.col-lg-3.column.column-right
+    #other-results.col-lg-3.col-md-3.col-sm-3.col-xs-3.column.column-right

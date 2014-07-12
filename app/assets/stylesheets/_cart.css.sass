@@ -2,18 +2,18 @@ $sectionWidth: 740px
 
 #search-index, #carts-show, #owners-show
     #top-content
-        height: 100px
+        @include scale-property(height, 100px)
         background: getColor(default)
 
         .navbar
             z-index: 1
 
         .padded
-            padding-top: 10px
-            padding-left: 40px
+            @include scale-property(padding-top, 10px)
+            @include scale-property(padding-left, 40px)
 
         .nav-btn
-            margin-bottom: 7px
+            @include scale-property(margin-bottom, 7px)
             @include vendor(border-radius, 2px)
 
         .form-input
@@ -21,21 +21,21 @@ $sectionWidth: 740px
 
         .home-link
             font-family: "Bebas Regular"
-            font-size: 25px
+            @include scale-property(font-size, 25px)
 
             @extend .highlight-default
 
         #search-bar
             background: #333
-            padding-top: 12px
-            padding-bottom: 12px
+            @include scale-property(padding-top, 12px)
+            @include scale-property(padding-bottom, 12px)
             top: -500px
 
             border: none
             @include vendor(transition, all 0.4s ease 0s)
 
         #loc
-            width: 300px
+            @include scale-property(width, 300px)
 
 
     #main-content
@@ -45,18 +45,18 @@ $sectionWidth: 740px
     #title-bar
         padding: 0px
         margin: 0
-        margin-bottom: 10px
+        @include scale-property(margin-bottom, 10px)
 
         background: getColor(default)
         border-bottom: 2px solid #222
 
         .column-header
             font-family: "Bebas Regular"
-            font-size: 25px
+            @include scale-property(font-size, 25px)
 
             padding-left: 20%
-            padding-bottom: 10px
-            padding-top: 10px
+            @include scale-property(padding-bottom, 10px)
+            @include scale-property(padding-top, 10px)
 
             @extend .highlight-black
 
@@ -72,37 +72,37 @@ $sectionWidth: 740px
         font-size: 1.2em
 
         display: inline-block
-        width: 20px
-        height: 250px
-        margin-left: 10px
+        @include scale-property(width, 20px)
+        @include scale-property(height, 250px)
+        @include scale-property(margin-left, 10px)
         vertical-align: top
-        padding-top: 125px
+        @include scale-property(padding-top, 125px)
 
     .cart-btn
         font-size: 1em
 
-        margin-top: 5px
+        @include scale-property(margin-top, 5px)
         padding: 3px 8px
         @include vendor(border-radius, 2px)
 
 
     .more-link
-        font-size: 15px
-        margin-top: 5px
+        @include scale-property(font-size, 15px)
+        @include scale-property(margin-top, 5px)
 
     .directions-link
-        font-size: 13px
+        @include scale-property(font-size, 13px)
 
     .warning
         color: getColor(red) !important
 
     .rating
         img
-            width: 17px
+            @include scale-property(width, 17px)
             height: auto
 
     .no-results-header
-        font-size: 17px
+        @include scale-property(font-size, 17px)
 
         padding-top: 40%
 
@@ -120,7 +120,7 @@ $sectionWidth: 740px
 
     .moved-notice
         font-size: 1.5em
-        line-height: 50px
+        @include scale-property(line-height, 50px)
 
     .section-header
         font-size: 2em
@@ -130,8 +130,8 @@ $sectionWidth: 740px
         display: block
         width: $sectionWidth
         margin-right: auto
-        margin-top: 20px
-        margin-bottom: 50px
+        @include scale-property(margin-top, 20px)
+        @include scale-property(margin-bottom, 50px)
         border-bottom: 2px solid #333
 
     .form-section

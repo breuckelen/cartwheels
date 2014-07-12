@@ -38,7 +38,7 @@
         .section-header
           Info
       .info.section
-        .col-lg-3
+        .col-lg-3.col-md-3.col-sm-3.col-xs-3
           .photo
             -if cart.photos.first
               =image_tag(cart.photos.first.image_url)
@@ -74,7 +74,7 @@
 
                   -if user_signed_in? or owner_signed_in?
                     =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
-        .col-lg-5
+        .col-lg-5.col-md-5.col-sm-5.col-xs-5
           .location
             -if cart.moved
               .moved-notice
@@ -86,9 +86,9 @@
               .meta
                 //Find a way to specify what's streets between
                 .address
-                  .col-lg-2
+                  .col-lg-2.col-md-2.col-sm-2.col-xs-2
                     .address-heading Near
-                  .col-lg-9
+                  .col-lg-9.col-md-9.col-sm-9.col-xs-9
                     =link_to cart.address, "#", {"data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}", class: "directions-link"}
                 .mark-as-moved
                   %a{href: "#"}
@@ -134,16 +134,16 @@
                           %button.hidden{type: "submit"}
 
 
-        .col-lg-4.hours
+        .col-lg-4.col-md-4.col-sm-4.col-xs-4.hours
           -if cart.hours.first
             .hours-heading
               Hours
             -cart.hours.order(:day).each do |item|
               .item.row
-                .col-lg-4.day=n_to_day(item.day)
-                .start.col-lg-4=n_to_time(item.start)
-                .bridge.col-lg-1 To
-                .end.col-lg-4=n_to_time(item.end)
+                .col-lg-4.col-md-4.col-sm-4.col-xs-4.day=n_to_day(item.day)
+                .start.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.start)
+                .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
+                .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
           -else
             .hours-heading.warning No hours available
           -if cart.hours.count < 7
@@ -159,9 +159,9 @@
         .menu.section
           .row
             -if cart.menu.menu_items.first
-              .col-lg-4
+              .col-lg-4.col-md-4.col-sm-4.col-xs-4
                 .notes.notes-left
-              .col-lg-2.carousel.slide{id: "menu-carousel-#{cart.id}", "data-ride" => "carousel", "data-interval" => "false"}
+              .col-lg-2.col-md-2.col-sm-2.col-xs-2.carousel.slide{id: "menu-carousel-#{cart.id}", "data-ride" => "carousel", "data-interval" => "false"}
                 %ol.carousel-indicators
                   -(0...cart.menu.menu_items.count).each do |i|
                     -if i == 0
@@ -200,16 +200,16 @@
                   %span.glyphicon.glyphicon-circle-arrow-left
                 %a.right.carousel-control{"data-slide" => "next", href: "#menu-carousel-#{cart.id}", role: "button"}
                   %span.glyphicon.glyphicon-circle-arrow-right
-              .col-lg-4
+              .col-lg-4.col-md-4.col-sm-4.col-xs-4
                 .notes.notes-right
             -else
-              .col-lg-4
-              .col-lg-4
+              .col-lg-4.col-md-4.col-sm-4.col-xs-4
+              .col-lg-4.col-md-4.col-sm-4.col-xs-4
                 .no-results-header
                   %a{href: cart_path(cart)}
                     Add a menu item
                     %span.glyphicon.glyphicon-list-alt
-                  .col-lg-4
+                  .col-lg-4.col-md-4.col-sm-4.col-xs-4
 
       -if not small and (user_signed_in? or owner_signed_in?)
         .form-section
@@ -228,13 +228,13 @@
                 .date=time_ago_in_words(review.updated_at) + " ago"
                 .text=review.text
           -else
-            .col-lg-4
-            .col-lg-4
+            .col-lg-4.col-md-4.col-sm-4.col-xs-4
+            .col-lg-4.col-md-4.col-sm-4.col-xs-4
               .no-results-header
                 %a{href: cart_path(cart)}
                   Add a review
                   %span.glyphicon.glyphicon-pencil
-            .col-lg-4
+            .col-lg-4.col-md-4.col-sm-4.col-xs-4
 
       -if not small and user_signed_in?
         .form-section
@@ -253,11 +253,11 @@
                     %a.pop-image.pop-image-top{href: "#", "data-title" => checkin.user.name, "data-content" => checkin.description}
                       =image_tag(checkin.photos.first.image_url_thumb)
           -else
-            .col-lg-4
-            .col-lg-4
+            .col-lg-4.col-md-4.col-sm-4.col-xs-4
+            .col-lg-4.col-md-4.col-sm-4.col-xs-4
               .no-results-header
                 =link_to "No checkins", cart
-            .col-lg-4
+            .col-lg-4.col-md-4.col-sm-4.col-xs-4
 
       .modal.fade.checkins-modal{id: "checkins-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
         .modal-dialog

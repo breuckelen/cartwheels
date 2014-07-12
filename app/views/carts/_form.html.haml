@@ -12,10 +12,14 @@
   .wheels-form
     .form-header.row
       .col-lg-4
-        %a{href: "#"} Submit a cart
+        -if action_name == "new"
+          %a{href: "#"} Submit a cart
+        -else
+          %a{href: "#"} Edit cart
 
-    .form-desc
-      Are any of your favorite food carts not yet listed on the site? You can register them in a few clicks, and then begin adding reviews, images, and more!
+    -if action_name == "new"
+      .form-desc
+        Are any of your favorite food carts not yet listed on the site? You can register them in a few clicks, and then begin adding reviews, images, and more!
 
     =form_for cart, remote: true, html: {:multipart => true, 'data-model' => 'cart'} do |f|
       .form-group

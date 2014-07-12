@@ -2,7 +2,7 @@
   .form-header.row
     .col-lg-4.col-md-4.col-sm-4.col-xs-4
     .col-lg-4
-      %a{href: "#"} Sign In
+      %a{href: "#"} User Sign In
 
   = form_for User.new, remote: true, authenticity_token: true, url: session_path("user"), html: {'data-model' => 'user'} do |f|
     .form-group.row
@@ -22,3 +22,4 @@
     .form-group.row
       .col-lg-1.col-md-1.col-sm-1.col-xs-1
       %button.btn.btn-primary.form-btn{type: "submit"} Sign In
+      %a.btn.btn-danger.form-btn{href: new_owner_session_path} Owner Sign In

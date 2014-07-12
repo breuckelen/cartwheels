@@ -20,7 +20,7 @@ $sectionWidth: 740px
         padding-right: 2%
         padding-bottom: 2%
         padding-top: 1%
-        margin-bottom: 20px
+        @include scale-property(margin-bottom, 20px)
 
         position: relative
         overflow: hidden
@@ -29,19 +29,19 @@ $sectionWidth: 740px
         @include vendor(transition, all 0.7s ease 0s)
 
         &.size-xs
-            width: $sectionWidth
-            height: 280px
+            width: 89%
+            @include scale-property(height, 280px)
 
         &.size-md
             width: $sectionWidth
-            height: 350px
+            @include scale-property(height, 350px)
 
         &.size-lg
-            width: $sectionWidth
-            height: 450px
+            @include scale-property(width, $sectionWidth)
+            @include scale-property(height, 450px)
 
         > .name
-            font-size: 20px
+            @include scale-property(font-size, 20px)
             display: inline-block
             width: 100%
 
@@ -50,10 +50,10 @@ $sectionWidth: 740px
 
             > .subname
                 font-family: "Bebas Regular"
-                font-size: 17px
-                letter-spacing: 2px
+                @include scale-property(font-size, 17px)
+                @include scale-property(letter-spacing, 2px)
 
-                margin-left: 20px
+                @include scale-property(margin-left, 20px)
                 display: inline-block
 
                 a
@@ -67,7 +67,7 @@ $sectionWidth: 740px
             > .claim-btn
                 display: inline-block
                 float: right
-                margin-left: 10px
+                @include scale-property(margin-left, 10px)
                 @include scale-property(line-height, 34px)
 
                 @extend .highlight-darkblue
@@ -82,7 +82,7 @@ $sectionWidth: 740px
             > .checkin-btn
                 display: inline-block
                 float: right
-                margin-left: 10px
+                @include scale-property(margin-left, 10px)
 
     //Content
     .content
@@ -106,29 +106,29 @@ $sectionWidth: 740px
 
         .section
             display: inline-block
-            width: $sectionWidth
+            width: 24.6%
             height: 100%
-            padding-top: 10px
+            @include scale-property(padding-top, 10px)
 
     //Sections
     .info
         .photo
-            width: 100px
-            height: 100px
+            @include scale-property(width, 100px)
+            @include scale-property(height, 100px)
 
             img
-                width: 100px
+                @include scale-property(width, 100px)
                 @include vendor(border-radius, 2px)
 
         .categories
-            margin-top: 10px
-            height: 25px
+            @include scale-property(margin-top, 10px)
+            @include scale-property(height, 25px)
             @include vendor(transition, all 0.4s ease 0s)
 
             .item
                 display: inline-block
-                padding: 3px
-                margin-bottom: 2px
+                @include scale-property(padding, 3px)
+                @include scale-property(margin-bottom, 2px)
 
                 background: getColor(red)
                 @include vendor(border-radius, 2px)
@@ -145,10 +145,10 @@ $sectionWidth: 740px
                     @include vendor(border-radius, 2px)
 
             .address
-                margin-top: 5px
+                @include scale-property(margin-top, 5px)
 
                 .address-heading
-                    font-size: 13px
+                    @include scale-property(font-size, 13px)
                     font-weight: bold
 
                     display: inline-block
@@ -176,18 +176,18 @@ $sectionWidth: 740px
                 width: 28% !important
 
             .bridge
-                width: 10px
+                @include scale-property(width, 10px)
                 padding: 0
 
             .add-hours
-                margin-top: 10px
+                @include scale-property(margin-top, 10px)
 
             .form-control
                 font-family: OpenSans
                 font-size: 0.8em
 
-                width: 75px
-                height: 20px
+                @include scale-property(width, 75px)
+                @include scale-property(height, 20px)
                 padding: 0
 
     .menu
@@ -196,7 +196,7 @@ $sectionWidth: 740px
                 display: none
                 font-family: "OpenSans Italic"
 
-                margin: 10px
+                @include scale-property(margin, 10px)
                 font-size: 1.1em
 
                 .user
@@ -206,7 +206,7 @@ $sectionWidth: 740px
         .add-note
             .form-text-area
                 font-size: 0.9em
-                width: 230px
+                @include scale-property(width, 230px)
 
         .notes-left
             padding-left: 20%
@@ -215,8 +215,8 @@ $sectionWidth: 740px
             padding-right: 20%
 
         .carousel
-            width: 250px
-            height: 220px
+            @include scale-property(width, 250px)
+            @include scale-property(height, 220px)
 
             .carousel-indicators
                 li
@@ -225,8 +225,8 @@ $sectionWidth: 740px
                     &.active
                         background: getColor(red)
 
-                        width: 13px
-                        height: 13px
+                        @include scale-property(width, 13px)
+                        @include scale-property(height, 13px)
 
             .carousel-inner
                 width: 100%
@@ -239,14 +239,14 @@ $sectionWidth: 740px
 
                     .name
                         font-family: Roboto
-                        font-size: 15px
+                        @include scale-property(font-size, 15px)
 
                         margin: 0 auto
 
                     img
                         margin: 0 auto
-                        margin-top: 15px
-                        height: 110px
+                        @include scale-property(margin-top, 15px)
+                        @include scale-property(height, 110px)
 
                         @include vendor(border-radius, 2px)
 
@@ -270,11 +270,11 @@ $sectionWidth: 740px
     .reviews
         vertical-align: top
         height: 100%
-        padding-bottom: 30px
+        @include scale-property(padding-bottom, 30px)
         overflow-y: scroll
 
         .item
-            padding-bottom: 20px
+            @include scale-property(padding-bottom, 20px)
 
             .user
                 font-family: Roboto
@@ -286,10 +286,10 @@ $sectionWidth: 740px
             .text
                 width: 80%
                 margin: 0 auto
-                margin-top: 10px
-                padding-top: 10px
-                padding-left: 20px
-                padding-bottom: 20px
+                @include scale-property(margin-top, 10px)
+                @include scale-property(padding-top, 10px)
+                @include scale-property(padding-left, 20px)
+                @include scale-property(padding-bottom, 20px)
 
                 border-left: 1px solid getColor(default)
 
@@ -306,7 +306,7 @@ $sectionWidth: 740px
 
         .item
             display: inline-block
-            margin: 2px
+            @include scale-property(margin, 2px)
 
             .photo
                 img

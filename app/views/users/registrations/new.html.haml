@@ -2,7 +2,7 @@
   .form-header.row
     .col-lg-4.col-md-4.col-sm-4.col-xs-4
     .col-lg-4
-      %a{href: "#"} Sign Up
+      %a{href: "#"} User Sign Up
 
   = form_for @user, remote: true, authenticity_token: true, url: registration_path("user"), html: {'data-model' => 'user'} do |f|
     - if @user.errors.any?
@@ -68,3 +68,4 @@
 
     .form-group.row
       = f.submit "Register", class: "btn btn-primary form-btn"
+      %a.btn.btn-danger.form-btn{href: new_owner_registration_path} Owner Sign Up
