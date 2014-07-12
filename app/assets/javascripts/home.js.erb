@@ -78,8 +78,12 @@
         }
     }
 
-    var onBoundsChange = function() {
+    var search = function() {
         cartMap.removeMarkers();
+        $.getJSON('/carts/search', data, renderMap);
+    }
+
+    var onBoundsChange = function() {
         var bounds = cartMap.map.getBounds();
         var center = cartMap.getCenter();
         var sw = bounds.getSouthWest(),
@@ -92,8 +96,6 @@
         });
         data['box'] = [sw.lat() + " " + sw.lng(), ne.lat() + " " + ne.lng()];
         data['lq'] = center.lat() + " " + center.lng();
-
-        $.getJSON('/carts/search', data, renderMap);
     }
 
     var loadResults = function(inputs) {
@@ -107,12 +109,13 @@
                         var latlng = results[0].geometry.location;
                         cartMap.setCenter(latlng.lat(), latlng.lng());
                         cartMap.setZoom(14);
+                        search();
                     }
                 }
             });
         }
         else {
-            onBoundsChange();
+            search();
         }
     }
 
@@ -144,7 +147,7 @@
             e.preventDefault();
             searchLimit += 20;
             data['limit'] = searchLimit;
-            $.getJSON('/carts/search', data, renderMap);
+            search();
         });
 
         controller.find('.search-form').searchForm({

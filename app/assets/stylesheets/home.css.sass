@@ -168,16 +168,16 @@ $mapHeight: 600px
 
         .more
             font-family: OpenSans
-            color: getColor(blue)
+            color: white
 
-            display: inline-block
+            display: block
             padding: 3px
 
-            background: white
+            background: getColor(red)
             @include vendor(border-radius, 2px)
 
             &:hover
-                background: #eee
+                background: getColor(darkred)
 
             .hide
                 display: none
