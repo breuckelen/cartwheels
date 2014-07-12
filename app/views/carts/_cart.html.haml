@@ -135,8 +135,6 @@
       -if not small
         .section-header
           Menu
-          -if cart.menu.nil?
-            Bla Bla Bla
       //Slideshow form default, list form when expands
       -if not cart.menu.nil? and (small or cart.menu.menu_items.first)
         .menu.section
