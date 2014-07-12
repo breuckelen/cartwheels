@@ -3,11 +3,6 @@ class ApplicationController < ActionController::Base
     # For APIs, you may want to use :null_session instead.
     protect_from_forgery with: :exception
 
-    before_filter :authenticate_basic_http
-    skip_before_filter :authenticate_basic_http,
-        only: [:create, :update, :destroy, :data, :search],
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-
     before_filter :authenticate_user_from_token,
         only: [:create, :update, :destroy, :claim, :mark_as_moved],
         :if => Proc.new { |c| c.request.format == 'application/json' }
