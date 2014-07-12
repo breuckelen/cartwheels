@@ -166,7 +166,7 @@ class Cart < ActiveRecord::Base
                             .where(carts[:name].matches(tq)
                                 .or(categories[:name].eq(text_query)
                                 .or(categories[:name].eq_any(cats))))
-                    Rail.logger.info res.to_sql
+                    Rails.logger.info res.to_sql
                     return res
                 end
             end
