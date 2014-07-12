@@ -167,10 +167,17 @@ $mapHeight: 600px
                 display: none
 
         .more
-            font-family: Roboto
+            font-family: OpenSans
             color: getColor(blue)
 
             display: inline-block
+            padding: 3px
+
+            background: white
+            @include vendor(border-radius, 2px)
+
+            &:hover
+                background: #eee
 
             .hide
                 display: none

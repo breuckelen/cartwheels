@@ -43,7 +43,6 @@
                     .replace(/{{rating}}/, d.rating)
             });
             google.maps.event.addListener(infoWindow, 'domready', function(e) {
-                console.log(controller.find('.rating'));
                 controller.find('.rating').raty({
                     starOff: "<%= asset_path("star-off.png") %>",
                     starOn: "<%= asset_path("star-on.png") %>",
@@ -70,9 +69,10 @@
 
         //Increase search offset if more results, else reset
         if (data.data.length === searchLimit) {
-            searchOffset += searchLimit;
-        } else {
-            searchOffset = 0;
+            controller.find('.more').removeClass('hide');
+        }
+        else {
+            controller.find('.more').addClass('hide');
         }
     }
 
@@ -83,6 +83,8 @@
         var sw = bounds.getSouthWest(),
             ne = bounds.getNorthEast();
 
+        searchLimit = 20;
+        data['limit'] = searchLimit;
         data['categories'] = _.map(controller.find(':checked'), function(d) {
             return $(d).parent().attr('data-category');
         });
@@ -94,6 +96,7 @@
 
     var loadResults = function(inputs) {
         data['tq'] = inputs.tq;
+
         if(inputs['lq'] !== '') {
             GMaps.geocode({
                 address: inputs.lq,
@@ -134,6 +137,13 @@
             onBoundsChange);
         google.maps.event.addListener(cartMap.map, 'zoom_changed',
             onBoundsChange);
+
+        controller.find('.more').click(function(e) {
+            e.preventDefault();
+            searchLimit += 20;
+            data['limit'] = searchLimit;
+            $.getJSON('/carts/search', data, renderMap);
+        });
 
         controller.find('.search-form').searchForm({
             searchCallback: loadResults
