@@ -161,13 +161,11 @@ class Cart < ActiveRecord::Base
                         .joins(cart_category_relations: :category)
                             .where(categories[:name].eq_any(cats))
                 else
-                    res = in_bounds(box).by_distance(origin: location_query)
+                    return in_bounds(box).by_distance(origin: location_query)
                         .joins(cart_category_relations: :category)
                             .where(carts[:name].matches(tq)
                                 .or(categories[:name].eq(text_query)
                                 .or(categories[:name].eq_any(cats))))
-                    Rails.logger.info res.to_sql
-                    return res
                 end
             end
         end
