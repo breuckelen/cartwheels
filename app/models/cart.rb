@@ -124,24 +124,41 @@ class Cart < ActiveRecord::Base
     def self.search(sort_by, text_query, location_query, categories, box)
         if box.empty?
             if text_query.blank? and location_query.blank?
-                order("#{sort_by} DESC, created_at DESC")
+                return order("#{sort_by} DESC, created_at DESC")
             elsif text_query.blank?
-                by_distance(origin: location_query)
+                return by_distance(origin: location_query)
                     .order("#{sort_by} DESC, created_at DESC")
             elsif location_query.blank?
                 tq = "%#{text_query}%"
-                where("name like ?", tq)
+                carts = Cart.arel_table
+                categories = Category.arel_table
+
+                return joins(cart_category_relations: :category)
+                        .merge(where(carts[:name].matches(tq)
+                                    .or(categories[:name].eq(text_query))))
                     .order("#{sort_by} DESC, created_at DESC")
             else
                 tq = "%#{text_query}%"
-                by_distance(origin: location_query).where("name like ?", tq)
+                carts = Cart.arel_table
+                categories = Category.arel_table
+
+                return by_distance(origin: location_query)
+                    .joins(cart_category_relations: :category)
+                        .merge(where(carts[:name].matches(tq)
+                                    .or(categories[:name].eq(text_query))))
                     .order("#{sort_by} DESC, created_at DESC")
             end
         else
-            in_bounds(box).joins(cart_category_relations: :category)
-                .merge(
-                    Category.where("name like ?", categories[0])
-                )
+            if "all".in? categories
+                return in_bounds(box)
+            else
+                tq = "%#{text_query}%"
+                carts = Cart.arel_table
+                categories = Category.arel_table
+                return in_bounds(box).joins(cart_category_relations: :category)
+                    .merge(where(carts[:name].matches(tq)
+                                .or(categories[:name].eq(text_query))))
+            end
         end
     end
 

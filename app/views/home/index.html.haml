@@ -51,14 +51,14 @@
         %a{href: "#"} Search For
 
       .form-group
-        -Category.most_popular(5).each do |cat|
+        .checkbox.tag
+          %label{"data-category-id" => "all"}
+            %input{type: "checkbox"} All
+        -Category.most_popular(6).each do |cat|
           .checkbox.tag
-            %label
+            %label{"data-category-id" => cat.id}
               %input{type: "checkbox"}
                 =cat.name
-        .checkbox.tag
-          %label
-            %input{type: "checkbox"} Other
     #map-div
 
   %footer.row

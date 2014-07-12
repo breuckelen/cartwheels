@@ -193,7 +193,8 @@ class CartsController < ApplicationController
     end
 
     def search_params
-        ps = params.permit(:offset, :limit, :sort_by, :tq, :lq, :categories, :box)
+        ps = params.permit(:offset, :limit, :sort_by, :tq, :lq,
+            categories: [], box: [])
         defaults = {"offset" => 0, "limit" => 20, "categories" => [], "box" => []}
         defaults.merge(ps)
     end

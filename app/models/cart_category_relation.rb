@@ -8,6 +8,12 @@ class CartCategoryRelation < ActiveRecord::Base
     validates :category_id, uniqueness: {:scope => :cart_id,
         :message => "Category may only belong to cart once."}
 
+    after_create :update_category
+
+    def update_category
+        category.save
+    end
+
     def as_json(options={})
         options[:only] ||= [:id, :category_id, :cart_id]
         super(options)

@@ -1,10 +1,18 @@
 (function() {
     var controller, cartMap;
-    var lastVertPos, searchOffset, searchLimit;
+    var lastVertPos, searchOffset = 0, searchLimit = 20;
     var infoTemplate = "\
         <div class'marker-header'><a href='/carts/{{id}}'>{{name}}</a></div>\
         <div class='rating' data-score='{{rating}}' style='width: 100px; height: 20px;'></div>\
         ";
+    var data = {
+        'tq': '',
+        'lq': '',
+        'offset': searchOffset,
+        'limit': searchLimit,
+        'categories': [],
+        'box': []
+    };
 
     var init = function() {
         controller = $('#home-index #content-wrapper');
@@ -23,13 +31,11 @@
     }
 
     var renderMap = function(data) {
-        var bounds = [];
         cartMap.removeMarkers();
 
         $.each(data.data, function(i, d) {
             //Extend the bounds of the map
             var latlng = new google.maps.LatLng(d.lat, d.lon);
-            bounds.push(latlng);
 
             var infoWindow = new google.maps.InfoWindow({
                 content: infoTemplate.replace(/{{name}}/, d.name)
@@ -60,14 +66,7 @@
                     cartMap.setCenter(d.lat, d.lon);
                 }
             });
-
-            //Center on the last data point
-            if (i === data.data.length - 1) {
-                cartMap.setCenter(d.lat, d.lon);
-            }
         });
-
-        cartMap.fitLatLngBounds(bounds);
 
         //Increase search offset if more results, else reset
         if (data.data.length === searchLimit) {
@@ -77,19 +76,38 @@
         }
     }
 
-    var loadResults = function(inputs) {
-        //Set map center to geocoded address
+    var onBoundsChange = function() {
+        cartMap.removeMarkers();
+        var bounds = cartMap.map.getBounds();
+        var sw = bounds.getSouthWest(),
+            ne = bounds.getNorthEast();
+
         //Get map bounds
         //Get checked categories
         //Search with query, map bounds, and categories
-        var data = {
-            'tq': inputs.tq,
-            'lq': inputs.lq,
-            'offset': searchOffset,
-            'limit': searchLimit
-        };
+        data['categories'] = _.map(controller.find(':checked'), function(d) {
+            return $(d).parent().attr('data-category-id');
+        });
+        data['box'] = [sw.lat() + " " + sw.lng(), ne.lat() + " " + ne.lng()];
 
         $.getJSON('/carts/search', data, renderMap);
+    }
+
+    var loadResults = function(inputs) {
+        //Set map center to geocoded address
+        GMaps.geocode({
+            address: inputs.lq,
+            callback: function(results, status) {
+                if(status == 'OK') {
+                    var latlng = results[0].geometry.location;
+
+                    cartMap.setCenter(latlng.lat(), latlng.lng());
+                    cartMap.setZoom(14);
+
+                    data['tq'] = inputs.tq;
+                }
+            }
+        });
     }
 
     var ready = function(e) {
@@ -110,6 +128,11 @@
             zoom: 11,
             scrollwheel: false
         });
+
+        google.maps.event.addListener(cartMap.map, 'dragend',
+            onBoundsChange);
+        google.maps.event.addListener(cartMap.map, 'zoom_changed',
+            onBoundsChange);
 
         controller.find('.search-form').searchForm({
             searchCallback: loadResults
