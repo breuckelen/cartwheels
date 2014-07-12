@@ -192,7 +192,7 @@ class CartsController < ApplicationController
                 format.json { render json: {
                     success: true } }
             else
-                format.html { redirect_to @cart,
+                format.html { redirect_to last_path(current_owner),
                     notice: 'You do not have permission to perform this action.' }
                 format.json { render json: {
                     success: false }

@@ -64,6 +64,17 @@ $sectionWidth: 740px
                 &.active
                     @include highlight(darkblue)
 
+            > .claim-btn
+                display: inline-block
+                float: right
+                margin-left: 10px
+                @include scale-property(line-height, 34px)
+
+                @extend .highlight-darkblue
+
+                span
+                    color: black
+
             > .green-btn
                 display: inline-block
                 float: right

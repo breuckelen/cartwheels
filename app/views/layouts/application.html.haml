@@ -31,6 +31,8 @@
               = link_to "Logout", logout_path, :method => :delete
           - elsif owner_signed_in?
             %li.section.bg-highlight.highlight-full-default
+              = link_to "Manage", owner_path(current_owner)
+            %li.section.bg-highlight.highlight-full-default
               = link_to "Logout", destroy_owner_session_path, :method => :delete
           - else
             %li.section.bg-highlight.highlight-full-default

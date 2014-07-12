@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140712000358) do
+ActiveRecord::Schema.define(version: 20140712170138) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -196,11 +196,12 @@ ActiveRecord::Schema.define(version: 20140712000358) do
     t.string   "target_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.integer  "author_id"
+    t.string   "author_type"
   end
 
   add_index "photos", ["target_id", "target_type"], name: "index_photos_on_target_id_and_target_type"

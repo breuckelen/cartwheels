@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
     has_one :profile_photo, class_name: "Photo", as: :target
     has_many :reviews
     has_many :clickthroughs
-    has_many :photos
+    has_many :photos, as: :author
     has_many :user_cart_relations
     has_many :carts, :through => :user_cart_relations
     has_many :checkins, as: :user, dependent: :destroy
@@ -30,7 +30,6 @@ class User < ActiveRecord::Base
     roles :admin, :manager
 
     # Hooks
-    before_validation :verify_email
     before_save :ensure_authentication_token
     before_create :build_default_search_history
 
@@ -65,13 +64,6 @@ class User < ActiveRecord::Base
         end
     end
 
-    def verify_email
-        if Owner.where(email: self.email).count > 0
-            self.errors.add(:email,
-                "Email is already taken.")
-        end
-    end
-
     def as_json(options={})
         options[:only] ||= [:id, :email, :name, :zip_code, :created_at, :updated_at]
         super(options)
@@ -91,5 +83,4 @@ class User < ActiveRecord::Base
     end
 
     private :generate_authentication_token
-    private :verify_email
 end

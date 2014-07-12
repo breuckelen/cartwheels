@@ -1,5 +1,1 @@
-%h1 Edit cart
-
-= render 'form'
-
-= link_to 'Back', carts_path
+= render partial: 'form', locals: {cart: @cart}

@@ -56,7 +56,7 @@
           = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
         = f.submit "Submit", class: "btn btn-primary form-btn"
 
-      = f.hidden_field :lat, value: 40.7820015
-      = f.hidden_field :lon, value: -73.8317032
+      = f.hidden_field :lat, value: (cart.lat.nil? ? 40.7820015 : cart.lat)
+      = f.hidden_field :lon, value: (cart.lon.nil? ? -73.8317032 : cart.lon)
 
       .form-group.row

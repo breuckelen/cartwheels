@@ -12,7 +12,7 @@
     / Collect the nav links, forms, and other content for toggling
     .navbar-collapse.collapse
       %ul.nav.navbar-nav.navbar-left
-        -if not user_signed_in? or owner_signed_in?
+        -if not user_signed_in? and not owner_signed_in?
           .login-link
             =link_to "Sign Up", register_path
           .login-link

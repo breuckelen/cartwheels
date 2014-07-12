@@ -24,9 +24,12 @@
           %button.btn.btn-warning{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
             %span.glyphicon.glyphicon-ok
             Checkin
+      -if owner_signed_in? and not cart.in? current_owner.carts
+        .claim-btn
+          %span.glyphicon.glyphicon-briefcase{"data-toggle" => "modal", "data-target" => "#claim-modal-#{cart.id}"}
       -if cart.green == 1
         .green-btn
-          %button.btn.btn-success{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
+          %button.btn.btn-success
             %span.glyphicon.glyphicon-leaf
             green cart
 
@@ -38,7 +41,7 @@
         .col-lg-3
           .photo
             -if cart.photos.first
-              =image_tag(cart.photos.first.image_url_large)
+              =image_tag(cart.photos.first.image_url)
             -else
               =image_tag(asset_path("cw-logo-no-text.jpg"))
           .rating{"data-score" => cart.rating }
@@ -91,6 +94,23 @@
                   %a{href: "#"}
                     Mark as Moved
                     %span.glyphicon.glyphicon-flag
+
+        .modal.fade.claim-modal{id: "claim-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{"data-dismiss" => "modal", type: "button"}
+                  %span{"aria-hidden" => "true"} ×
+                  %span.sr-only Close
+                %h3.modal-title="Claim #{cart.name}"
+              .modal-body
+                .wheels-form
+                  .form-group
+                    %form{action: claim_cart_path(cart)}
+                      .row
+                        %input.form-input.location-input#address{name: "permit_number", placeholder: "Enter permit number"}
+                        %button.btn.btn-primary.form-btn{type: "submit"}
+                          Claim
 
           .modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
             .modal-dialog
@@ -216,7 +236,7 @@
                   %span.glyphicon.glyphicon-pencil
             .col-lg-4
 
-      -if not small and (user_signed_in? or owner_signed_in?)
+      -if not small and user_signed_in?
         .form-section
           =render partial: "reviews/form", locals: {cart: cart, review: Review.new}
 
