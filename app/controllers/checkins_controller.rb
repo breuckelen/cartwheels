@@ -28,12 +28,12 @@ class CheckinsController < ApplicationController
         @checkin.cart_id = params[:cart_id]
 
         if image = params[:checkin][:image]
-            @checkin.photos.build(user: user, image: image)
+            @checkin.photos.build(author: user, image: image)
         end
 
         if request.xhr? || remotipart_submitted?
             if @checkin.save
-                @checkin.cart.photos.create(user: user, image: image)
+                @checkin.cart.photos.create(author: user, image: image)
 
                 render locals: {cart: @checkin.cart }, status: :created
             else
@@ -42,7 +42,7 @@ class CheckinsController < ApplicationController
         else
             respond_to do |format|
                 if @checkin.save
-                    @checkin.cart.photos.create(user: user, image: image)
+                    @checkin.cart.photos.create(author: user, image: image)
 
                     format.json { render status: :created,
                         location: last_path(user),
@@ -57,7 +57,7 @@ class CheckinsController < ApplicationController
 
     def update
         if image = params[:checkin][:image]
-            @checkin.photos.build(user: current_user, image: image)
+            @checkin.photos.build(author: current_user, image: image)
         end
 
         respond_to do |format|

@@ -61,6 +61,16 @@
             callback: popoverCallback
         });
 
+        this.$el.find('.map-form').map_form();
+
+        this.$el.find('form[data-model=menu_item]').on('submit', function(e) {
+            e.preventDefault();
+
+            $(this).ajaxSubmit({
+                contentType: 'application/json'
+            });
+        });
+
         if(options !== undefined && options['startTab'] !== undefined) {
             this.switchSection(
                 this.$el.find('.subname a[data-target-class=' + options['startTab'] + ']')
@@ -223,14 +233,6 @@
         if (controller.length === 0) return;
 
         controller.find('.cart').cart();
-
-        controller.find('form[data-model=menu_item]').on('submit', function(e) {
-            e.preventDefault();
-
-            $(this).ajaxSubmit({
-                contentType: 'application/json'
-            });
-        });
 
         controller.find('#search-bar').css({'top': '0px'});
 
