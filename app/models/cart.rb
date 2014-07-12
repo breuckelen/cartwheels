@@ -133,9 +133,7 @@ class Cart < ActiveRecord::Base
                 carts = Cart.arel_table
                 categories = Category.arel_table
 
-                return joins(cart_category_relations: :category)
-                        .where(carts[:name].matches(tq)
-                            .or(categories[:name].eq(text_query)))
+                return where("name LIKE ?", tq)
                     .order("#{sort_by} DESC, created_at DESC")
             else
                 tq = "%#{text_query}%"
@@ -143,9 +141,7 @@ class Cart < ActiveRecord::Base
                 categories = Category.arel_table
 
                 return by_distance(origin: location_query)
-                    .joins(cart_category_relations: :category)
-                        .where(carts[:name].matches(tq)
-                            .or(categories[:name].eq(text_query)))
+                    .where("name LIKE ?", tq)
                     .order("#{sort_by} DESC, created_at DESC")
             end
         else
@@ -162,10 +158,7 @@ class Cart < ActiveRecord::Base
                             .where(categories[:name].eq_any(cats))
                 else
                     return in_bounds(box).by_distance(origin: location_query)
-                        .joins(cart_category_relations: :category)
-                            .where(carts[:name].matches(tq)
-                                .or(categories[:name].eq(text_query)
-                                .or(categories[:name].eq_any(cats))))
+                        .where("name LIKE ?", tq)
                 end
             end
         end
