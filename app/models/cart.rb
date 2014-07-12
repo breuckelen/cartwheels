@@ -165,8 +165,7 @@ class Cart < ActiveRecord::Base
                     return in_bounds(box).by_distance(origin: location_query)
                         .joins(cart_category_relations: :category)
                         .merge(where(carts[:name].matches(tq)
-                                    .or(categories[:name].eq(text_query))
-                                    .or(categories[:name].eq_any(cats))))
+                                    .or(categories[:name].eq(text_query))))
                 end
             end
         end
