@@ -150,12 +150,14 @@ class Cart < ActiveRecord::Base
             end
         else
             if "all".in? categories
-                return in_bounds(box)
+                return in_bounds(box).by_distance(origin: location_query)
             else
                 tq = "%#{text_query}%"
                 carts = Cart.arel_table
                 categories = Category.arel_table
-                return in_bounds(box).joins(cart_category_relations: :category)
+
+                return in_bounds(box).by_distance(origin: location_query)
+                    .joins(cart_category_relations: :category)
                     .merge(where(carts[:name].matches(tq)
                                 .or(categories[:name].eq(text_query))))
             end
