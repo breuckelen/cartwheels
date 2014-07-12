@@ -164,8 +164,7 @@ class Cart < ActiveRecord::Base
                     Rails.logger.info tq
                     return in_bounds(box).by_distance(origin: location_query)
                         .joins(cart_category_relations: :category)
-                        .merge(where(carts[:name].matches(tq)
-                                    .or(categories[:name].eq(text_query))))
+                        .merge(where(carts[:name].matches(tq)))
                 end
             end
         end
