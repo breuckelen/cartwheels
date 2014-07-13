@@ -95,6 +95,27 @@
                     Mark as Moved
                     %span.glyphicon.glyphicon-flag
 
+        .modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{"data-dismiss" => "modal", type: "button"}
+                  %span{"aria-hidden" => "true"} ×
+                  %span.sr-only Close
+                %h3.modal-title="Directions to #{cart.name}"
+              .modal-body
+                .directions-body
+                  .directions-map{id: "directions-map-#{cart.id}", "data-latitude" => cart.lat, "data-longitude" => cart.lon}
+                  .directions-panel{id: "directions-panel-#{cart.id}"}
+                    .heading Directions
+                    .container
+                .wheels-form
+                  .form-group
+                    %form.search-form
+                      .row
+                        %input.form-input.location-input#address{name: "lq", placeholder: "Start Address"}
+                        %button.hidden{type: "submit"}
+
         .modal.fade.claim-modal{id: "claim-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
           .modal-dialog
             .modal-content
@@ -111,27 +132,6 @@
                         %input.form-input.location-input#address{name: "permit_number", placeholder: "Enter permit number"}
                         %button.btn.btn-primary.form-btn{type: "submit"}
                           Claim
-
-          .modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
-            .modal-dialog
-              .modal-content
-                .modal-header
-                  %button.close{"data-dismiss" => "modal", type: "button"}
-                    %span{"aria-hidden" => "true"} ×
-                    %span.sr-only Close
-                  %h3.modal-title="Directions to #{cart.name}"
-                .modal-body
-                  .directions-body
-                    .directions-map{id: "directions-map-#{cart.id}", "data-latitude" => cart.lat, "data-longitude" => cart.lon}
-                    .directions-panel{id: "directions-panel-#{cart.id}"}
-                      .heading Directions
-                      .container
-                  .wheels-form
-                    .form-group
-                      %form.search-form
-                        .row
-                          %input.form-input.location-input#address{name: "lq", placeholder: "Start Address"}
-                          %button.hidden{type: "submit"}
 
 
         .col-lg-4.col-md-4.col-sm-4.col-xs-4.hours

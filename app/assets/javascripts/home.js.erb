@@ -77,30 +77,30 @@
     }
 
     var search = function() {
-        cartMap.removeMarkers();
-        $.getJSON('/carts/search', data, renderMap);
-    }
-
-    var onBoundsChange = function() {
         var bounds = cartMap.map.getBounds();
         var center = cartMap.getCenter();
         var sw = bounds.getSouthWest(),
             ne = bounds.getNorthEast();
 
-        controller.find('.more').removeClass('hide');
-        searchLimit = 20;
+        cartMap.removeMarkers();
         data['limit'] = searchLimit;
         data['categories'] = _.map(controller.find(':checked'), function(d) {
             return $(d).parent().attr('data-category');
         });
         data['box'] = [sw.lat() + " " + sw.lng(), ne.lat() + " " + ne.lng()];
         data['lq'] = center.lat() + " " + center.lng();
+        $.getJSON('/carts/search', data, renderMap);
+    }
+
+    var onBoundsChange = function() {
+        controller.find('.more').removeClass('hide');
+        searchLimit = 20;
     }
 
     var loadResults = function(inputs) {
         data['tq'] = inputs.tq;
 
-        if(inputs['lq'] !== '') {
+        if(inputs.lq !== '') {
             GMaps.geocode({
                 address: inputs.lq,
                 callback: function(results, status) {
