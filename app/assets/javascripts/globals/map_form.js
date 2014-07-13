@@ -26,6 +26,8 @@
             $(this).ajaxSubmit({
                 contentType: 'application/json'
             });
+
+            $(this).trigger('custom');
         });
 
         if(this.$el.parents('.modal').length > 0) {

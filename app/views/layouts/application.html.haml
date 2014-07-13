@@ -9,6 +9,7 @@
   = csrf_meta_tags
 
 %body
+  .loading-modal
   %div{:id => "#{controller.controller_name}-#{action_name}"}
     .flash-wrapper
       - flash.each do |key, value|
