@@ -22,7 +22,7 @@
         var currVertPos = $(window).scrollTop();
         var delta = currVertPos - lastVertPos;
 
-        $("#poster").each(function(){
+        $(".poster").each(function(){
             $(this).css("top", parseFloat($(this).css("top")) -
                 delta * $(this).attr("speed") + "px");
         });
@@ -123,7 +123,6 @@
 
         if (controller.length === 0) return;
 
-        //Variables
         $(window).scrollTop(0);
         searchOffset = 0;
         searchLimit = 20;
@@ -159,6 +158,18 @@
             var $container = $(this).parent();
             $container.find('li.active').removeClass('active');
             $(this).addClass('active');
+        });
+
+        controller.find('.navbar-center a').click(function(e) {
+            if($(this).attr('data-target') == 1) {
+                controller.find('.other.poster').removeClass('hide');
+                controller.find('#main-content').hide();
+                controller.find('#about-content').show();
+            }
+            else {
+                controller.find('#about-content').hide();
+                controller.find('#main-content').show();
+            }
         });
 
         $(window).scroll(onScroll);

@@ -73,7 +73,7 @@ $mapHeight: 600px
                 padding-left: 10px
                 padding-right: 10px
 
-                @extend .highlight-blue
+                @extend .highlight-gray
 
         &.navbar-right
             padding-left: 10%
@@ -87,18 +87,18 @@ $mapHeight: 600px
         img
             @include scale-property(width, 40px, 0.8, 0.7, 0.5, 0.4)
 
-
-#poster
+.poster
     position: absolute
     width: 100%
-    top: 0
     @include scale-property(height, $posterHeight + $posterOffset)
+
+    &.hide
+        display: none
 
     .fill
         width: 100%
         height: 100%
 
-        background-image: image-url("header.png")
         background-position: top center
         background-size: cover
         opacity: 0.8
@@ -115,17 +115,67 @@ $mapHeight: 600px
 
                 line-height: normal
                 vertical-align: middle
+
+.poster-top
+    top: 0
+
+    .fill
+        background-image: image-url("header.png")
+
+.poster-top-middle
+    top: 120%
+
+    .fill
+        background-image: image-url("times-square.jpg")
+
+.poster-middle-one
+    top: 260%
+
+    .fill
+        background-image: image-url("lightbulb.jpg")
+
+.poster-middle-two
+    top: 400%
+
+    .fill
+        background-image: image-url("food-cart.jpg")
+
+.poster-bottom-middle
+    top: 540%
+
+    .fill
+        background-image: image-url("skyline.jpg")
+
+
+.poster-bottom
+    top: 700%
+
+    .fill
+        background-image: image-url("cw-logo-no-text.jpg")
+        background-size: auto
+        background-repeat: no-repeat
+
 #home-index #main-content
+    position: relative
     width: 100%
     height: 100%
     padding: 0
-    position: relative
 
     background-size: cover
     background-position: center
     background-color: getColor(default)
     overflow-x: hidden
     overflow-y: hidden
+
+#home-index #about-content
+    display: none
+    position: relative
+    width: 100%
+    height: 100%
+    padding: 0
+
+    background-size: cover
+    background-position: center
 
 #map-header
     @include scale-property(margin-top, 20px)
@@ -274,6 +324,78 @@ $mapHeight: 600px
 
         &:hover
             background-color: rgba(0, 0, 0, 0.9)
+
+#about-content
+    font-family: "Bebas Regular"
+    font-size: 2em
+
+    .section
+        width: 100%
+        background: white
+        margin-bottom: 22%
+        height: 500px
+
+        &.last
+            height: 300px
+
+            .photo
+                position: relative
+                display: inline-block
+                vertical-align: top
+
+                height: 300px
+                margin-right: 5%
+                margin-bottom: 5%
+
+                img
+                    z-index: 2
+                    position: relative
+                    width: auto
+                    @include scale-property(height, 300px)
+
+                    @include vendor(transition, all 0.4s ease 0s)
+
+                    &:hover
+                        opacity: 0.1
+
+                .text
+                    z-index: 1
+                    font-family: Roboto
+                    font-size: 0.8em
+                    text-align: center
+
+                    position: absolute
+                    width: 100%
+                    top: 10%
+
+                    .name
+                        font-size: 1.3em
+                        font-weight: bold
+
+        .section-header
+            text-align: center
+            font-size: 1.5em
+
+            width: 70%
+            margin: 0 auto
+            padding-top: 5%
+            padding-bottom: 2%
+
+            border-bottom: 3px solid #222
+
+        .section-content
+            font-family: OpenSans
+            font-size: 0.8em
+            width: 75%
+            height: 100%
+            margin: 0 auto
+            padding-top: 2%
+
+            ul
+                margin-bottom: 8%
+
+            li
+                margin-bottom: 1%
 
 footer
     text-align: center

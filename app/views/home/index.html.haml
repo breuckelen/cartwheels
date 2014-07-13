@@ -2,7 +2,7 @@
   =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
   =javascript_include_tag "gmaps.js"
 
-#poster.carousel.slide{speed: "0.2"}
+.poster.poster-top.carousel.slide{speed: "0.2"}
   .fill
     .banner
       %span Cartwheels
@@ -20,9 +20,9 @@
       .nav.navbar-nav
         %ul.navbar-center
           %li.active
-            %a{href: "#about"} Map
+            %a{href: "#about", "data-target" => "2"} Map
           %li
-            %a{href: "#about"} About
+            %a{href: "#about", "data-target" => "1"} About
       %ul.nav.navbar-nav.navbar-right
         %a.navbar-brand{href: "https://www.facebook.com/cartwheelsUS"}
           =image_tag("fb-icon.png")
@@ -65,3 +65,120 @@
     .row
       .col-lg-12
         %p Copyright © Cartwheels 2014
+
+.poster.other.poster-top-middle.carousel.slide.hide{speed: "0.2"}
+  .fill
+
+.poster.other.poster-middle-one.carousel.slide.hide{speed: "0.28"}
+  .fill
+
+.poster.other.poster-middle-two.carousel.slide.hide{speed: "0.3"}
+  .fill
+
+.poster.other.poster-bottom-middle.carousel.slide.hide{speed: "0.3"}
+  .fill
+
+.poster.other.poster-bottom.carousel.slide.hide{speed: "0.25"}
+  .fill
+
+#about-content
+
+  #content
+    .section
+      .section-header Background
+      .section-content
+        New York City, the vast, metropolitan expanse of concrete and steel that houses over 8 million inhabitants, sustains an immensely unique and multi-faceted culture. Mobile food vendors pervade this city, ingraining themselves deeply in the lives and routines of hungry New Yorkers. They populate centers of traffic on NY's busiest street corners, because that's how owners earn their money. Vending everything from lobsters to waffles to pastries, these vendors are an important and burgeoning part of our culture.
+    .section
+      .section-header The Problem
+      .section-content
+        %ol
+          %li
+            Mobile food vendors can be 
+            %b hard to find.
+            How do you know which corner has Halal food, which has a coffee cart, and which has fruit?
+          %li
+            The average cart owner pays
+            %b $433/year in health violations.
+            But consumers have no way of knowing which carts have top-notch, healthy foods and which do not!
+          %li
+            Cart owners have
+            %b no incentive to provide reliable, consistent service
+            because there is no accountability mechanism to keep them in check.
+    .section
+      .section-header The Cartwheels Solution
+      .section-content
+        %ol
+          %li
+            We provide New Yorkers with instant maps of nearby carts differentiated by the products they sell through out web and mobile applications. 
+          %li
+            We allow consumers to rate and review food carts as well as report health violations on our applications - talk about accontability!
+          %li
+            We facilitate communication between cart owners and consumers, allowing cart owners to update their online menus, advetise their carts, and offer special offers and consumer loyalty programs. Not only do we increase accountability, but we improve the customer experience in the mobile food vending space. 
+    .section
+      .section-header We ♥ small businesses
+      .section-content
+        %ul
+          %li
+            By driving traffic to food vendors, Cartwheels helps these small businesses generate revenue. 
+          %li
+            By facilitating communication between cart owners and consumers, we increase revenues for carts. Owners can purchase premium ads on our site and attract a recurring customer base through consumer loyalty programs. 
+    .section
+      .section-header We ♥ new york
+      .section-content
+        %ul
+          %li
+            Because of Cartwheels, there's no more hastle! Now, citi-goers can find food vendors near them with a click of a button.
+          %li
+            Consumers get to buy healthier, tastier food from the carts they enjoy mostly by reading cart reviews.
+          %li
+            They can subscribe to carts, receive special offers, and participate in consumer loyalty programs. 
+          %li
+            On top of that, our review system will create greater accountability for food quality and cleanliness among food vendors.
+
+    .section.last
+      .section-header About us
+      .section-content
+        %ul
+          %li
+            Named the #1 best high school app by the MIT Media Lab 
+          %li
+            Named the #2 best new app idea globally by the Institute for Electrical and Electronic Engineers (IEEE). 
+          %li
+            Endorsed by NYC Venture Capitalist Fred Wilson and staff at CBS Local.
+          %li
+            Featured in YahooNews, MarketWatch, NBC, and Fox.  
+        .photo
+          =image_tag(asset_path("ben.jpg"))
+          .text
+            .name
+              Benjamin Attal
+            .title
+              Co-Founder and Chief Executive Officer
+        .photo
+          =image_tag(asset_path("jack.jpg"))
+          .text
+            .name
+              Jack Cahn
+            .title
+              Co-Founder and President
+        .photo
+          =image_tag(asset_path("david.jpg"))
+          .text
+            .name
+              David Cahn
+            .title
+              Chief Financial Officer
+        .photo
+          =image_tag(asset_path("will.jpg"))
+          .text
+            .name
+              Will Field-Thompson
+            .title
+              iOS Lead
+        .photo
+          =image_tag(asset_path("eric.jpg"))
+          .text
+            .name
+              Eric Chen
+            .title
+              Android Lead
