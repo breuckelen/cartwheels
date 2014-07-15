@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140712170138) do
+ActiveRecord::Schema.define(version: 20140715171726) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -76,12 +76,13 @@ ActiveRecord::Schema.define(version: 20140712170138) do
     t.float    "lon"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "green",         default: 0
-    t.integer  "popularity",    default: 0
+    t.integer  "green",          default: 0
+    t.integer  "popularity",     default: 0
     t.float    "rating"
     t.string   "address"
-    t.string   "description",   default: ""
-    t.boolean  "moved",         default: false
+    t.string   "description",    default: ""
+    t.boolean  "moved",          default: false
+    t.string   "twitter_handle", default: ""
   end
 
   add_index "carts", ["created_at", "city"], name: "index_carts_on_created_at_and_city"
