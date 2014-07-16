@@ -74,20 +74,21 @@
     }
 
     MapForm.prototype.moveCheckin = function($container, address) {
+        var $form = this;
         GMaps.geocode({
             address: address,
             callback: function(results, status) {
                 if(status == 'OK') {
                     var latlng = results[0].geometry.location;
 
-                    this.formMap.removeMarkers();
-                    this.formMap.setCenter(latlng.lat(), latlng.lng());
-                    this.formMap.addMarker({
+                    $form.formMap.removeMarkers();
+                    $form.formMap.setCenter(latlng.lat(), latlng.lng());
+                    $form.formMap.addMarker({
                         lat: latlng.lat(),
                         lng: latlng.lng(),
                         draggable: true
                     });
-                    this.formMap.setZoom(14);
+                    $form.formMap.setZoom(14);
                 }
             }
         });
