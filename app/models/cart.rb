@@ -27,7 +27,6 @@ class Cart < ActiveRecord::Base
     validates :permit_number, presence: true, unless: :twitter_handle?
     validates :permit_number, uniqueness: true, unless: :twitter_handle?
     validates :permit_number, numericality: true, unless: :twitter_handle?
-    validates :twitter_handle, uniqueness: true, unless: :permit_number?
 
     # Filters
     before_validation :update_popularity, :update_rating, :update_location
