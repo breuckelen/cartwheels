@@ -16,14 +16,18 @@ class Cart < ActiveRecord::Base
     has_many :hours
     has_many :cart_owner_relations
     has_many :owners, through: :cart_owner_relations
+    has_many :tweets
 
     # Validations
-    validates :name, :city, :permit_number, :zip_code, :address, :lat, :lon,
+    validates :name, :city, :zip_code, :address, :lat, :lon,
         presence: true
-    validates :permit_number, :zip_code, :lat, :lon, :popularity, numericality: true
-    validates :permit_number, uniqueness: true
+    validates :zip_code, :lat, :lon, :popularity, numericality: true
     validates :zip_code, format: {:with => /\A\d{5}\Z/}
     validates :green, :inclusion => {:in => [0, 1, 2]}
+    validates :permit_number, presence: true, unless: :twitter_handle?
+    validates :permit_number, uniqueness: true, unless: :twitter_handle?
+    validates :permit_number, numericality: true, unless: :twitter_handle?
+    validates :twitter_handle, uniqueness: true, unless: :permit_number?
 
     # Filters
     before_validation :update_popularity, :update_rating, :update_location

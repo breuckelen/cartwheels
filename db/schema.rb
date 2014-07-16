@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140715171726) do
+ActiveRecord::Schema.define(version: 20140716041157) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -264,6 +264,13 @@ ActiveRecord::Schema.define(version: 20140715171726) do
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name"
+
+  create_table "tweets", force: true do |t|
+    t.integer  "cart_id"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "user_cart_relations", force: true do |t|
     t.integer "relation_type"

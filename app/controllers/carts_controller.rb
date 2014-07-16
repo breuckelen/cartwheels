@@ -231,7 +231,7 @@ class CartsController < ApplicationController
 
     def cart_params
         params.require(:cart).permit(:name, :city, :permit_number, :lat, :lon,
-            :green, :rating, :description)
+            :green, :rating, :description, :twitter_handle)
     end
 
     def set_cart
