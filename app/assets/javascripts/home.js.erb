@@ -31,11 +31,13 @@
     }
 
     var renderMap = function(data) {
+        var bounds = [];
         cartMap.removeMarkers();
 
         $.each(data.data, function(i, d) {
             //Extend the bounds of the map
             var latlng = new google.maps.LatLng(d.lat, d.lon);
+            bounds.push(latlng);
 
             var infoWindow = new google.maps.InfoWindow({
                 content: infoTemplate.replace(/{{name}}/, d.name)
@@ -66,6 +68,8 @@
                 }
             });
         });
+
+        cartMap.fitLatLngBounds(bounds);
 
         //Increase search offset if more results, else reset
         if (data.data.length === searchLimit) {
