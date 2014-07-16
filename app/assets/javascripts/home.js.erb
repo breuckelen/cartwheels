@@ -69,7 +69,8 @@
             });
         });
 
-        cartMap.fitLatLngBounds(bounds);
+        if (data.data.length > 0)
+            cartMap.fitLatLngBounds(bounds);
 
         //Increase search offset if more results, else reset
         if (data.data.length === searchLimit) {
