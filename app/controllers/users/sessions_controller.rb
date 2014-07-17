@@ -13,7 +13,6 @@ class Users::SessionsController < Devise::SessionsController
         sign_in resource
 
         respond_to do |format|
-            flash[:notice] = "Logged in successfully"
             format.html { redirect_to home_path }
             format.json { render status: :ok,
                 location: last_path(resource),

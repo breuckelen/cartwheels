@@ -1,20 +1,26 @@
 .wheels-form
+    width: 80%
     margin: 0 auto
+
+    form
+        margin-left: 0
 
     .form-input
         width: 70%
         @include scale-property(height, 32px)
 
     label
-        color: white
         size: 1.5em
 
 .form-header
     font-family: "Bebas Book"
     font-weight: bold
     color: #eee
+    text-align: center
+
     @include scale-property(font-size, 30px)
 
+    width: 100%
     margin-bottom: 2%
 
     a
@@ -33,7 +39,7 @@
     font-family: OpenSans
     font-weight: 500
     font-size: 1.5em
-    color: #eee
+    color: white
     vertical-align: middle
 
     @include scale-property(height, 32px)
@@ -45,6 +51,7 @@
 
     display: block
     width: 80%
+    margin: 0 auto
     margin-bottom: 8px
     padding-left: 11px
     padding-right: 13px
@@ -73,6 +80,7 @@
 
 .form-text-area
     width: 80%
+    margin: 0 auto
 
 textarea
     &.no-resize
@@ -82,9 +90,14 @@ textarea
 
 .form-btn
     font-size: 1.2em
-    color: white
-
+    width: 20%
+    margin: 0 auto
+    text-align: center
     vertical-align: middle
+
+    border: none
+
+
     @include scale-property(height, 32px)
     @include scale-property(line-height, 16px)
     @include scale-property(padding-left, 30px)
@@ -92,19 +105,27 @@ textarea
 
     @include vendor(transition, all 0.2s ease 0s)
 
+
     &.no-scale
         height: 32px
         line-height: 20px
 
+.login-btn
+    color: #777
+    background: getColor(lightteal)
+    box-shadow: 1px 1px 2px #222
+
     &:hover
-        color: #eee
+        background: getColor(darkteal)
 
 .file-btn
     font-weight: 500
 
     position: relative
     overflow: hidden
-    background: getColor(red)
+
+    &:hover
+        opacity: 0.9
 
     input[type=file]
         position: absolute
@@ -120,8 +141,8 @@ textarea
         cursor: inherit
         display: block
 
-    &:hover
-        opacity: 0.9
+    .label
+        color: #777
 
 input[type=readonly]
     background-color: white !important
@@ -130,6 +151,7 @@ input[type=readonly]
 .help-block
     font-size: 1.5em
     font-color: getColor(red)
+    text-align: center
 
     margin: 0px
     height: 0px

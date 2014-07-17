@@ -241,7 +241,7 @@
             searchCallback: search
         });
 
-        controller.find('.mark-as-moved a').click(function(e) {
+        controller.find('.mark-as-moved').click(function(e) {
             var cartId = $(this).parents('.cart').attr('data-cart-id');
 
             $.getJSON('/carts/' + cartId + '/mark_as_moved', {moved: true}, function(data) {

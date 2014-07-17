@@ -20,6 +20,7 @@
 
         controller.find('.form-input').focus(function(e) {
             controller.parent().find('.form-desc').slideUp();
+            controller.parent().find('.form-header').slideUp();
         });
     }
 

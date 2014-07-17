@@ -26,7 +26,7 @@
               .form-group.search-group
                 %input.search-input.no-scale{type: "text", name: "tq", placeholder: "Food"}
                 %input.search-input.no-scale.location-input{type: "text", name: "lq", placeholder: "Location"}
-                %button.btn.btn-primary.search-btn Search
+                %button.btn.btn-primary.form-btn.search-btn Search
           - if user_signed_in?
             %li.section.bg-highlight.highlight-full-default
               = link_to "Logout", logout_path, :method => :delete

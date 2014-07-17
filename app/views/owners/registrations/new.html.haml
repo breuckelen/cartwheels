@@ -1,8 +1,6 @@
 #form-wrapper.wheels-form
-  .form-header.row
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
-    .col-lg-4
-      %a{href: "#"} Owner Sign Up
+  .form-header
+    %a{href: "#"} Owner Sign Up
 
   = form_for @owner, remote: true, authenticity_token: true, url: registration_path("owner"), html: {'data-model' => 'owner'} do |f|
     - if @owner.errors.any?
@@ -13,16 +11,12 @@
 
     .form-group
       .row
-        .form-label Name
-      .row
         = f.text_field :name, :class => 'form-input',
             :placeholder => 'Your name'
       .row
         .help-block
 
     .form-group
-      .row
-        .form-label Email
       .row
         = f.text_field :email, :class => 'form-input',
             :placeholder => 'Your email address'
@@ -31,8 +25,6 @@
 
     .form-group
       .row
-        .form-label Password
-      .row
         = f.password_field :password, :class => 'form-input',
             :placeholder => 'Password (8 or more letters)'
       .row
@@ -40,13 +32,11 @@
 
     .form-group
       .row
-        .form-label Confirm
-      .row
         = f.password_field :password_confirmation, :class => 'form-input',
             :placeholder => 'Confirm password'
       .row
         .help-block
 
     .form-group.row
-      = f.submit "Register", class: "btn btn-primary form-btn"
+      %button.btn.btn-primary.form-btn Register
       %a.btn.btn-danger.form-btn{href: register_path} User Sign Up

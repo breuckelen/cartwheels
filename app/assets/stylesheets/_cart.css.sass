@@ -13,6 +13,9 @@ $sectionWidth: 740px
             @include scale-property(padding-left, 40px)
 
         .nav-btn
+            display: none
+            width: 15%
+            padding: 0
             @include scale-property(margin-bottom, 7px)
             @include vendor(border-radius, 2px)
 
@@ -68,25 +71,6 @@ $sectionWidth: 740px
 
 
 #carts
-    //Links and icons
-    .slide-icon
-        font-size: 1.2em
-
-        display: inline-block
-        @include scale-property(width, 20px)
-        @include scale-property(height, 250px)
-        @include scale-property(margin-left, 10px)
-        vertical-align: top
-        @include scale-property(padding-top, 125px)
-
-    .cart-btn
-        font-size: 1em
-
-        @include scale-property(margin-top, 5px)
-        padding: 3px 8px
-        @include vendor(border-radius, 2px)
-
-
     .more-link
         @include scale-property(font-size, 15px)
         @include scale-property(margin-top, 5px)
@@ -101,50 +85,3 @@ $sectionWidth: 740px
         img
             @include scale-property(width, 17px)
             height: auto
-
-    .no-results-header
-        @include scale-property(font-size, 17px)
-
-        padding-top: 40%
-
-        a
-            color: getColor(red)
-
-    .location
-        .mark-as-moved
-            display: block
-            font-size: 0.8em
-            padding-left: 5%
-
-            a
-                color: getColor(red)
-
-    .moved-notice
-        font-size: 1.5em
-        @include scale-property(line-height, 50px)
-
-    .section-header
-        font-size: 2em
-        font-family: "Bebas Regular"
-        text-align: center
-
-        display: block
-        width: $sectionWidth
-        margin-right: auto
-        @include scale-property(margin-top, 20px)
-        @include scale-property(margin-bottom, 50px)
-        border-bottom: 2px solid #333
-
-    .form-section
-        width: 100%
-        margin: 50px 0
-        padding: 20px 50px
-
-        border: 1px solid #aaa
-        @include vendor(border-radius, 2px)
-
-        .form-header
-            color: #222
-
-        .form-input
-            border: 1px solid #aaa

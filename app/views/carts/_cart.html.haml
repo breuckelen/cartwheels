@@ -1,99 +1,91 @@
 .cart{id: "cart_#{cart.id}", "data-cart-id" => cart.id}
-  -if small
-    .slide-icon.prev
-      %a{href: "#"}
-        %span.glyphicon.glyphicon-chevron-left
-
   .container.size-xs
-    .name
-      -if small
-        -if cart.name.length < 28
-          =link_to cart.name, cart
-        -else
-          =link_to "#{cart.name[0..28]}...", cart
-        .subname.active
-          %a{href: "#", "data-target-class" => "first"} Info
-        .subname
-          %a{href: "#", "data-target-class" => "second"} Menu
-        .subname
-          %a{href: "#", "data-target-class" => "third"} Reviews
-        .subname
-          %a{href: "#", "data-target-class" => "fourth"} Checkins
-      -if user_signed_in?
-        .checkin-btn
-          %button.btn.btn-warning{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
-            %span.glyphicon.glyphicon-ok
-            Checkin
-      -if owner_signed_in? and not cart.in? current_owner.carts
-        .claim-btn
-          %span.glyphicon.glyphicon-briefcase{"data-toggle" => "modal", "data-target" => "#claim-modal-#{cart.id}"}
-      -if cart.green == 1
-        .green-btn
-          %button.btn.btn-success
-            %span.glyphicon.glyphicon-leaf
-            green cart
 
-    .content.first
+    .content
       -if not small
         .section-header
           Info
       .info.section
-        .col-lg-3.col-md-3.col-sm-3.col-xs-3
+        .info-header
           .photo
             -if cart.photos.first
               =image_tag(cart.photos.first.image_url)
             -else
               =image_tag(asset_path("cw-logo-no-text.jpg"))
-          .rating{"data-score" => cart.rating }
-          .categories
-            -if cart.categories.first
-              -cart.categories[0..2].each do |item|
-                .item
-                  =link_to item.name, "#"
-          -if cart.categories.count > 3
-            =link_to "#{cart.categories[3..-1].count} more", "#", {"data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
+          .actions
+            -if user_signed_in?
+              .action-link
+                %span.glyphicon.glyphicon-ok{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
+                Checkin
+            -if not cart.moved
+              .action-link.mark-as-moved
+                %span.glyphicon.glyphicon-exclamation-sign
+                Mark as Moved
+            -if owner_signed_in? and not cart.in? current_owner.carts
+              .action-link
+                %span.glyphicon.glyphicon-briefcase{"data-toggle" => "modal", "data-target" => "#claim-modal-#{cart.id}"}
+            -if cart.green == 1
+              .action-link
+                %span.glyphicon.glyphicon-leaf
+        .info-content
+          .subsection
+            .col-lg-4
+              .rating{"data-score" => cart.rating }
+              .reviews="#{cart.reviews.count} reviews"
+              .name
+                -if small
+                  -if cart.name.length < 28
+                    =link_to cart.name, cart
+                  -else
+                    =link_to "#{cart.name[0..28]}...", cart
+            .col-lg-4
+              .categories
+                -if cart.categories.first
+                  -cart.categories[0..2].each do |item|
+                    .item
+                      =link_to item.name, "#"
+              -if cart.categories.count > 3
+                =link_to "#{cart.categories[3..-1].count} more", "#", {"data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
+              -else
+                %a{href: "#", "data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
+                  Add a category
+            .col-lg-4
+              .location
+                .map
+                  %a.pop-image.pop-image-top{href: "#", "data-title" => "Address", "data-content" => cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
+                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
+          -if cart.hours.first
+            .hours-heading
+              Hours
+            -cart.hours.order(:day).each do |item|
+              .item.row
+                .col-lg-4.col-md-4.col-sm-4.col-xs-4.day=n_to_day(item.day)
+                .start.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.start)
+                .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
+                .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
           -else
-            %a{href: "#", "data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
-              Add a category
-          .modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
-            .modal-dialog
-              .modal-content
-                .modal-header
-                  %button.close{"data-dismiss" => "modal", type: "button"}
-                    %span{"aria-hidden" => "true"} ×
-                    %span.sr-only Close
-                  %h3.modal-title="Categories - #{cart.name}"
-                .modal-body
-                  .categories
-                    -cart.categories.each do |item|
-                      .item
-                        =link_to item.name, "#"
-                  -if user_signed_in? or owner_signed_in?
-                    .links
-                      =link_to "Add a new category", new_category_path
+            .hours-heading.warning No hours available
+          -if cart.hours.count < 7
+            -if user_signed_in? or owner_signed_in?
+              .add-hours.wheels-form
+                =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
 
-                  -if user_signed_in? or owner_signed_in?
-                    =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
-        .col-lg-5.col-md-5.col-sm-5.col-xs-5
-          .location
-            -if cart.moved
-              .moved-notice
-                .warning This cart has moved recently
-                Checkin to update it's location
-            -else
-              .map
-                = image_tag "http://maps.google.com/maps/api/staticmap?size=250x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
-              .meta
-                //Find a way to specify what's streets between
-                .address
-                  .col-lg-2.col-md-2.col-sm-2.col-xs-2
-                    .address-heading Near
-                  .col-lg-9.col-md-9.col-sm-9.col-xs-9
-                    =link_to cart.address, "#", {"data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}", class: "directions-link"}
-                .mark-as-moved
-                  %a{href: "#"}
-                    Mark as Moved
-                    %span.glyphicon.glyphicon-flag
+
+        .modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{"data-dismiss" => "modal", type: "button"}
+                  %span{"aria-hidden" => "true"} ×
+                  %span.sr-only Close
+                %h3.modal-title="Categories - #{cart.name}"
+              .modal-body
+                .categories
+                  -cart.categories.each do |item|
+                    .item
+                      =link_to item.name, "#"
+                -if user_signed_in? or owner_signed_in?
+                  =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
 
         .modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
           .modal-dialog
@@ -133,23 +125,17 @@
                         %button.btn.btn-primary.form-btn{type: "submit"}
                           Claim
 
-
-        .col-lg-4.col-md-4.col-sm-4.col-xs-4.hours
-          -if cart.hours.first
-            .hours-heading
-              Hours
-            -cart.hours.order(:day).each do |item|
-              .item.row
-                .col-lg-4.col-md-4.col-sm-4.col-xs-4.day=n_to_day(item.day)
-                .start.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.start)
-                .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
-                .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
-          -else
-            .hours-heading.warning No hours available
-          -if cart.hours.count < 7
-            -if user_signed_in? or owner_signed_in?
-              .add-hours.wheels-form
-                =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
+        .modal.fade.checkins-modal{id: "checkins-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{"data-dismiss" => "modal", type: "button"}
+                  %span{"aria-hidden" => "true"} ×
+                  %span.sr-only Close
+                %h3.modal-title="Checkin at #{cart.name}"
+              .modal-body
+                -if user_signed_in?
+                  =render partial: "checkins/form", locals: {cart: cart, checkin: Checkin.new}
 
       -if not small
         .section-header
@@ -158,58 +144,16 @@
       -if not cart.menu.nil? and (small or cart.menu.menu_items.first)
         .menu.section
           .row
-            -if cart.menu.menu_items.first
-              .col-lg-4.col-md-4.col-sm-4.col-xs-4
-                .notes.notes-left
-              .col-lg-2.col-md-2.col-sm-2.col-xs-2.carousel.slide{id: "menu-carousel-#{cart.id}", "data-ride" => "carousel", "data-interval" => "false"}
-                %ol.carousel-indicators
-                  -(0...cart.menu.menu_items.count).each do |i|
-                    -if i == 0
-                      %li.active{"data-slide-to" => "0", "data-target" => "#menu-carousel-#{cart.id}"}
+            -cart.menu.menu_items.each do |item|
+              -if item == cart.menu.menu_items.first
+                .item.active{id: "#{item.id}"}
+                  .name=item.name
+                  .photo
+                    -if item.photo
+                      =image_tag(item.photo.image_url_small)
                     -else
-                      %li{"data-slide-to" => "#{i}", "data-target" => "#menu-carousel-#{cart.id}"}
-                .carousel-inner
-                  -cart.menu.menu_items.each do |item|
-                    -if item == cart.menu.menu_items.first
-                      .item.active{id: "#{item.id}"}
-                        .name=item.name
-                        %a.pop-image.pop-input{href: "#"}
-                          -if item.photo
-                            =image_tag(item.photo.image_url_small)
-                          -else
-                            =image_tag(asset_path("cw-logo-no-text.jpg"))
-                        .carousel-caption
-                          .price="$#{item.price}"
-                        -if user_signed_in?
-                          .content-popover
-                            =render partial: "notes/form", locals: {menu_item: item, note: Note.new}
-                    -else
-                      .item{id: "#{item.id}"}
-                        .name=item.name
-                        %a.pop-image.pop-input{href: "#"}
-                          -if item.photo
-                            =image_tag(item.photo.image_url_small)
-                          -else
-                            =image_tag(asset_path("cw-logo-no-text.jpg"))
-                        .carousel-caption
-                          .price="$#{item.price}"
-                        -if user_signed_in?
-                          .content-popover
-                            =render partial: "notes/form", locals: {menu_item: item, note: Note.new}
-                %a.left.carousel-control{"data-slide" => "prev", href: "#menu-carousel-#{cart.id}", role: "button"}
-                  %span.glyphicon.glyphicon-circle-arrow-left
-                %a.right.carousel-control{"data-slide" => "next", href: "#menu-carousel-#{cart.id}", role: "button"}
-                  %span.glyphicon.glyphicon-circle-arrow-right
-              .col-lg-4.col-md-4.col-sm-4.col-xs-4
-                .notes.notes-right
-            -else
-              .col-lg-4.col-md-4.col-sm-4.col-xs-4
-              .col-lg-4.col-md-4.col-sm-4.col-xs-4
-                .no-results-header
-                  %a{href: cart_path(cart)}
-                    Add a menu item
-                    %span.glyphicon.glyphicon-list-alt
-                  .col-lg-4.col-md-4.col-sm-4.col-xs-4
+                      =image_tag(asset_path("cw-logo-no-text.jpg"))
+                  .price="$#{item.price}"
 
       -if not small and (user_signed_in? or owner_signed_in?)
         .form-section
@@ -227,14 +171,6 @@
                 .user=review.user.name
                 .date=time_ago_in_words(review.updated_at) + " ago"
                 .text=review.text
-          -else
-            .col-lg-4.col-md-4.col-sm-4.col-xs-4
-            .col-lg-4.col-md-4.col-sm-4.col-xs-4
-              .no-results-header
-                %a{href: cart_path(cart)}
-                  Add a review
-                  %span.glyphicon.glyphicon-pencil
-            .col-lg-4.col-md-4.col-sm-4.col-xs-4
 
       -if not small and user_signed_in?
         .form-section
@@ -252,29 +188,6 @@
                   -if checkin.photos.first
                     %a.pop-image.pop-image-top{href: "#", "data-title" => checkin.user.name, "data-content" => checkin.description}
                       =image_tag(checkin.photos.first.image_url_thumb)
-          -else
-            .col-lg-4.col-md-4.col-sm-4.col-xs-4
-            .col-lg-4.col-md-4.col-sm-4.col-xs-4
-              .no-results-header
-                =link_to "No checkins", cart
-            .col-lg-4.col-md-4.col-sm-4.col-xs-4
-
-      .modal.fade.checkins-modal{id: "checkins-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
-        .modal-dialog
-          .modal-content
-            .modal-header
-              %button.close{"data-dismiss" => "modal", type: "button"}
-                %span{"aria-hidden" => "true"} ×
-                %span.sr-only Close
-              %h3.modal-title="Checkin at #{cart.name}"
-            .modal-body
-              -if user_signed_in?
-                =render partial: "checkins/form", locals: {cart: cart, checkin: Checkin.new}
 
     -if small
       .expand
-  -if small
-    .slide-icon.next
-      %a{src: "#"}
-        %span.glyphicon.glyphicon-chevron-right
-

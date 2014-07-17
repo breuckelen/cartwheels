@@ -1,8 +1,6 @@
 #form-wrapper.wheels-form
-  .form-header.row
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
-    .col-lg-4
-      %a{href: "#"} User Sign Up
+  .form-header
+    %a{href: "#"} User Sign Up
 
   = form_for @user, remote: true, authenticity_token: true, url: registration_path("user"), html: {'data-model' => 'user'} do |f|
     - if @user.errors.any?
@@ -12,8 +10,6 @@
             %li= m
 
     .form-group
-      .row
-        .form-label Name
       .row
         - if session['devise.auth_data']
           = f.text_field :name, :class => 'form-input', :placeholder => 'Name',
@@ -25,8 +21,6 @@
 
     .form-group
       .row
-        .form-label Email
-      .row
         - if session['devise.auth_data']
           = f.text_field :email, :class => 'form-input', :placeholder => 'Email',
               value: session['devise.auth_data']['info']['email']
@@ -37,8 +31,6 @@
 
     .form-group
       .row
-        .form-label Password
-      .row
         = f.password_field :password, :class => 'form-input',
             :placeholder => 'Password'
       .row
@@ -46,16 +38,12 @@
 
     .form-group
       .row
-        .form-label Confirm
-      .row
         = f.password_field :password_confirmation, :class => 'form-input',
             :placeholder => 'Confirm Password'
       .row
         .help-block
 
     .form-group
-      .row
-        .form-label Zip Code
       .row
         = f.text_field :zip_code, :class => 'form-input', :autocomplete => "off",
             :placeholder => 'Zip Code'
@@ -67,5 +55,5 @@
       = f.hidden_field :uid, value: session['devise.auth_data']['uid']
 
     .form-group.row
-      = f.submit "Register", class: "btn btn-primary form-btn"
+      %button.btn.btn-primary.form-btn Register
       %a.btn.btn-danger.form-btn{href: new_owner_registration_path} Owner Sign Up

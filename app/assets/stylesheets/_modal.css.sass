@@ -1,7 +1,9 @@
 //Modals
 .modal
     .modal-header
-        color: white
+        color: getColor(black)
+        border-bottom: 1px solid getColor(black)
+
 
     .modal-content
         @include vendor(border-radius, 2px)
@@ -11,8 +13,7 @@
         height: 100%
 
     .wheels-form
-        margin: 0 auto
-        margin-left: 20px
+        padding-left: 0 !important
 
         .form-label
             color: black
@@ -36,43 +37,27 @@
         @include scale-property(margin-top, 20px)
 
 .categories-modal
-    .modal-header
-        background: getColor(red)
-
     .wheels-form
         margin-top: 20px
+        margin-left: 10px
 
-        .form-input
-            width: 150px
-            height: 26px
-            padding-left: 5px
+        .form-control
+            height: 30px
+            margin-bottom: 10px
+
+        .form-btn
+            display: block
+            width: 100%
 
     .categories
         .item
-            padding: 3px 5px
-            padding-right: 20px
-            margin: 4px
-
-    .cart-btn
-        margin-bottom: 8px
-
-    .tt-dropdown-menu
-        width: 150px
-        padding-left: 10px
-
-        background: white
-        border: 1px solid #eee
-        @include vendor(box-shadow, rgba(0, 0, 0, 0.5) 0px 2px 4px 0px)
 
     .links
-        @include scale-property(margin-left, 10px)
+        font-size: 1.5em
+        @include scale-property(margin-left, 40px)
         @include scale-property(margin-top, 30px)
 
 .checkins-modal
-    .modal-header
-        background: getColor(checkin)
-        border-bottom: 1px solid getColor(black)
-
     .form-header
         display: none
 
@@ -81,6 +66,9 @@
 
     .form-input
         border: 1px solid #aaa
+
+    .form-text-area
+        margin-left: 0
 
     .modal-content
         width: 650px
@@ -110,18 +98,15 @@
         position: relative
         z-index: 1
         width: 100%
-        margin-left: 0
         margin-top: 47%
         padding-top: 2%
-        padding-left: 12%
         padding-bottom: 12%
-        background: #333
+        padding-left: 12% !important
+
+        border-top: 1px solid getColor(black)
+        background: white !important
 
 .directions-modal
-    .modal-header
-        background: getColor(blue)
-        border-bottom: 1px solid getColor(black)
-
     .modal-content
         width: 650px
         height: 520px
@@ -179,5 +164,6 @@
         padding-top: 2%
 
     .form-input
+        margin-left: 5%
         width: 50%
         font-size: 0.8em
