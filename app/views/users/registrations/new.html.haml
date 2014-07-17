@@ -55,5 +55,5 @@
       = f.hidden_field :uid, value: session['devise.auth_data']['uid']
 
     .form-group.row
-      %button.btn.btn-primary.form-btn Register
-      %a.btn.btn-danger.form-btn{href: new_owner_registration_path} Owner Sign Up
+      %button.btn.btn-primary.form-btn.login-btn Register
+      %a.btn.btn-danger.form-btn.login-btn{href: new_owner_registration_path} Owner Sign Up

@@ -2,9 +2,6 @@
   .container.size-xs
 
     .content
-      -if not small
-        .section-header
-          Info
       .info.section
         .info-header
           .photo
@@ -33,11 +30,10 @@
               .rating{"data-score" => cart.rating }
               .reviews="#{cart.reviews.count} reviews"
               .name
-                -if small
-                  -if cart.name.length < 28
-                    =link_to cart.name, cart
-                  -else
-                    =link_to "#{cart.name[0..28]}...", cart
+                -if cart.name.length < 28
+                  =link_to cart.name, cart
+                -else
+                  =link_to "#{cart.name[0..28]}...", cart
             .col-lg-4
               .categories
                 -if cart.categories.first
@@ -53,23 +49,7 @@
               .location
                 .map
                   %a.pop-image.pop-image-top{href: "#", "data-title" => "Address", "data-content" => cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
-                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
-          -if cart.hours.first
-            .hours-heading
-              Hours
-            -cart.hours.order(:day).each do |item|
-              .item.row
-                .col-lg-4.col-md-4.col-sm-4.col-xs-4.day=n_to_day(item.day)
-                .start.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.start)
-                .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
-                .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
-          -else
-            .hours-heading.warning No hours available
-          -if cart.hours.count < 7
-            -if user_signed_in? or owner_signed_in?
-              .add-hours.wheels-form
-                =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
-
+                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x130&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
 
         .modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
           .modal-dialog
@@ -136,58 +116,3 @@
               .modal-body
                 -if user_signed_in?
                   =render partial: "checkins/form", locals: {cart: cart, checkin: Checkin.new}
-
-      -if not small
-        .section-header
-          Menu
-      //Slideshow form default, list form when expands
-      -if not cart.menu.nil? and (small or cart.menu.menu_items.first)
-        .menu.section
-          .row
-            -cart.menu.menu_items.each do |item|
-              -if item == cart.menu.menu_items.first
-                .item.active{id: "#{item.id}"}
-                  .name=item.name
-                  .photo
-                    -if item.photo
-                      =image_tag(item.photo.image_url_small)
-                    -else
-                      =image_tag(asset_path("cw-logo-no-text.jpg"))
-                  .price="$#{item.price}"
-
-      -if not small and (user_signed_in? or owner_signed_in?)
-        .form-section
-          =render partial: "menu_items/form", locals: {cart: cart, menu_item: MenuItem.new}
-
-      -if not small
-        .section-header
-          Reviews
-      -if small or cart.reviews.first
-        .reviews.section
-          -if cart.reviews.first
-            -cart.reviews[0..7].each do |review|
-              .item
-                .rating{'data-score' => review.rating}
-                .user=review.user.name
-                .date=time_ago_in_words(review.updated_at) + " ago"
-                .text=review.text
-
-      -if not small and user_signed_in?
-        .form-section
-          =render partial: "reviews/form", locals: {cart: cart, review: Review.new}
-
-      -if not small
-        .section-header
-          Checkins
-      -if small or cart.checkins.first
-        .checkins.section
-          -if cart.checkins.first
-            -cart.checkins.order('created_at DESC')[0..10].each do |checkin|
-              .item
-                .photo
-                  -if checkin.photos.first
-                    %a.pop-image.pop-image-top{href: "#", "data-title" => checkin.user.name, "data-content" => checkin.description}
-                      =image_tag(checkin.photos.first.image_url_thumb)
-
-    -if small
-      .expand

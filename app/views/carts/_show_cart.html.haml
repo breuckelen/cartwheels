@@ -1,0 +1,167 @@
+.cart{id: "cart_#{cart.id}", "data-cart-id" => cart.id}
+  .content
+    .section-header
+      Info
+    .info.section
+      .info-header
+        .photo
+          -if cart.photos.first
+            =image_tag(cart.photos.first.image_url)
+          -else
+            =image_tag(asset_path("cw-logo-no-text.jpg"))
+        .actions
+          -if user_signed_in?
+            .action-link
+              %span.glyphicon.glyphicon-ok{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
+              Checkin
+          -if not cart.moved
+            .action-link.mark-as-moved
+              %span.glyphicon.glyphicon-exclamation-sign
+              Mark as Moved
+          -if owner_signed_in? and not cart.in? current_owner.carts
+            .action-link
+              %span.glyphicon.glyphicon-briefcase{"data-toggle" => "modal", "data-target" => "#claim-modal-#{cart.id}"}
+          -if cart.green == 1
+            .action-link
+              %span.glyphicon.glyphicon-leaf
+      .info-content
+        .subsection
+          .col-lg-4
+            .rating{"data-score" => cart.rating }
+            .reviews="#{cart.reviews.count} reviews"
+            .name=cart.name
+          .col-lg-4
+            .categories
+              -if cart.categories.first
+                -cart.categories[0..2].each do |item|
+                  .item
+                    =link_to item.name, "#"
+            -if cart.categories.count > 3
+              =link_to "#{cart.categories[3..-1].count} more", "#", {"data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
+            -else
+              %a{href: "#", "data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
+                Add a category
+          .col-lg-4
+            .location
+              .map
+                %a.pop-image.pop-image-top{href: "#", "data-title" => "Address", "data-content" => cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
+                  = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
+        .subsection
+          -if cart.hours.first
+            .hours-heading
+              Hours
+            -cart.hours.order(:day).each do |item|
+              .item.row
+                .col-lg-4.col-md-4.col-sm-4.col-xs-4.day=n_to_day(item.day)
+                .start.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.start)
+                .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
+                .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
+          -else
+            .hours-heading.warning No hours available
+          -if cart.hours.count < 7
+            -if user_signed_in? or owner_signed_in?
+              .add-hours.wheels-form
+                =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
+    .section-header
+      Menu
+    //Slideshow form default, list form when expands
+    -if not cart.menu.nil? and cart.menu.menu_items.first
+      .menu.section
+        .row
+          -cart.menu.menu_items.each do |item|
+            -if item == cart.menu.menu_items.first
+              .item.active{id: "#{item.id}"}
+                .name=item.name
+                .photo
+                  -if item.photo
+                    =image_tag(item.photo.image_url_small)
+                  -else
+                    =image_tag(asset_path("cw-logo-no-text.jpg"))
+                .price="$#{item.price}"
+
+    -if user_signed_in? or owner_signed_in?
+      .form-section
+        =render partial: "menu_items/form", locals: {cart: cart, menu_item: MenuItem.new}
+
+    .section-header
+      Reviews
+    -if cart.reviews.first
+      .reviews.section
+        -if cart.reviews.first
+          -cart.reviews[0..7].each do |review|
+            .item
+              .rating{'data-score' => review.rating}
+              .user=review.user.name
+              .date=time_ago_in_words(review.updated_at) + " ago"
+              .text=review.text
+
+    -if user_signed_in?
+      .form-section
+        =render partial: "reviews/form", locals: {cart: cart, review: Review.new}
+
+.modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} ×
+          %span.sr-only Close
+        %h3.modal-title="Categories - #{cart.name}"
+      .modal-body
+        .categories
+          -cart.categories.each do |item|
+            .item
+              =link_to item.name, "#"
+        -if user_signed_in? or owner_signed_in?
+          =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
+
+.modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} ×
+          %span.sr-only Close
+        %h3.modal-title="Directions to #{cart.name}"
+      .modal-body
+        .directions-body
+          .directions-map{id: "directions-map-#{cart.id}", "data-latitude" => cart.lat, "data-longitude" => cart.lon}
+          .directions-panel{id: "directions-panel-#{cart.id}"}
+            .heading Directions
+            .container
+        .wheels-form
+          .form-group
+            %form.search-form
+              .row
+                %input.form-input.location-input#address{name: "lq", placeholder: "Start Address"}
+                %button.hidden{type: "submit"}
+
+.modal.fade.claim-modal{id: "claim-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} ×
+          %span.sr-only Close
+        %h3.modal-title="Claim #{cart.name}"
+      .modal-body
+        .wheels-form
+          .form-group
+            %form{action: claim_cart_path(cart)}
+              .row
+                %input.form-input.location-input#address{name: "permit_number", placeholder: "Enter permit number"}
+                %button.btn.btn-primary.form-btn{type: "submit"}
+                  Claim
+
+.modal.fade.checkins-modal{id: "checkins-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} ×
+          %span.sr-only Close
+        %h3.modal-title="Checkin at #{cart.name}"
+      .modal-body
+        -if user_signed_in?
+          =render partial: "checkins/form", locals: {cart: cart, checkin: Checkin.new}
+

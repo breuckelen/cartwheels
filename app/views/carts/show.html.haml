@@ -9,7 +9,8 @@
         .col-lg-4
           .nav.navbar-nav.padded
             .home-link
-              =link_to "Cartwheels", home_path, "data-no-turbolink" => true
+              %a{href: home_path, "data-no-turbolink" => true}
+                =image_tag("cw-logo-no-text-white.png")
         %form.navbar-form.search-form.col-lg-8{role: "search", action: "/search"}
           .form-group
             %input.form-control.form-input#food{type: "text", name: "tq", placeholder: "Food", value: @tq}
@@ -31,4 +32,4 @@
     #featured-bar.col-lg-2.column.column-left
     #search-results.col-lg-7.column.column-center
       .column-content
-        =render partial: "cart", locals: {cart: @cart, small: false}
+        =render partial: "carts/show_cart", locals: {cart: @cart}

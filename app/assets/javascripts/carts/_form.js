@@ -17,11 +17,6 @@
         init();
 
         if(controller.length === 0) return;
-
-        controller.find('.form-input').focus(function(e) {
-            controller.parent().find('.form-desc').slideUp();
-            controller.parent().find('.form-header').slideUp();
-        });
     }
 
     $(document).ready(ready);

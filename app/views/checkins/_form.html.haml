@@ -14,7 +14,7 @@
     =form_for checkin, remote: true, url: cart_checkins_path(cart), html: {multipart: true, 'data-model' => 'checkin'} do |f|
 
       .form-group.row
-        %span.btn.form-btn.file-btn
+        %span.btn.form-btn.file-btn.login-btn
           .label
             Image
           = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
