@@ -37,11 +37,20 @@ class CartsController < ApplicationController
     # create a new cart
     def create
         # redirect unless cart owner
+        user = current_user
+        user ||= current_owner
+
         @cart = Cart.new(cart_params)
         @cart.user_cart_relations.build(user: current_user, relation_type: 0)
 
         if image = params[:cart][:image]
-            @cart.photos.build(author: current_user, image: image)
+            @cart.photos.build(author: user, image: image)
+        end
+
+        if not photo_params[:encoded_image].nil?
+            data = new_params.delete(:encoded_image)
+            @photo = @cart.photos.build(author: user)
+            @photo.decode_from_data(data)
         end
 
         if request.xhr? || remotipart_submitted?
