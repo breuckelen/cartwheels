@@ -47,8 +47,7 @@ class CartsController < ApplicationController
             @cart.photos.build(author: user, image: image)
         end
 
-        if not photo_params[:encoded_image].nil?
-            data = new_params.delete(:encoded_image)
+        if data = params[:cart][:encoded_image]
             @photo = @cart.photos.build(author: user)
             @photo.decode_from_data(data)
         end
