@@ -116,7 +116,7 @@ class Cart < ActiveRecord::Base
 
     def as_json(options={})
         options[:only] ||= [:id, :name, :city, :permit_number, :zip_code,
-            :description, :rating, :lat, :lon]
+            :description, :rating, :lat, :lon, :address]
         options[:include] ||= {
             :photos => { :only => :null, :methods => [:image_url,
                 :image_url_large] }
