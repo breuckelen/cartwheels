@@ -82,6 +82,8 @@ class CartsController < ApplicationController
                 @cart.photos.build(author: current_user, image: image)
             end
 
+            @cart.moved = false
+
             if request.xhr? || remotipart_submitted?
                 Cart.skip_callback(:validation, :before, :update_popularity)
                 Cart.skip_callback(:validation, :before, :update_rating)
