@@ -17,7 +17,10 @@ class Review < ActiveRecord::Base
     end
 
     def as_json(options={})
-        options[:only] ||= [:id, :text, :rating, :cart_id, :user_id, :created_at, :updated_at]
+        options[:only] ||= [:id, :text, :rating, :cart_id, :created_at, :updated_at]
+        options[:include] ||= {
+            user: {only: [:id, :name]}
+        }
         super(options)
     end
 
