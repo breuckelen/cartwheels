@@ -6,9 +6,9 @@
         .info-header
           .photo
             -if cart.photos.first
-              =image_tag(cart.photos.first.image_url_large)
+              =image_tag(cart.photos.first.image_url)
             -else
-              =image_tag(asset_path("cw-logo-no-text.jpg"))
+              =image_tag("/system/images/default.png")
           .actions
             -if user_signed_in?
               .action-link

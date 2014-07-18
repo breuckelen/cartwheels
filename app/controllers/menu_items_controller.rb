@@ -22,7 +22,7 @@ class MenuItemsController < ApplicationController
         user ||= current_owner
 
         cart = Cart.find(params[:id])
-        @menu_item.menu = cart.menu.menu_items.build(menu_item_params)
+        @menu_item = cart.menu.menu_items.build(menu_item_params)
 
         if image = params[:menu_item][:image]
             @menu_item.build_photo(author: user, image: image)

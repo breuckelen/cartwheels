@@ -7,6 +7,7 @@
 # Public assets
 public/assets
 public/system/images
+!public/system/images/*.jpg
 
 # Ignore bundler config.
 /.bundle

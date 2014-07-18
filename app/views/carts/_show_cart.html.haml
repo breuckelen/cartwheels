@@ -6,7 +6,7 @@
           -if cart.photos.first
             =image_tag(cart.photos.first.image_url_large)
           -else
-            =image_tag(asset_path("cw-logo-no-text.jpg"))
+            =image_tag("/system/images/default.png")
         .actions
           -if user_signed_in?
             .action-link
@@ -82,7 +82,7 @@
                     -if item.photo
                       =image_tag(item.photo.image_url_thumb)
                     -else
-                      =image_tag(asset_path("cw-logo-no-text.jpg"))
+                      =image_tag("/system/images/default.png")
                 .col-lg-6
                   .name=item.name
                   .price="$#{item.price}"
