@@ -81,14 +81,41 @@ class HoursController < ApplicationController
         end
     end
 
-    private
-    # Use callbacks to share common setup or constraints between actions.
+    respond_to :json
+    def data
+        if params[:hour].empty?
+            @hours = Hour.limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        else
+            @hours = Hour.where(data_params)
+                .limit(search_params["limit"].to_i)
+                .offset(search_params["offset"].to_i)
+        end
+
+        render :status => 200,
+            :json => { :success => true, :data => @hours }
+    end
+
+    def data_params
+        params.require(:review).permit(:id, :cart_id)
+    end
+
+    def search_params
+        ps = params.permit(:offset, :limit, :lq, :tq)
+        defaults = {"offset" => 0, "limit" => 20}
+        defaults.merge(ps)
+    end
+
+    def hour_params
+        params.require(:hour).permit(:day, :start, :end)
+    end
+
     def set_hour
         @hour = Hour.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def hour_params
-        params.require(:hour).permit(:day, :start, :end, :cart_id)
-    end
+    private :data_params
+    private :search_params
+    private :hour_params
+    private :set_hour
 end

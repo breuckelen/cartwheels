@@ -100,6 +100,12 @@ Rails.application.routes.draw do
     resources :reviews, only: [:show, :edit, :update, :destroy],
         concerns: [:data, :search]
 
+    resources :menu_items, only: [:show, :edit, :update, :destroy],
+        concerns: [:data, :notes]
+
+    resources :hours, only: [:show, :edit, :update, :destroy],
+        concerns: [:data]
+
     resources :tags, concerns: [:data]
 
     resources :categories, concerns: [:data]
@@ -113,14 +119,8 @@ Rails.application.routes.draw do
     resources :checkins, only: [:show, :edit, :update, :destroy],
         concerns: [:data, :search], path: "_checkins"
 
-    resources :menu_items, only: [:show, :edit, :update, :destroy],
-        concerns: [:data, :notes]
-
     resources :notes, only: [:show, :edit, :update, :destroy],
         concerns: [:data], path: "_notes"
-
-    resources :hours, only: [:show, :edit, :update, :destroy],
-        concerns: [:data], path: "_hours"
 
     resources :user_cart_relations, only: [:show, :edit, :update, :destroy],
         concerns: [:data], path: "_cart_associations"
