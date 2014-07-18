@@ -78,6 +78,25 @@ $sectionWidth: 740px
     .directions-link
         @include scale-property(font-size, 13px)
 
+    .action-link
+        font-size: 1.2em
+
+        display: inline-block
+        margin: 0 5px
+
+        @extend .highlight-blue
+
+        span, a
+            color: black
+
+    .glyphicon-leaf
+        font-size: 1.2em
+        color: green !important
+        padding-right: 10%
+
+    .not-available
+        font-size: 2em
+
     .warning
         color: getColor(red) !important
 
@@ -98,4 +117,3 @@ $sectionWidth: 740px
 
             a
                 color: white
-

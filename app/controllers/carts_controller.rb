@@ -76,7 +76,8 @@ class CartsController < ApplicationController
     end
 
     def update
-        if current_owner.in? @cart.owners or current_user.has_role? :admin
+        if current_owner.in? @cart.owners or\
+                (current_user and current_user.has_role? :admin)
             if image = params[:cart][:image]
                 @cart.photos.build(author: current_user, image: image)
             end

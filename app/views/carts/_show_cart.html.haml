@@ -12,13 +12,14 @@
             .action-link
               %span.glyphicon.glyphicon-ok{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}
               Checkin
-          -if not cart.moved
+          -if user_signed_in? and not cart.moved
             .action-link.mark-as-moved
               %span.glyphicon.glyphicon-exclamation-sign
               Mark as Moved
           -if owner_signed_in? and not cart.in? current_owner.carts
             .action-link
               %span.glyphicon.glyphicon-briefcase{"data-toggle" => "modal", "data-target" => "#claim-modal-#{cart.id}"}
+              Claim
           -if cart.green == 1
             .action-link
               %span.glyphicon.glyphicon-leaf
@@ -42,8 +43,11 @@
           .col-lg-4
             .location
               .map
-                %a.pop-image.pop-image-top{href: "#", "data-title" => "Address", "data-content" => cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
-                  = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}&key=AIzaSyAGUZSRG0jaa4-xP1OmWdniAJbCAld9PZw"
+                %a.pop-image.pop-image-top{href: "#", "data-title" => cart.moved ? "MOVED": "Address", "data-content" => cart.moved ? "This cart has moved" : cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
+                  -if Rails.env.production?
+                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}&key=#{SECRETS['google_static']}"
+                  -else
+                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
         .subsection.hours
           .section-header
             %span.glyphicon.glyphicon-time
@@ -57,7 +61,7 @@
                   .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
                   .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
             -else
-              .hours-heading.warning No hours available
+              .not-available.warning No hours available
           -if cart.hours.count < 7
             -if user_signed_in? or owner_signed_in?
               .col-lg-5

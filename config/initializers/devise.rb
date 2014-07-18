@@ -236,7 +236,7 @@ Devise.setup do |config|
 
   # Types of omniauth
   config.omniauth :facebook, 'APP_ID', 'APP_SECRET'
-  config.omniauth :google_oauth2, CLIENT_KEY, CLIENT_SECRET,
+  config.omniauth :google_oauth2, SECRETS['google_oauth_client'], SECRETS['google_oauth_secret'],
       { access_type: "offline" }
 
   # ==> Warden configuration
