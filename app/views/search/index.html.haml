@@ -39,11 +39,13 @@
           .page-numbers
             %ul.pagination
               %li
-                %a{"data-page" => @offset / 20 - 1} &laquo;
-                -((@total + 20) / 20).times do |i|
-                  %li
-                    %a{"data-page" => i}=i + 1
+                %a{href: "#", "data-page" => @offset / 20 - 1} prev
               %li
-                %a{"data-page" => @offset / 20 + 1} &raquo;
+                %a{href: "#", "data-page" => (@offset / 200) * 200}=(@offset / 200) * 200 + 1
+              -(1...@left + 1).each do |i|
+                %li
+                  %a{href: "#", "data-page" => (@offset / 200) * 200 + i}=(@offset / 200) * 200 + i + 1
+              %li
+                %a{href: "#", "data-page" => @offset / 20 + 1} next
 
     #other-results.col-lg-3.col-md-3.col-sm-3.col-xs-3.column.column-right

@@ -3,7 +3,11 @@ class SearchController < ApplicationController
         @total = Cart.search("id", search_params["tq"],
                 search_params["lq"], search_params["categories"],
                 search_params["box"]).count
-        Rails.logger.info(@total.methods)
+
+        rounded = (search_params["offset"].to_i / 200) * 200
+        @left = (@total - rounded) / 20
+        @left = @left > 10 ? 10 : @left
+
         @carts = Cart.search("popularity", search_params["tq"],
                 search_params["lq"], search_params["categories"],
                 search_params["box"])
