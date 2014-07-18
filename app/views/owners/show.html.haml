@@ -5,7 +5,8 @@
         .col-lg-4
           .nav.navbar-nav.padded
             .home-link
-              =link_to "Cartwheels", home_path, "data-no-turbolink" => true
+              %a{href: home_path, "data-no-turbolink" => true}
+                =image_tag("cw-logo-no-text-white.png")
         %form.navbar-form.search-form.col-lg-8{role: "search", action: "/search"}
           .form-group
             %input.form-control.form-input#food{type: "text", name: "tq", placeholder: "Food"}
@@ -14,24 +15,19 @@
 
   #main-content
     #title-bar.row
-      .col-lg-2
+      .col-lg-3.col-md-3.col-sm-2.col-xs-2
         .column-header
-      .col-lg-7
+      .col-lg-6.col-md-6.col-sm-6.col-xs-6
         .column-header
           =link_to "Manage Carts", "#"
-      .col-lg-3
+      .col-lg-3.col-md-3.col-sm-3.col-xs-3
         .column-header
 
-    #featured-bar.col-lg-2.column.column-left
-    #search-results.col-lg-7.column.column-center
+    #featured-bar.col-lg-3.col-md-3.col-sm-3.col-xs-3.column.column-left
+
+    #search-results.col-lg-6.col-md-6.col-sm-6.col-xs-6.column.column-center
       .column-content
         -@owner.carts.each do |cart|
-          .manager-item
-            .manager-header
-              .name=cart.name
-              .permit-number=cart.permit_number
-              .actions
-                =link_to "Edit", edit_cart_path(cart)
-                =link_to "Show", cart_path(cart)
-            .manager-content
-              =render partial: "carts/cart", locals: {cart: cart, small: false}
+          =render partial: "carts/search_cart", locals: {cart: cart}
+
+    #other-results.col-lg-3.col-md-3.col-sm-3.col-xs-3.column.column-right

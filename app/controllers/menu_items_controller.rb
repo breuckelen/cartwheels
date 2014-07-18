@@ -22,7 +22,8 @@ class MenuItemsController < ApplicationController
         user ||= current_owner
 
         cart = Cart.find(params[:id])
-        @menu_item = cart.menu.menu_items.build(menu_item_params)
+        @menu_item = MenuItem.new(menu_item_params)
+        @menu_item.menu = cart.menu
 
         if image = params[:menu_item][:image]
             @menu_item.build_photo(author: user, image: image)
@@ -39,13 +40,10 @@ class MenuItemsController < ApplicationController
         else
             respond_to do |format|
                 if @menu_item.save
-                    format.html { redirect_to cart,
-                        notice: 'Menu item was succesfully created.' }
                     format.json { render status: :created,
                         location: @menu_item,
                         :json => { :success => true }}
                 else
-                    format.html { render :new }
                     format.json { render json: @menu_item.errors,
                         status: :unprocessable_entity,
                         :json => { :success => false }}

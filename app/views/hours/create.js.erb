@@ -1,8 +1,8 @@
 var $cart = $('#cart_' + <%= cart.id %>);
 if ($('#search-index').length > 0) {
-    $cart.html("<%= escape_javascript render partial: "carts/cart", locals: {cart: cart, small: true}%>");
+    $cart.html("<%= escape_javascript render partial: "carts/search_cart", locals: {cart: cart}%>");
 }
 else {
-    $cart.html("<%= escape_javascript render partial: "carts/cart", locals: {cart: cart, small: false}%>");
+    $cart.html("<%= escape_javascript render partial: "carts/show_cart", locals: {cart: cart}%>");
 }
 $cart.cart();

@@ -13,21 +13,17 @@
 
     =form_for checkin, remote: true, url: cart_checkins_path(cart), html: {multipart: true, 'data-model' => 'checkin'} do |f|
 
+      .form-group
+        .row
+          =f.text_area :description, cols: "5", rows: "3", class: "form-control form-text-area", placeholder: "Share what you did, what you ordered, or anything else about your experience at this cart!"
+        .row
+          .help-block
+
       .form-group.row
-        %span.btn.form-btn.file-btn.login-btn
+        %span.btn.btn-secondary.form-btn.file-btn.login-btn
           .label
             Image
           = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
-        .row
-          .help-block
-
-      .form-group
-        .row
-          =f.text_area :description, class: "form-control form-text-area", placeholder: "Share what you did, what you ordered, or anything else about your experience at this cart!"
-        .row
-          .help-block
-
-      .form-group.row
         = f.submit "Submit", class: "btn btn-primary form-btn", disable_with: "Submitting..."
 
       =f.hidden_field :lat, value: cart.lat

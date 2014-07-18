@@ -72,6 +72,14 @@
             console.log('goodbye');
         });
 
+        this.$el.find('.info .photo').on('mouseenter', function(e) {
+            $(this).parents('.info-header').find('.actions').addClass('show');
+        });
+
+        this.$el.find('.info .info-header').on('mouseleave', function(e) {
+            $(this).find('.actions').removeClass('show');
+        });
+
         if(options !== undefined && options['startTab'] !== undefined) {
             this.switchSection(
                 this.$el.find('.subname a[data-target-class=' + options['startTab'] + ']')

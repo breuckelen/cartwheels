@@ -6,7 +6,7 @@
         .info-header
           .photo
             -if cart.photos.first
-              =image_tag(cart.photos.first.image_url)
+              =image_tag(cart.photos.first.image_url_large)
             -else
               =image_tag(asset_path("cw-logo-no-text.jpg"))
           .actions
@@ -49,7 +49,7 @@
               .location
                 .map
                   %a.pop-image.pop-image-top{href: "#", "data-title" => "Address", "data-content" => cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
-                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x130&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
+                  = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}&key=AIzaSyAGUZSRG0jaa4-xP1OmWdniAJbCAld9PZw"
 
         .modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
           .modal-dialog

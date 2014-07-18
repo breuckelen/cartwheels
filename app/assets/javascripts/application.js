@@ -17,5 +17,4 @@
 //= require turbolinks
 //= require underscore
 //= require bootstrap
-//= require typeahead.bundle.min.js
 //= require_tree .

@@ -1,12 +1,10 @@
 .cart{id: "cart_#{cart.id}", "data-cart-id" => cart.id}
   .content
-    .section-header
-      Info
     .info.section
       .info-header
         .photo
           -if cart.photos.first
-            =image_tag(cart.photos.first.image_url)
+            =image_tag(cart.photos.first.image_url_large)
           -else
             =image_tag(asset_path("cw-logo-no-text.jpg"))
         .actions
@@ -45,59 +43,66 @@
             .location
               .map
                 %a.pop-image.pop-image-top{href: "#", "data-title" => "Address", "data-content" => cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
-                  = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
-        .subsection
-          -if cart.hours.first
-            .hours-heading
-              Hours
-            -cart.hours.order(:day).each do |item|
-              .item.row
-                .col-lg-4.col-md-4.col-sm-4.col-xs-4.day=n_to_day(item.day)
-                .start.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.start)
-                .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
-                .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
-          -else
-            .hours-heading.warning No hours available
+                  = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}&key=AIzaSyAGUZSRG0jaa4-xP1OmWdniAJbCAld9PZw"
+        .subsection.hours
+          .section-header
+            %span.glyphicon.glyphicon-time
+            Hours
+          .col-lg-6
+            -if cart.hours.first
+              -cart.hours.order(:day).each do |item|
+                .item.row
+                  .col-lg-2.col-md-2.col-sm-2.col-xs-2.day=n_to_day(item.day)
+                  .start.col-lg-3.col-md-3.col-sm-3.col-xs-3=n_to_time(item.start)
+                  .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
+                  .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
+            -else
+              .hours-heading.warning No hours available
           -if cart.hours.count < 7
             -if user_signed_in? or owner_signed_in?
-              .add-hours.wheels-form
-                =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
-    .section-header
-      Menu
-    //Slideshow form default, list form when expands
-    -if not cart.menu.nil? and cart.menu.menu_items.first
-      .menu.section
-        .row
-          -cart.menu.menu_items.each do |item|
-            -if item == cart.menu.menu_items.first
-              .item.active{id: "#{item.id}"}
-                .name=item.name
-                .photo
-                  -if item.photo
-                    =image_tag(item.photo.image_url_small)
-                  -else
-                    =image_tag(asset_path("cw-logo-no-text.jpg"))
-                .price="$#{item.price}"
+              .col-lg-5
+                .add-hours.wheels-form
+                  =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
+    .section
+      .col-lg-4.subsection-col.menu
+        .section-header
+          %span.glyphicon.glyphicon-th-list
+          Menu
+        //Slideshow form default, list form when expands
+        -if not cart.menu.nil? and cart.menu.menu_items.first
+          .row
+            -cart.menu.menu_items.each do |item|
+              .item{id: "#{item.id}"}
+                .col-lg-6
+                  .photo
+                    -if item.photo
+                      =image_tag(item.photo.image_url_thumb)
+                    -else
+                      =image_tag(asset_path("cw-logo-no-text.jpg"))
+                .col-lg-6
+                  .name=item.name
+                  .price="$#{item.price}"
 
-    -if user_signed_in? or owner_signed_in?
-      .form-section
-        =render partial: "menu_items/form", locals: {cart: cart, menu_item: MenuItem.new}
+        -if user_signed_in? or owner_signed_in?
+          .form-section
+            =render partial: "menu_items/form", locals: {cart: cart, menu_item: MenuItem.new}
 
-    .section-header
-      Reviews
-    -if cart.reviews.first
-      .reviews.section
+      .col-lg-8.subsection-col.reviews
+        .section-header
+          %span.glyphicon.glyphicon-edit
+          Reviews
         -if cart.reviews.first
-          -cart.reviews[0..7].each do |review|
-            .item
-              .rating{'data-score' => review.rating}
-              .user=review.user.name
-              .date=time_ago_in_words(review.updated_at) + " ago"
-              .text=review.text
+          -if cart.reviews.first
+            -cart.reviews[0..7].each do |review|
+              .item
+                .rating{'data-score' => review.rating}
+                .user=review.user.name
+                .date=time_ago_in_words(review.updated_at) + " ago"
+                .text=review.text
 
-    -if user_signed_in?
-      .form-section
-        =render partial: "reviews/form", locals: {cart: cart, review: Review.new}
+        -if user_signed_in? and cart.reviews.where(user: current_user).empty?
+          .form-section
+            =render partial: "reviews/form", locals: {cart: cart, review: Review.new}
 
 .modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
   .modal-dialog

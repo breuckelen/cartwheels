@@ -10,13 +10,13 @@ module ApplicationHelper
 
     def n_to_day(n)
         case n
-            when 1 then return "Monday"
-            when 2 then return "Tuesday"
-            when 3 then return "Wednesday"
-            when 4 then return "Thursday"
-            when 5 then return "Friday"
-            when 6 then return "Saturday"
-            when 7 then return "Sunday"
+            when 1 then return "Mon"
+            when 2 then return "Tue"
+            when 3 then return "Wed"
+            when 4 then return "Thu"
+            when 5 then return "Fri"
+            when 6 then return "Sat"
+            when 7 then return "Sun"
         end
     end
 
