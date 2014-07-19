@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140719001150) do
+ActiveRecord::Schema.define(version: 20140719022219) do
 
   create_table "ad_types", force: true do |t|
     t.string  "title"
@@ -271,7 +271,7 @@ ActiveRecord::Schema.define(version: 20140719001150) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "date"
-    t.integer  "tweet_id"
+    t.integer  "tweet_id",   limit: 8
   end
 
   create_table "user_cart_relations", force: true do |t|
