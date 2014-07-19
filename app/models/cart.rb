@@ -185,12 +185,15 @@ class Cart < ActiveRecord::Base
             handle = cart.twitter_handle.split('@')[1]
             options = {count: 50, include_rts: true}
 
-            $client.user_timeline(handle, options).each do |tweet|
-                begin
-                    cart.tweets.create(tweet_id: tweet.id, text: tweet.text,
-                        date: tweet.created_at.to_date)
-                rescue Exception => e
+            begin
+                $client.user_timeline(handle, options).each do |tweet|
+                    begin
+                        cart.tweets.create(tweet_id: tweet.id, text: tweet.text,
+                            date: tweet.created_at.to_date)
+                    rescue Exception => e
+                    end
                 end
+            rescue Exception => e
             end
         end
     end
