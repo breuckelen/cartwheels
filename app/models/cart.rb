@@ -179,5 +179,18 @@ class Cart < ActiveRecord::Base
     def self.trending
     end
 
+    def self.collect_tweets
+        where.not(twitter_handle: "").where.not(twitter_handle: nil).each\
+                do |cart|
+            handle = cart.twitter_handle.split('@')[1]
+            options = {count: 50, include_rts: true}
+
+            $client.user_timeline(handle, options).each do |tweet|
+                cart.tweets.create(tweet_id: tweet.id, text: tweet.text,
+                    date: tweet.created_at.to_date)
+            end
+        end
+    end
+
     private :build_default_menu
 end

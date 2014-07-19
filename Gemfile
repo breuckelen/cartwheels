@@ -29,6 +29,7 @@ gem 'activerecord-session_store'
 # OAuth
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem 'twitter'
 
 # Google maps + geolocation
 gem 'geocoder'
@@ -37,6 +38,9 @@ gem 'geokit-rails'
 # Images
 gem "paperclip", "~> 4.1"
 gem "remotipart"
+
+#Other
+gem 'whenever', :require => false
 
 group :production do
     gem "mysql2"

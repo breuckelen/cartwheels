@@ -28,7 +28,7 @@ class MenuItemsController < ApplicationController
             @menu_item.build_photo(author: user, image: image)
         end
 
-        if data = params[:cart][:encoded_image]
+        if data = params[:menu_item][:encoded_image]
             @photo = @menu_item.build_photo(author: user)
             @photo.decode_from_data(data)
         end
