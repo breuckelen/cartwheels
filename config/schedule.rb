@@ -18,6 +18,6 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-every 1.day, :at => '8:00 am' do
+every 1.day, :at => '8:40 pm' do
   runner "Cart.collect_tweets"
 end
