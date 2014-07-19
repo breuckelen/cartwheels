@@ -47,7 +47,7 @@
       .form-group
         .row
           = f.text_field :twitter_handle, :class => 'form-input',
-              :placeholder => 'Cart\'s witter handle, e.g. @cartwheels'
+              :placeholder => 'Cart\'s twitter handle, e.g. @cartwheels'
         .row
           .help-block
 
@@ -55,7 +55,7 @@
         %span.btn.btn-secondary.form-btn.file-btn.login-btn
           .label
             Upload Image
-          = f.file_field :image, :placeholder => 'Image', :id => 'img-input'
+          = f.file_field :image, :placeholder => 'Image', :class => 'img-input'
         = f.submit "Submit", class: "btn btn-primary form-btn"
 
       = f.hidden_field :lat, value: (cart.lat.nil? ? 40.7820015 : cart.lat)

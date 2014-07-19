@@ -8,6 +8,14 @@
         }
     }
 
+    var readUrl = function(input) {
+        var $container = $(input).parents('form');
+        if (input.files && input.files[0]) {
+            var label = input.files[0].name;
+            $container.find('.file-btn .label').text(label);
+        }
+    }
+
     var Cart = function(element, options) {
         this.$el = element;
         var $cart = this;
@@ -74,6 +82,10 @@
 
         this.$el.find('.info .photo').on('mouseenter', function(e) {
             $(this).parents('.info-header').find('.actions').addClass('show');
+        });
+
+        this.$el.find('.img-input').change(function(e) {
+            readUrl(this);
         });
 
         this.$el.find('.info .info-header').on('mouseleave', function(e) {

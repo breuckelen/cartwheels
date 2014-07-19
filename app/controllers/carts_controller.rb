@@ -78,8 +78,12 @@ class CartsController < ApplicationController
     def update
         if current_owner.in? @cart.owners or\
                 (current_user and current_user.has_role? :admin)
+
+            user = current_user
+            user ||= current_owner
+
             if image = params[:cart][:image]
-                @cart.photos.build(author: current_user, image: image)
+                @cart.photos.build(author: user, image: image)
             end
 
             @cart.moved = false
@@ -195,7 +199,8 @@ class CartsController < ApplicationController
 
     def claim
         respond_to do |format|
-            if params[:permit_number] == @cart.permit_number
+            if not @cart.permit_number.empty? and\
+                    params[:permit_number] == @cart.permit_number
                 @cart.owners << current_owner
 
                 format.html { redirect_to @cart,

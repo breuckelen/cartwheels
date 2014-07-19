@@ -24,7 +24,7 @@ class MenuItemsController < ApplicationController
         cart = Cart.find(params[:id])
         @menu_item = cart.menu.menu_items.build(menu_item_params)
 
-        if image = params[:menu_item][:image]
+        if not (image = params[:menu_item][:image]).empty?
             @menu_item.build_photo(author: user, image: image)
         end
 

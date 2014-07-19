@@ -6,7 +6,8 @@
         .info-header
           .photo
             -if cart.photos.first
-              =image_tag(cart.photos.first.image_url)
+              %a{"data-toggle" => "modal", "data-target" => "#photos-modal-#{cart.id}"}
+                =image_tag(cart.photos.first.image_url_large)
             -else
               =image_tag("/system/images/default.png")
           .actions
@@ -28,7 +29,7 @@
                 Claim
             -if owner_signed_in? and cart.in? current_owner.carts
               .action-link
-                %a.glyphicon.glyphicon-pencil{href: edit_cart_path(cart)}
+                %a.glyphicon.glyphicon-pencil{href: edit_cart_path(cart), "data-no-turbolinks" => true}
                 Edit
             -if cart.green == 1
               .action-link
@@ -128,3 +129,29 @@
               .modal-body
                 -if user_signed_in?
                   =render partial: "checkins/form", locals: {cart: cart, checkin: Checkin.new}
+
+        -if cart.photos.first
+          .modal.fade.photos-modal{id: "photos-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  %button.close{"data-dismiss" => "modal", type: "button"}
+                    %span{"aria-hidden" => "true"} ×
+                    %span.sr-only Close
+                  %h3.modal-title="Photos for #{cart.name}"
+                .modal-body
+                  .photos
+                    .carousel.slide.photos-carousel{id: "photos-carousel-#{cart.id}", "data-ride" => "carousel"}
+                      .carousel-inner
+                        -cart.photos.each do |photo|
+                          -if photo == cart.photos.first
+                            .item.active
+                              =image_tag(photo.image_url)
+                          -else
+                            .item
+                              =image_tag(photo.image_url)
+                      %a.left.carousel-control{href: "#photos-carousel-#{cart.id}", "role" => "button", "data-slide" => "prev"}
+                        %span.glyphicon.glyphicon-chevron-left
+                      %a.right.carousel-control{href: "#photos-carousel-#{cart.id}", "role" => "button", "data-slide" => "next"}
+                        %span.glyphicon.glyphicon-chevron-right
+

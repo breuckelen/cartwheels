@@ -46,7 +46,7 @@
         if(controller.attr('enctype') !== undefined) {
         }
 
-        controller.find('#img-input').change(function(e) {
+        controller.find('.img-input').change(function(e) {
             readUrl(this);
         });
     }
