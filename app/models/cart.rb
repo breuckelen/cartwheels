@@ -186,7 +186,8 @@ class Cart < ActiveRecord::Base
             options = {count: 50, include_rts: true}
 
             $client.user_timeline(handle, options).each do |tweet|
-                cart.tweets.create(tweet_id: tweet.id, text: tweet.text,
+                text = text.force_encoding('UTF-8')
+                cart.tweets.create(tweet_id: tweet.id, text: text,
                     date: tweet.created_at.to_date)
             end
         end
