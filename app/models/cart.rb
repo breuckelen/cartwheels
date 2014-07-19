@@ -186,10 +186,11 @@ class Cart < ActiveRecord::Base
             options = {count: 50, include_rts: true}
 
             $client.user_timeline(handle, options).each do |tweet|
-                text = tweet.text.dup
-                text = text.force_encoding('UTF-8')
-                cart.tweets.create(tweet_id: tweet.id, text: text,
-                    date: tweet.created_at.to_date)
+                begin
+                    cart.tweets.create(tweet_id: tweet.id, text: tweet.text,
+                        date: tweet.created_at.to_date)
+                rescue Exception => e
+                end
             end
         end
     end
