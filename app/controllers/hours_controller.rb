@@ -67,14 +67,16 @@ class HoursController < ApplicationController
     # DELETE /hours/1
     # DELETE /hours/1.json
     def destroy
+        cart = @hour.cart
+
         respond_to do |format|
             if (current_owner and @hour.cart.in? current_owner.carts) or\
-                (current_user and current_user.has_role? :admin)
+                    (current_user and current_user.has_role? :admin)
                 @hour.destroy
-                format.html { redirect_to home_path, notice: 'Hour was successfully destroyed.' }
+                format.html { redirect_to cart, notice: 'Hour was successfully destroyed.' }
                 format.json { head :no_content }
             else
-                format.html { redirect_to home_path,
+                format.html { redirect_to cart,
                     notice: 'You do not have permission to perform this action.' }
                 format.json { render json: { success: false } }
             end

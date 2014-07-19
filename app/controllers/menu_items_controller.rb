@@ -81,8 +81,10 @@ class MenuItemsController < ApplicationController
 
     def destroy
         cart = @menu_item.menu.cart
+
         respond_to do |format|
-            if current_user.has_role? :admin
+            if (current_owner and cart.in? current_owner.carts) or\
+                    (current_user and current_user.has_role? :admin)
                 @menu_item.destroy
 
                 format.html { redirect_to cart,

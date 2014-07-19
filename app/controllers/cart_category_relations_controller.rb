@@ -53,7 +53,8 @@ class CartCategoryRelationsController < ApplicationController
         cart = @ccr.cart
 
         respond_to do |format|
-            if current_user.has_role? :admin
+            if (current_owner and cart.in? current_owner.carts) or\
+                    (current_user and current_user.has_role? :admin)
                 @ccr.destroy
 
                 format.html { redirect_to cart,

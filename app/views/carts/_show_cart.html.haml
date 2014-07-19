@@ -65,6 +65,8 @@
                   .start.col-lg-3.col-md-3.col-sm-3.col-xs-3=n_to_time(item.start)
                   .bridge.col-lg-1.col-md-1.col-sm-1.col-xs-1 To
                   .end.col-lg-4.col-md-4.col-sm-4.col-xs-4=n_to_time(item.end)
+                  -if owner_signed_in?
+                    =link_to "delete", hour_path(item), method: :delete, confirm: "Are you sure you want to remove these hours?"
             -else
               .not-available.warning No hours available
           -if cart.hours.count < 7
@@ -91,6 +93,8 @@
                 .col-lg-6
                   .name=item.name
                   .price="$#{item.price}"
+                  .destroy
+                    =link_to "delete", menu_item_path(item), method: :delete, confirm: "Are you sure you want to remove this item?"
 
         -if user_signed_in? or owner_signed_in?
           .form-section
@@ -125,7 +129,10 @@
         .categories
           -cart.categories.each do |item|
             .item
-              =link_to item.name, "#"
+              -if owner_signed_in?
+                =link_to item.name, cart.cart_category_relations.where(category_id: item.id).first, method: :delete, confirm: "Are you sure you want to remove this category?"
+              -else
+                =link_to item.name, "#"
         -if user_signed_in? or owner_signed_in?
           =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
 
