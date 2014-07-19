@@ -194,8 +194,6 @@ class CartsController < ApplicationController
     end
 
     def claim
-        Cart.collect_tweets
-
         respond_to do |format|
             if params[:permit_number] == @cart.permit_number
                 @cart.owners << current_owner

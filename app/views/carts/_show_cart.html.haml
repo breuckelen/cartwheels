@@ -8,6 +8,10 @@
           -else
             =image_tag("/system/images/default.png")
         .actions
+          -if cart.twitter_handle and cart.twitter_handle != ''
+            .action-link
+              %a.glyphicon.glyphicon-comment{href: twitter_url(cart.twitter_handle)}
+              Twitter
           -if user_signed_in?
             .action-link
               %span.glyphicon.glyphicon-ok{"data-toggle" => "modal", "data-target" => "#checkins-modal-#{cart.id}"}

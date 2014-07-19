@@ -58,4 +58,8 @@ module ApplicationHelper
         end
         return options
     end
+
+    def twitter_url(handle)
+        return "https://twitter.com/#{handle.split('@')[1]}"
+    end
 end
