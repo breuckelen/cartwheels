@@ -53,7 +53,7 @@
       .form-group
         .checkbox.tag
           %label{"data-category" => "all"}
-            %input{type: "checkbox"} All
+            %input{type: "checkbox", checked: ""} All
         -Category.most_popular(6).each do |cat|
           .checkbox.tag
             %label{"data-category" => cat.name}
