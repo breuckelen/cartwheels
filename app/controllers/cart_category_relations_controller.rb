@@ -28,13 +28,16 @@ class CartCategoryRelationsController < ApplicationController
                     format.json { render status: :created,
                         location: last_path(current_user),
                         :json => { :success => true }}
-                    format.js { render locals: {cart: @ccr.cart, errors: nil}}
+                    format.js { render "shared/concerns/form_modal",
+                        locals: {cart: @ccr.cart, errors: nil,
+                            modal: "categories"}}
                 else
                     format.html { render :new }
                     format.json { render status: :unprocessable_entity,
                         :json => { :success => false, :errors => @ccr.errors }}
-                    format.js { render locals: {cart: @ccr.cart,
-                        errors: @ccr.errors }}
+                    format.js { render "shared/concerns/form_modal",
+                        locals: {cart: @ccr.cart, errors: @ccr.errors,
+                            modal: "categories"}}
                 end
             else
                 cart = Cart.find(params[:cart_id])
@@ -42,8 +45,8 @@ class CartCategoryRelationsController < ApplicationController
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
                     :json => { :success => false, errors: errors}}
-                format.js { render locals: {cart: cart,
-                    errors: errors }}
+                format.js { render "shared/concerns/form_modal",
+                    locals: {cart: cart, errors: errors, modal: "categories"}}
 
             end
         end

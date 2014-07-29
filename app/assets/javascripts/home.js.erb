@@ -3,7 +3,8 @@
     var lastVertPos, searchOffset = 0, searchLimit = 20;
     var infoTemplate = "\
         <div class'marker-header'><a href='/carts/{{id}}'>{{name}}</a></div>\
-        <div class='rating' data-score='{{rating}}' style='width: 100px; height: 20px;'></div>\
+        <div class='rating' data-score='{{rating}}'\
+        style='width: 100px; height: 20px;'></div>\
         ";
     var data = {
         'tq': '',
@@ -155,27 +156,6 @@
 
         controller.find('.search-form').searchForm({
             searchCallback: loadResults
-        });
-
-        controller.find('.navbar-center li').click(function(e) {
-            e.preventDefault();
-
-            var $container = $(this).parent();
-            $container.find('li.active').removeClass('active');
-            $(this).addClass('active');
-        });
-
-        controller.find('.navbar-center a').click(function(e) {
-            if($(this).attr('data-target') == 1) {
-                controller.find('.other.poster').removeClass('hide');
-                controller.find('#main-content').hide();
-                controller.find('#about-content').show();
-            }
-            else {
-                controller.find('.other.poster').addClass('hide');
-                controller.find('#about-content').hide();
-                controller.find('#main-content').show();
-            }
         });
 
         $(window).scroll(onScroll);

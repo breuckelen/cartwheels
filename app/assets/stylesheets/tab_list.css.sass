@@ -1,0 +1,22 @@
+.tab-list
+    li
+        display: inline-block
+        padding-left: 10px
+        padding-right: 10px
+
+        &.active
+            @include highlight(default)
+            @include underline(default)
+
+        &:hover
+            @include highlight(default)
+            @include underline(default)
+
+        > a
+            display: inline-block
+            color: #eee
+
+            padding-bottom: 3px
+
+            &:hover
+                text-decoration: none

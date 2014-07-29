@@ -1,0 +1,20 @@
+var $cart = $('#cart_' + <%= cart.id %>);
+<% if errors.nil? %>
+        $cart.html("<%= escape_javascript render partial: "carts/show_cart", locals: {cart: cart}%>");
+        $cart.cart();
+<% else %>
+    var $form = $cart.find('form[data-model=<%= model %>]');
+    var model = "<%= model %>";
+
+    $form.clear_previous_errors();
+    <% errors.each do |field, messages| %>
+        console.log("<%= field %>");
+        var $input = $form.find('input[name="' + model + '[<%= field.to_s %>]"]');
+        if ($input.length > 0) {
+            $input.closest('.form-group').addClass('has-error').find('.help-block').html( "<%= messages %>" );
+        }
+        else {
+            $form.find('.form-group').addClass('has-error').find('.help-block').html("<%= messages %>" );
+        }
+    <% end %>
+<% end %>

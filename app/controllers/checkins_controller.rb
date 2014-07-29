@@ -35,9 +35,15 @@ class CheckinsController < ApplicationController
             if @checkin.save
                 @checkin.cart.photos.create(author: user, image: image)
 
-                render locals: {cart: @checkin.cart }, status: :created
+                render "shared/concerns/form_modal",
+                    locals: {cart: @checkin.cart, errors: nil,
+                        modal: "checkins"},
+                    status: :created
             else
-                render locals: {cart: @checkin.cart }, status: :unprocessable_entity
+                render "shared/concerns/form_modal",
+                    locals: {cart: @checkin.cart, errors: @checkin.errors,
+                        modal: "checkins"},
+                    status: :unprocessable_entity
             end
         else
             respond_to do |format|
@@ -47,9 +53,17 @@ class CheckinsController < ApplicationController
                     format.json { render status: :created,
                         location: last_path(user),
                         :json => { :success => true }}
+                    format.js { render "shared/concerns/form_modal",
+                        locals: {cart: @checkin.cart, errors: nil,
+                            modal: "checkins"},
+                        status: :created }
                 else
                     format.json { render status: :unprocessable_entity,
-                        :json => { :success => false, :errors => @checkin.errors}}
+                        :json => { :success => false, :errors => @checkin.errors }}
+                    format.js { render "shared/concerns/form_modal",
+                        locals: {cart: @checkin.cart, errors: @checkin.errors,
+                            modal: "checkins"},
+                        status: :unprocessable_entity }
                 end
             end
         end

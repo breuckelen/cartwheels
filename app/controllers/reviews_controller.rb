@@ -30,12 +30,20 @@ class ReviewsController < ApplicationController
                 format.json { render status: :created,
                     location: @review,
                     :json => { :success => true }}
-                format.js { render locals: {cart: @review.cart, errors: nil}}
+                format.js { render "shared/concerns/form_multiple",
+                        locals: {cart: @review.cart, errors: nil,
+                            model: "review"},
+                        status: :created
+                }
             else
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
                     :json => { :success => false, :errors => @review.errors}}
-                format.js { render locals: {cart: @review.cart, errors: @review.errors}}
+                format.js { render "shared/concerns/form_multiple",
+                        locals: {cart: @review.cart,
+                            errors: @review.errors, model: "review"},
+                        status: :unprocessable_entity
+                }
             end
         end
     end

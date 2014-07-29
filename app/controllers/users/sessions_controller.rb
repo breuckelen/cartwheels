@@ -17,7 +17,7 @@ class Users::SessionsController < Devise::SessionsController
             format.json { render status: :ok,
                 location: last_path(resource),
                 json: { success: true }}
-            format.js { render "shared/concerns/login",
+            format.js { render "shared/concerns/form_default",
                 locals: { errors: nil, user: resource, redirect_path: last_path(resource)}}
         end
     end
@@ -29,7 +29,7 @@ class Users::SessionsController < Devise::SessionsController
                 notice: "Login failed"}
             format.json { render status: :unprocessable_entity,
                 json: { errors: errors, success: false }}
-            format.js { render "shared/concerns/login",
+            format.js { render "shared/concerns/form_default",
                 locals: { errors: errors }}
         end
     end

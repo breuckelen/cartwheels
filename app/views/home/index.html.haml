@@ -18,11 +18,11 @@
           .login-link
             =link_to "Log In", login_path
       .nav.navbar-nav
-        %ul.navbar-center
-          %li.active
-            %a{href: "#about", "data-target" => "2"} Map
-          %li
-            %a{href: "#about", "data-target" => "1"} About
+        %ul.navbar-center.tab-list
+          %li.active{"data-target" => "#main-content"}
+            %a{href: "#about"} Map
+          %li{"data-target" => "#about-content"}
+            %a{href: "#about"} About
       %ul.nav.navbar-nav.navbar-right
         %a.navbar-brand{href: "https://www.facebook.com/cartwheelsUS"}
           =image_tag("fb-icon.png")
@@ -41,7 +41,7 @@
       %form.search-form
         .input-block
           %input.gmaps-input{name: "tq", placeholder: "Halal Guys, wafels and dinges, breakfast"}
-          %input.gmaps-input.location-input{name: "lq", placeholder: "10282, brooklyn, 456 allen st"}
+          %input.gmaps-input.location-input{name: "lq", placeholder: "456 allen, brooklyn, 10282"}
         %button.gmaps-button.btn.btn-primary{type: "submit"}
           =image_tag("search.png")
         %button.gmaps-button.btn.btn-primary.more{type: "submit"}
@@ -65,23 +65,21 @@
     .row
       .col-lg-12
         %p Copyright © Cartwheels 2014
-
-.poster.other.poster-top-middle.carousel.slide.hide{speed: "0.2"}
-  .fill
-
-.poster.other.poster-middle-one.carousel.slide.hide{speed: "0.28"}
-  .fill
-
-.poster.other.poster-middle-two.carousel.slide.hide{speed: "0.3"}
-  .fill
-
-.poster.other.poster-bottom-middle.carousel.slide.hide{speed: "0.3"}
-  .fill
-
-.poster.other.poster-bottom.carousel.slide.hide{speed: "0.25"}
-  .fill
-
 #about-content
+  .poster.other.poster-top-middle.carousel.slide{speed: "0.2"}
+    .fill
+
+  .poster.other.poster-middle-one.carousel.slide{speed: "0.28"}
+    .fill
+
+  .poster.other.poster-middle-two.carousel.slide{speed: "0.3"}
+    .fill
+
+  .poster.other.poster-bottom-middle.carousel.slide{speed: "0.3"}
+    .fill
+
+  .poster.other.poster-bottom.carousel.slide{speed: "0.25"}
+    .fill
 
   #content
     .section
@@ -187,3 +185,5 @@
               Reda Lamniji
             .title
               Content Expert
+#help-content
+

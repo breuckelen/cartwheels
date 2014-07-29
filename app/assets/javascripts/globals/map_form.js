@@ -9,6 +9,8 @@
         this.$el = element;
         var $form = this;
 
+        this.$el.addClass('map_form:bound');
+
         this.$el.find('.search-form').searchForm({
             searchCallback: function(inputs) {
                 $form.moveCheckin(element, inputs.lq);
@@ -26,8 +28,6 @@
             $(this).ajaxSubmit({
                 contentType: 'application/json'
             });
-
-            $(this).trigger('custom');
         });
 
         if(this.$el.parents('.modal').length > 0) {
@@ -96,7 +96,9 @@
 
     $.fn.map_form = function(options) {
         $.each(this, function(el) {
-            var mapForm = new MapForm($(this), options);
+            if (!$(this).hasClass('map_form:bound')) {
+                var mapForm = new MapForm($(this), options);
+            }
         });
     }
 

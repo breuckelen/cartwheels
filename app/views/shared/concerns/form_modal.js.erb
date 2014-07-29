@@ -1,5 +1,5 @@
 var $cart = $('#cart_' + <%= cart.id %>);
-var $modal = $cart.find("<%= modal %>");
+var $modal = $cart.find(".<%= modal %>-modal");
 <% if errors.nil? %>
     $modal.on('hidden.bs.modal', function(e) {
         if ($('#search-index').length > 0) {

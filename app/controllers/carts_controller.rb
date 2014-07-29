@@ -55,10 +55,13 @@ class CartsController < ApplicationController
         if request.xhr? || remotipart_submitted?
             if @cart.save
                 flash[:notice] = "Cart was successfully created."
-                render locals: {errors: nil, redirect_path: cart_path(@cart)},
+                render "shared/concerns/form_default",
+                    locals: {errors: nil, redirect_path: cart_path(@cart)},
                     status: :created
             else
-                render locals: {errors: @cart.errors}, status: :unprocessable_entity
+                render "shared/concerns/form_default",
+                    locals: {errors: @cart.errors},
+                    status: :unprocessable_entity
             end
         else
             respond_to do |format|
@@ -67,9 +70,14 @@ class CartsController < ApplicationController
                     format.json { render status: :created,
                         location: carts_path,
                         :json => { :success => true }}
+                    format.js { render "shared/concerns/form_default",
+                        locals: {errors: nil,
+                        redirect_path: last_path(current_owner)}}
                 else
                     format.json { render status: :unprocessable_entity,
                         :json => { :errors => @cart.errors, :success => false }}
+                    format.js {render "shared/concerns/form_default",
+                        locals: {errors: @cart.errors}}
                 end
             end
         end
@@ -99,7 +107,7 @@ class CartsController < ApplicationController
                     Cart.set_callback(:validation, :before, :update_location)
 
                     flash[:notice] = "Cart was successfully updated."
-                    render "shared/concerns/login",
+                    render "shared/concerns/form_default",
                         locals: {errors: nil, redirect_path: cart_path(@cart)},
                         status: :created
                 else
@@ -107,8 +115,9 @@ class CartsController < ApplicationController
                     Cart.set_callback(:validation, :before, :update_rating)
                     Cart.set_callback(:validation, :before, :update_location)
 
-                    render "shared/concerns/login",
-                        locals: {errors: @cart.errors}, status: :unprocessable_entity
+                    render "shared/concerns/form_default",
+                        locals: {errors: @cart.errors},
+                        status: :unprocessable_entity
                 end
             else
                 respond_to do |format|
@@ -126,7 +135,8 @@ class CartsController < ApplicationController
                         format.json { render :show, status: :ok,
                             location: @cart,
                             :json => { :success => true }}
-                        format.js {render "shared/concerns/login", locals: {errors: nil,
+                        format.js { render "shared/concerns/form_default",
+                            locals: {errors: nil,
                             redirect_path: last_path(current_owner)}}
                     else
                         Cart.set_callback(:validation, :before, :update_popularity)
@@ -136,7 +146,7 @@ class CartsController < ApplicationController
                         format.html { render :edit }
                         format.json { render status: :unprocessable_entity,
                             :json => { :errors => @cart.errors, :success => false }}
-                        format.js {render "shared/concerns/login",
+                        format.js {render "shared/concerns/form_default",
                             locals: {errors: @cart.errors}}
                     end
                 end

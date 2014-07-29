@@ -18,8 +18,9 @@ class Owners::SessionsController < Devise::SessionsController
             format.json { render status: :ok,
                 location: home_path,
                 :json => { :success => true }}
-            format.js { render "shared/concerns/login",
-                locals: { errors: nil, user: resource, redirect_path: last_path(resource)}}
+            format.js { render "shared/concerns/form_default",
+                locals: { errors: nil, user: resource,
+                    redirect_path: last_path(resource)}}
         end
     end
 
@@ -29,8 +30,10 @@ class Owners::SessionsController < Devise::SessionsController
             format.html { render :new,
                 notice: "Login failed"}
             format.json { render status: :unprocessable_entity,
-                :json => { :errors => ["Email and password combination is invalid"], :success => false }}
-            format.js { render "shared/concerns/login",
+                :json => {
+                    :errors => ["Email and password combination is invalid"],
+                    :success => false }}
+            format.js { render "shared/concerns/form_default",
                 locals: { errors: errors }}
         end
     end

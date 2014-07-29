@@ -8,14 +8,6 @@
         }
     }
 
-    var readUrl = function(input) {
-        var $container = $(input).parents('form');
-        if (input.files && input.files[0]) {
-            var label = input.files[0].name;
-            $container.find('.file-btn .label').text(label);
-        }
-    }
-
     var Cart = function(element, options) {
         this.$el = element;
         var $cart = this;
@@ -29,23 +21,6 @@
             score: function() {
                 return $(this).attr('data-score');
             }
-        });
-
-        this.menuInit();
-
-        this.$el.find('.next').click(function(e) {
-            e.preventDefault();
-            $cart.nextSection();
-        });
-
-        this.$el.find('.prev').click(function(e) {
-            e.preventDefault();
-            $cart.prevSection();
-        });
-
-        this.$el.find('.subname a').click(function(e) {
-            e.preventDefault();
-            $cart.switchSection($(this));
         });
 
         this.$el.find('.pop-image').click(function(e) {
@@ -69,148 +44,26 @@
             callback: popoverCallback
         });
 
-        this.$el.find('.map-form').map_form();
+        this.$el.find('.mark-as-moved').click(function(e) {
+            var cartId = $cart.$el.attr('data-cart-id');
 
-        this.$el.find('form[data-model=menu_item]').on('submit', function(e) {
-            e.preventDefault();
-
-            $(this).ajaxSubmit({
-                contentType: 'application/json'
+            $.getJSON('/carts/' + cartId + '/mark_as_moved', {moved: true},
+                    function(data) {
+                window.location.reload();
             });
-            console.log('goodbye');
         });
 
         this.$el.find('.info .photo').on('mouseenter', function(e) {
             $(this).parents('.info-header').find('.actions').addClass('show');
         });
 
-        this.$el.find('.img-input').change(function(e) {
-            readUrl(this);
-        });
-
         this.$el.find('.info .info-header').on('mouseleave', function(e) {
             $(this).find('.actions').removeClass('show');
         });
 
-        if(options !== undefined && options['startTab'] !== undefined) {
-            this.switchSection(
-                this.$el.find('.subname a[data-target-class=' + options['startTab'] + ']')
-            )
-        }
-    }
-
-    Cart.prototype.nextSection = function() {
-        var $content = this.$el.find('.content');
-        var oclass = $content.attr('class').split(' ')[1],
-            nclass;
-
-        if($content.hasClass('first')) {
-            nclass = 'second';
-            $content.addClass('second');
-            $content.removeClass('first');
-        }
-        else if($content.hasClass('second')) {
-            nclass = 'third';
-            $content.addClass('third');
-            $content.removeClass('second');
-        }
-        else if($content.hasClass('third')) {
-            nclass = 'fourth';
-            $content.addClass('fourth');
-            $content.removeClass('third');
-        }
-        else if($content.hasClass('fourth')) {
-            nclass = 'first';
-            $content.addClass('first');
-            $content.removeClass('fourth');
-        }
-
-        this.$el.find('a[data-target-class=' + nclass + ']').parent().addClass('active');
-        this.$el.find('a[data-target-class=' + oclass + ']').parent().removeClass('active');
-    }
-
-    Cart.prototype.prevSection = function() {
-        var $content = this.$el.find('.content');
-        var oclass = $content.attr('class').split(' ')[1],
-            nclass;
-
-        if($content.hasClass('first')) {
-            nclass = 'fourth';
-            $content.addClass('fourth');
-            $content.removeClass('first');
-        }
-        else if($content.hasClass('second')) {
-            nclass = 'first';
-            $content.addClass('first');
-            $content.removeClass('second');
-        }
-        else if($content.hasClass('third')) {
-            nclass = 'second';
-            $content.addClass('second');
-            $content.removeClass('third');
-        }
-        else if($content.hasClass('fourth')) {
-            nclass = 'third';
-            $content.addClass('third');
-            $content.removeClass('fourth');
-        }
-
-        this.$el.find('a[data-target-class=' + nclass + ']').parent().addClass('active');
-        this.$el.find('a[data-target-class=' + oclass + ']').parent().removeClass('active');
-    }
-
-    Cart.prototype.switchSection = function($el) {
-        var $content = this.$el.find('.content');
-        var nclass = $el.attr('data-target-class'),
-            oclass = $content.attr('class').split(' ')[1];
-
-        this.$el.find('.subname.active').removeClass('active');
-        $el.parent().addClass('active');
-
-        $content.addClass(nclass);
-        $content.removeClass(oclass);
-    }
-
-    Cart.prototype.menuInit = function() {
-        var $carousel = this.$el.find('.menu .carousel');
-        var $active = $carousel.find('.item.active');
-        var $cart = this;
-
-        this.getMenuNotes();
-
-        $carousel.on('slid.bs.carousel', function(e) {
-            $cart.getMenuNotes();
-        });
-    }
-
-    Cart.prototype.getMenuNotes = function() {
-        var $container = this.$el.find('.menu');
-        var $menuItem = $container.find('.item.active');
-
-        $container.find('.notes').find('.item').fadeOut(function(e) {
-            $(this).remove();
-        });
-
-        $.getJSON('/menu_items/data', {'menu_item': {'id': $menuItem.attr('id') } }, function(data) {
-            var notes = [], index = 0;
-            $.each(data.data, function(i, d) {
-                $.each(d.notes, function(i, n) {
-                    notes.push(n);
-                });
-            });
-
-            $.each(notes.splice(0, 4), function(i, n) {
-                if (i > 1) {
-                    index = 1;
-                }
-
-                var div = $('<div/>').text('"' + n.text + '"').addClass('item');
-                $('<div/>').text(n.user.name).addClass('user')
-                    .appendTo(div);
-                div.appendTo($container.find('.notes').get(index));
-                div.fadeIn();
-            });
-        });
+        this.$el.find('form').wheels_form();
+        this.$el.find('.map-form').map_form();
+        this.$el.find('.directions-modal').directions_modal();
     }
 
     $.fn.cart = function(options) {
@@ -224,10 +77,9 @@
     var controller;
 
     var init = function() {
-        controller = $('#carts');
+        controller = $('.cart');
     }
 
-    //Popover forms
     var popoverCallback = function() {
         $('.popover-input').keypress(function(e) {
             if(e.which === 13) {
@@ -238,36 +90,12 @@
         });
     }
 
-    var search = function(inputs) {
-        var str = '';
-        for(key in inputs) {
-            str += key + '=' + inputs[key] + '&';
-        }
-        str = str.slice(0, str.length - 1);
-
-        window.location.assign('/search?' + str);
-    }
-
     var ready = function() {
         init();
 
         if (controller.length === 0) return;
 
-        controller.find('.cart').cart();
-
-        controller.find('#search-bar').css({'top': '0px'});
-
-        controller.find('#top-content .search-form').searchForm({
-            searchCallback: search
-        });
-
-        controller.find('.mark-as-moved').click(function(e) {
-            var cartId = $(this).parents('.cart').attr('data-cart-id');
-
-            $.getJSON('/carts/' + cartId + '/mark_as_moved', {moved: true}, function(data) {
-                window.location.reload();
-            });
-        });
+        controller.cart();
     }
 
     $(document).ready(ready);

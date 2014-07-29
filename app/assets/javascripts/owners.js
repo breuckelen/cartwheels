@@ -9,10 +9,6 @@
         init();
 
         if(controller.length === 0) return;
-
-        controller.find('.manager-header').click(function(e) {
-            $(this).next('.manager-content').toggleClass('show');
-        });
     }
 
     $(document).ready(ready);

@@ -19,7 +19,8 @@
             searchCallback: search
         });
 
-        sidebar.find('.glyphicon.glyphicon-remove-circle').on('click', function(e) {
+        sidebar.find('.glyphicon.glyphicon-remove-circle').on('click',
+        function(e) {
             e.preventDefault();
             sidebar.removeClass('open');
             sidebar.addClass('closed');

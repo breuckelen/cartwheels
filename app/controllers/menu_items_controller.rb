@@ -35,11 +35,15 @@ class MenuItemsController < ApplicationController
 
         if request.xhr? || remotipart_submitted?
             if @menu_item.save
-                render locals: {cart: @menu_item.menu.cart, errors: nil},
+                render "shared/concerns/form_multiple",
+                    locals: {cart: @menu_item.menu.cart, errors: nil,
+                        model: "menu_item"},
                     status: :created
             else
-                render locals: {cart: @menu_item.menu.cart,
-                    errors: @menu_item.errors }, status: :unprocessable_entity
+                render "shared/concerns/form_multiple",
+                    locals: {cart: @menu_item.menu.cart,
+                        errors: @menu_item.errors, model: "menu_item"},
+                    status: :unprocessable_entity
             end
         else
             respond_to do |format|
@@ -47,10 +51,20 @@ class MenuItemsController < ApplicationController
                     format.json { render status: :created,
                         location: @menu_item,
                         :json => { :success => true }}
+                    format.js { render "shared/concerns/form_multiple",
+                            locals: {cart: @menu_item.menu.cart, errors: nil,
+                                model: "menu_item"},
+                            status: :created
+                    }
                 else
                     format.json { render json: @menu_item.errors,
                         status: :unprocessable_entity,
                         :json => { :success => false }}
+                    format.js { render "shared/concerns/form_multiple",
+                            locals: {cart: @menu_item.menu.cart,
+                                errors: @menu_item.errors, model: "menu_item"},
+                            status: :unprocessable_entity
+                    }
                 end
             end
         end

@@ -19,7 +19,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
             format.json { render status: :ok,
                 location: home_path,
                 :json => { :success => true }}
-            format.js { render "shared/concerns/login",
+            format.js { render "shared/concerns/form_default",
                 locals: { errors: nil, user: resource, redirect_path: home_path}}
         end
     end
@@ -30,7 +30,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
                 notice: "Registration was unsuccessful"}
             format.json { render status: :unprocessable_entity,
                 :json => { :errors => resource.errors, :success => false }}
-            format.js { render "shared/concerns/login",
+            format.js { render "shared/concerns/form_default",
                 locals: { errors: resource.errors }}
         end
     end
