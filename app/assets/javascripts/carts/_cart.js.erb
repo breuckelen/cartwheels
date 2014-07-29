@@ -1,18 +1,18 @@
 (function() {
-    var tmp = $.fn.popover.Constructor.prototype.show;
-
-    $.fn.popover.Constructor.prototype.show = function () {
-        tmp.call(this);
-        if (this.options.callback) {
-            this.options.callback();
-        }
-    }
-
+    /**
+     * Class representing a cart and all of its view functionality
+     * @param {element} element
+     * @param {object} options
+     * @constructor
+     */
     var Cart = function(element, options) {
         this.$el = element;
         var $cart = this;
 
-        this.$el.find('.info .rating').raty({
+        /*
+         * Configuration
+         */
+        this.ratingOptions = {
             starOff: "<%= asset_path("star-off.png") %>",
             starOn: "<%= asset_path("star-on.png") %>",
             starHalf: "<%= asset_path("star-half.png") %>",
@@ -21,49 +21,55 @@
             score: function() {
                 return $(this).attr('data-score');
             }
-        });
+        }
 
-        this.$el.find('.pop-image').click(function(e) {
-            e.preventDefault();
-        });
-
-        this.$el.find('.pop-image-top').popover({
+        this.popoverOptions = {
             placement: 'top',
             container: 'body',
             trigger: 'hover'
-        });
+        }
 
-        this.$el.find('.pop-input').popover({
-            html: true,
-            placement: 'top',
-            container: 'body',
-            content: function() {
-                return $(this).parent().find('.content-popover').html();
-            },
-            trigger: 'click',
-            callback: popoverCallback
-        });
+        /*
+         * Event binding
+         */
+        this.$el.find('.info .rating').raty(this.ratingOptions);
+        this.$el.find('.pop-image').popover(this.popoverOptions);
+        this.$el.find('.mark-as-moved').click(_.bind(this.markMoved, this));
+        this.$el.find('.info .photo').on('mouseenter', this.showActions);
+        this.$el.find('.info .info-header').on('mouseleave', this.hideActions);
 
-        this.$el.find('.mark-as-moved').click(function(e) {
-            var cartId = $cart.$el.attr('data-cart-id');
-
-            $.getJSON('/carts/' + cartId + '/mark_as_moved', {moved: true},
-                    function(data) {
-                window.location.reload();
-            });
-        });
-
-        this.$el.find('.info .photo').on('mouseenter', function(e) {
-            $(this).parents('.info-header').find('.actions').addClass('show');
-        });
-
-        this.$el.find('.info .info-header').on('mouseleave', function(e) {
-            $(this).find('.actions').removeClass('show');
-        });
-
+        /*
+         * Object binding
+         */
         this.$el.find('form').wheels_form();
         this.$el.find('.map-form').map_form();
         this.$el.find('.directions-modal').directions_modal();
+    }
+
+    /**
+     * Updates the cart instance in the database, marking it as moved.
+     */
+    Cart.prototype.markMoved = function(e) {
+        var cartId = this.$el.attr('data-cart-id');
+
+        $.getJSON('/carts/' + cartId + '/mark_as_moved', { moved: true },
+                function(data) {
+            window.location.reload();
+        });
+    }
+
+    /**
+     * Show other options for interacting with the cart.
+     */
+    Cart.prototype.showActions = function(e) {
+        $(this).parents('.info-header').find('.actions').addClass('show');
+    }
+
+    /**
+     * Hide other options for interacting with the cart.
+     */
+    Cart.prototype.hideActions = function(e) {
+        $(this).find('.actions').removeClass('show');
     }
 
     $.fn.cart = function(options) {
@@ -74,22 +80,22 @@
 
     $.fn.cart.Constructor = Cart;
 
+    /**
+     * All functionality in the javascript context acts on this DOM element
+     *      and its children.
+     */
     var controller;
 
+    /**
+     * Initialization function for this javascript context.
+     */
     var init = function() {
         controller = $('.cart');
     }
 
-    var popoverCallback = function() {
-        $('.popover-input').keypress(function(e) {
-            if(e.which === 13) {
-                e.preventDefault();
-                $(this).parent().submit();
-                $(this).parents('.popover').hide();
-            }
-        });
-    }
-
+    /**
+     * Function to execute context functionalisty when the DOM content loads.
+     */
     var ready = function() {
         init();
 
