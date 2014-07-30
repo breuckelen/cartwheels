@@ -1,11 +1,14 @@
 (function() {
+    /**
+     * Persistent variables for the home page and the map search -- including
+     *      controller, cartMap, etc.
+     */
     var controller, cartMap;
     var lastVertPos, searchOffset = 0, searchLimit = 20;
     var infoTemplate = "\
         <div class'marker-header'><a href='/carts/{{id}}'>{{name}}</a></div>\
         <div class='rating' data-score='{{rating}}'\
-        style='width: 100px; height: 20px;'></div>\
-        ";
+        style='width: 100px; height: 20px;'></div>";
     var data = {
         'tq': '',
         'lq': '',
@@ -15,10 +18,16 @@
         'box': []
     };
 
+    /**
+     * Initialization function for this javascript context.
+     */
     var init = function() {
         controller = $('#home-index #content-wrapper');
     }
 
+    /**
+     * Parralax on scroll.
+     */
     var onScroll = function(e) {
         var currVertPos = $(window).scrollTop();
         var delta = currVertPos - lastVertPos;
@@ -31,12 +40,14 @@
         lastVertPos = currVertPos;
     }
 
+    /**
+     * Render the map with new search results.
+     */
     var renderMap = function(data) {
         var bounds = [];
         cartMap.removeMarkers();
 
         $.each(data.data, function(i, d) {
-            //Extend the bounds of the map
             var latlng = new google.maps.LatLng(d.lat, d.lon);
             bounds.push(latlng);
 
@@ -58,7 +69,6 @@
                 });
             });
 
-            //Add a marker
             cartMap.addMarker({
                 lat: d.lat,
                 lng: d.lon,
@@ -73,7 +83,6 @@
         if (data.data.length > 0)
             cartMap.fitLatLngBounds(bounds);
 
-        //Increase search offset if more results, else reset
         if (data.data.length === searchLimit) {
             controller.find('.more').removeClass('hide');
         }
@@ -82,6 +91,9 @@
         }
     }
 
+    /**
+     * Send a json request to get the search results based on search data.
+     */
     var search = function() {
         var bounds = cartMap.map.getBounds();
         var center = cartMap.getCenter();
@@ -98,11 +110,17 @@
         $.getJSON('/carts/search', data, renderMap);
     }
 
+    /**
+     * Reset the search limit when bounds change.
+     */
     var onBoundsChange = function() {
         controller.find('.more').removeClass('hide');
         searchLimit = 20;
     }
 
+    /**
+     * Load search resuls on the map.
+     */
     var loadResults = function(inputs) {
         data['tq'] = inputs.tq;
 
@@ -124,16 +142,36 @@
         }
     }
 
+    /**
+     * Increase the search limit and load more results.
+     */
+    var loadMore = function(e) {
+        e.preventDefault();
+
+        searchLimit += 20;
+        data['limit'] = searchLimit;
+        search();
+    }
+
+    /**
+     * Function to execute context functionalisty when the DOM content loads.
+     */
     var ready = function(e) {
         init();
 
         if (controller.length === 0) return;
 
+        /*
+         * Initialization
+         */
         window.scrollTo(0,0);
         searchOffset = 0;
         searchLimit = 20;
         lastVertPos = $(window).scrollTop();
 
+        /*
+         * Configuration
+         */
         cartMap = new GMaps({
             div: '#map-div',
             lat: 40.7820015,
@@ -142,23 +180,24 @@
             scrollwheel: false
         });
 
+        /*
+         * Event binding
+         */
         google.maps.event.addListener(cartMap.map, 'dragend',
             onBoundsChange);
         google.maps.event.addListener(cartMap.map, 'zoom_changed',
             onBoundsChange);
 
-        controller.find('.more').click(function(e) {
-            e.preventDefault();
-            searchLimit += 20;
-            data['limit'] = searchLimit;
-            search();
-        });
+        controller.find('.more').click(loadMore);
 
+        $(window).scroll(onScroll);
+
+        /*
+         * Object binding
+         */
         controller.find('.search-form').searchForm({
             searchCallback: loadResults
         });
-
-        $(window).scroll(onScroll);
     };
 
     $(document).ready(ready);

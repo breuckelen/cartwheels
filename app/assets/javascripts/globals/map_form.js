@@ -1,43 +1,52 @@
 (function() {
-    var controller;
-
+    /**
+     * Initialization function for this javascript context.
+     */
     var init = function() {
         controller = $('.map-form');
     }
 
+    /**
+     * Class representing all forms with a map component.
+     * @param {element} element
+     * @param {object} options
+     * @constructor
+     */
     var MapForm = function(element, options) {
         this.$el = element;
         var $form = this;
 
+        /*
+         * Initialization
+         */
+        if(this.$el.parents('.modal').length > 0) {
+            this.$el.parents('.modal').on('shown.bs.modal',
+                _.bind(this.initMap, this));
+        }
+        else {
+            this.initMap();
+        }
+
+        /*
+         * Mark as bound
+         */
         this.$el.addClass('map_form:bound');
 
+        /*
+         * Event binding
+         */
+        this.$el.find('form[data-model=checkin]').unbind('submit');
+        this.$el.find('form[data-model=checkin]').submit(
+            _.bind(this.submit, this));
+
+        /*
+         * Object binding
+         */
         this.$el.find('.search-form').searchForm({
             searchCallback: function(inputs) {
                 $form.moveCheckin(element, inputs.lq);
             }
         });
-
-        this.$el.find('form').submit(function(e){
-            e.preventDefault();
-
-            var pos = $form.formMap.markers[0].getPosition();
-            var lat = pos.lat(), lon = pos.lng();
-
-            $form.latInput.val(lat);
-            $form.lonInput.val(lon);
-            $(this).ajaxSubmit({
-                contentType: 'application/json'
-            });
-        });
-
-        if(this.$el.parents('.modal').length > 0) {
-            this.$el.parents('.modal').on('shown.bs.modal', function(e) {
-                $form.initMap();
-            });
-        }
-        else {
-            this.initMap();
-        }
     }
 
     MapForm.prototype.initMap = function() {
@@ -60,16 +69,18 @@
             draggable: true
         });
 
-        GMaps.on('click', this.formMap.map, function(event) {
-            var lat = event.latLng.lat();
-            var lng = event.latLng.lng();
+        GMaps.on('click', this.formMap.map, _.bind(this.placeCheckin, this));
+    }
 
-            this.formMap.removeMarkers();
-            this.formMap.addMarker({
-                lat: lat,
-                lng: lng,
-                draggable: true
-            });
+    MapForm.prototype.placeCheckin = function(e) {
+        var lat = e.latLng.lat();
+        var lng = e.latLng.lng();
+
+        this.formMap.removeMarkers();
+        this.formMap.addMarker({
+            lat: lat,
+            lng: lng,
+            draggable: true
         });
     }
 
@@ -94,6 +105,20 @@
         });
     }
 
+    MapForm.prototype.submit = function(e) {
+        e.preventDefault();
+
+        var pos = this.formMap.markers[0].getPosition();
+        var lat = pos.lat(), lon = pos.lng();
+
+        this.latInput.val(lat);
+        this.lonInput.val(lon);
+
+        $(this).ajaxSubmit({
+            contentType: 'application/json'
+        });
+    }
+
     $.fn.map_form = function(options) {
         $.each(this, function(el) {
             if (!$(this).hasClass('map_form:bound')) {
@@ -104,6 +129,15 @@
 
     $.fn.map_form.Constructor = MapForm;
 
+    /**
+     * All functionality in the javascript context acts on this DOM element
+     *      and its children.
+     */
+    var controller;
+
+    /**
+     * Function to execute context functionalisty when the DOM content loads.
+     */
     var ready = function() {
         init();
 

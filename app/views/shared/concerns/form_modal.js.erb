@@ -12,6 +12,7 @@ var $modal = $cart.find(".<%= modal %>-modal");
     });
     $modal.modal('hide');
 <% else %>
+    console.log("<%= errors.inspect %>");
     var $form = $modal.find('form[data-remote=true]');
     var model = $form.attr('data-model');
 

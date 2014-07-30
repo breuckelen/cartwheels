@@ -1,26 +1,36 @@
 (function() {
-    var FormLoading = function(element, options) {
-        this.$el = element;
+    /**
+     * All functionality in the javascript context acts on this DOM element
+     *      and its children.
+     */
+    var controller;
 
-        var cachedFunction = this.$el.submit;
+    /**
+     * Initialization function for this javascript context.
+     */
+    var init = function() {
+        controller = $('body');
     }
 
-
-    $.fn.form_loading = function(options) {
-        $.each(this, function(el) {
-            var formLoading = new FormLoading($(this), options);
-        });
-    }
-
-    $.fn.form_loading.Constructor = FormLoading;
-
+    /**
+     * Function to execute context functionalisty when the DOM content loads.
+     */
     var ready = function() {
-        $('#loading-div').hide();
+        init();
+
+        controller.find('#loading-div').hide();
+
+        /*
+         * Show loading symbol on all ajax requests.
+         */
         $(document).ajaxStart(function() {
-            $('body').addClass('loading');
+            controller.addClass('loading');
         })
+        /*
+         * Remove loading symbol after ajax request completes.
+         */
         .ajaxStop(function() {
-            $('body').removeClass('loading');
+            controller.removeClass('loading');
         });
     }
 

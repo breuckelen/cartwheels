@@ -3,7 +3,7 @@ class Checkin < ActiveRecord::Base
     belongs_to :cart
     has_many :photos, as: :target, inverse_of: :target
 
-    validates :user, :cart, :lat, :lon, :photos, presence: true
+    validates :user, :cart, :lat, :lon, presence: true
 
     before_validation :check_user
     after_create :update_cart

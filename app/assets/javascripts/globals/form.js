@@ -1,10 +1,14 @@
 (function() {
+    /**
+     * Function available to all jquery objects. Adds errors to correct parts
+     *      of the form.
+     */
     $.fn.render_form_errors = function(errors) {
         var model = this.data('model');
         var $container = $(this);
 
         this.clear_previous_errors();
-        // show error messages in input form-group help-block
+
         $.each(errors, function(field, messages) {
             $input = $container.find(
                 'input[name="' + model + '[' + field + ']"]');
@@ -20,6 +24,10 @@
 
     };
 
+    /**
+     * Function available to all jquery objects. Clears all errors from the
+     *      form to prepare for re-rendering of errors.
+     */
     $.fn.clear_previous_errors = function() {
         $('.form-group.has-error', this).each(function() {
             $('.help-block', $(this)).html('');
@@ -27,33 +35,53 @@
         });
     };
 
+    /**
+     * Class representing a cartwheels form and all of its view functionality.
+     * @param {element} element
+     * @param {object} options
+     * @constructor
+     */
     var WheelsForm = function(element, options) {
         this.$el = element;
         var $form = this;
 
+        /*
+         * Mark as bound
+         */
         this.$el.addClass('form:bound');
-        this.$el.find('.img-input').change(function(e) {
-            $form.readUrl(this);
-        });
+
+        /*
+         * Event binding
+         */
+        this.$el.find('.img-input').change(_.bind(this.changeLabel, this));
 
         if (this.$el.attr('enctype') !== undefined) {
-            this.$el.on('submit', function(e) {
-                e.preventDefault();
-
-                $(this).ajaxSubmit({
-                    contentType: 'application/json'
-                });
-            });
+            this.$el.on('submit', this.multipartSubmit);
         }
     }
 
-    WheelsForm.prototype.readUrl = function(input) {
-        var $container = this.$el;
+    /**
+     * Change the label of a file input to match the name of the file.
+     */
+    WheelsForm.prototype.changeLabel = function(e) {
+        var input = e.target;
 
         if (input.files && input.files[0]) {
             var label = input.files[0].name;
-            $container.find('.file-btn .label').text(label);
+            this.$el.find('.file-btn .label').text(label);
         }
+    }
+
+    /**
+     * Submit callback for all forms with multipart data. Sends the request as
+     *      JSON instead of JS.
+     */
+    WheelsForm.prototype.multipartSubmit = function(e) {
+        e.preventDefault();
+
+        $(this).ajaxSubmit({
+            contentType: 'application/json'
+        });
     }
 
     $.fn.wheels_form = function(options) {
@@ -66,12 +94,22 @@
 
     $.fn.wheels_form.Constructor = WheelsForm;
 
+    /**
+     * All functionality in the javascript context acts on this DOM element
+     *      and its children.
+     */
     var controller;
 
+    /**
+     * Initialization function for this javascript context.
+     */
     var init = function() {
         controller = $('form');
     }
 
+    /**
+     * Function to execute context functionalisty when the DOM content loads.
+     */
     var ready = function() {
         init();
 

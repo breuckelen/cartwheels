@@ -33,8 +33,6 @@ class CheckinsController < ApplicationController
 
         if request.xhr? || remotipart_submitted?
             if @checkin.save
-                @checkin.cart.photos.create(author: user, image: image)
-
                 render "shared/concerns/form_modal",
                     locals: {cart: @checkin.cart, errors: nil,
                         modal: "checkins"},
