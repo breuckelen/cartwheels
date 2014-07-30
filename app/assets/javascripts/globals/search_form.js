@@ -48,11 +48,11 @@
                     ,timeout : 5000
                 });
             } else {
-                searchForm.search(inputs);
+                this.search(this.inputs);
             }
         }
         else {
-            searchForm.search(inputs);
+            this.search(this.inputs);
         }
     }
 

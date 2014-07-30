@@ -1,0 +1,64 @@
+(function() {
+    /**
+     * Class representing a rating and all of its view functionality.
+     * @param {element} element
+     * @param {object} options
+     * @constructor
+     */
+    var Rating = function(element, options) {
+        this.$el = element;
+
+        /*
+         * Configuration
+         */
+        this.options = {
+            starOff: "<%= asset_path("star-off.png") %>",
+            starOn: "<%= asset_path("star-on.png") %>",
+            starHalf: "<%= asset_path("star-half.png") %>",
+            readOnly: true,
+            size: 8,
+            score: function() {
+                return $(this).attr('data-score');
+            }
+        }
+        $.extend(this.options, options);
+
+        /*
+         * Initialization
+         */
+        this.$el.raty(this.options);
+    }
+
+    $.fn.wheels_rating = function(options) {
+        $.each(this, function(el) {
+            var rating = new Rating($(this), options);
+        });
+    }
+
+    $.fn.wheels_rating.Constructor = Rating;
+
+    /**
+     * All functionality in the javascript context acts on this DOM element
+     *      and its children.
+     */
+    var controller;
+
+    /**
+     * Initialization function for this javascript context.
+     */
+    var init = function() {
+        controller = $('.rating');
+    }
+
+    /**
+     * Function to execute context functionalisty when the DOM content loads.
+     */
+    var ready = function() {
+        init();
+
+        controller.wheels_rating();
+    }
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
+})();

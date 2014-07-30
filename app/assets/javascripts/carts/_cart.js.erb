@@ -7,20 +7,12 @@
      */
     var Cart = function(element, options) {
         this.$el = element;
-        var $cart = this;
 
         /*
          * Configuration
          */
         this.ratingOptions = {
-            starOff: "<%= asset_path("star-off.png") %>",
-            starOn: "<%= asset_path("star-on.png") %>",
-            starHalf: "<%= asset_path("star-half.png") %>",
-            readOnly: true,
-            size: 12,
-            score: function() {
-                return $(this).attr('data-score');
-            }
+            size: 12
         }
 
         this.popoverOptions = {
@@ -32,7 +24,6 @@
         /*
          * Event binding
          */
-        this.$el.find('.info .rating').raty(this.ratingOptions);
         this.$el.find('.pop-image').popover(this.popoverOptions);
         this.$el.find('.mark-as-moved').click(_.bind(this.markMoved, this));
         this.$el.find('.info .photo').on('mouseenter', this.showActions);
@@ -44,6 +35,7 @@
         this.$el.find('form').wheels_form();
         this.$el.find('.map-form').map_form();
         this.$el.find('.directions-modal').directions_modal();
+        this.$el.find('.info .rating').wheels_rating(this.ratingOptions);
     }
 
     /**

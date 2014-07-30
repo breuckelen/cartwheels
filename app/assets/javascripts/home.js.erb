@@ -57,18 +57,10 @@
                     .replace(/{{rating}}/, d.rating)
             });
             google.maps.event.addListener(infoWindow, 'domready', function(e) {
-                controller.find('.rating').raty({
-                    starOff: "<%= asset_path("star-off.png") %>",
-                    starOn: "<%= asset_path("star-on.png") %>",
-                    starHalf: "<%= asset_path("star-half.png") %>",
-                    readOnly: true,
-                    size: 4,
-                    score: function() {
-                        return $(this).attr('data-score');
-                    }
+                controller.find('.rating').wheels_rating({
+                    size: 4
                 });
             });
-
             cartMap.addMarker({
                 lat: d.lat,
                 lng: d.lon,
@@ -80,8 +72,9 @@
             });
         });
 
-        if (data.data.length > 0)
+        if (data.data.length > 0) {
             cartMap.fitLatLngBounds(bounds);
+        }
 
         if (data.data.length === searchLimit) {
             controller.find('.more').removeClass('hide');
@@ -101,12 +94,14 @@
             ne = bounds.getNorthEast();
 
         cartMap.removeMarkers();
+
         data['limit'] = searchLimit;
         data['categories'] = _.map(controller.find(':checked'), function(d) {
             return $(d).parent().attr('data-category');
         });
         data['box'] = [sw.lat() + " " + sw.lng(), ne.lat() + " " + ne.lng()];
         data['lq'] = center.lat() + " " + center.lng();
+
         $.getJSON('/carts/search', data, renderMap);
     }
 
@@ -119,6 +114,18 @@
     }
 
     /**
+     * Recenter the map and search once address has been geocoded.
+     */
+    var addressCallback = function(results, status) {
+        if(status == 'OK') {
+            var latlng = results[0].geometry.location;
+            cartMap.setCenter(latlng.lat(), latlng.lng());
+            cartMap.setZoom(14);
+            search();
+        }
+    }
+
+    /**
      * Load search resuls on the map.
      */
     var loadResults = function(inputs) {
@@ -127,14 +134,7 @@
         if(inputs.lq !== '') {
             GMaps.geocode({
                 address: inputs.lq,
-                callback: function(results, status) {
-                    if(status == 'OK') {
-                        var latlng = results[0].geometry.location;
-                        cartMap.setCenter(latlng.lat(), latlng.lng());
-                        cartMap.setZoom(14);
-                        search();
-                    }
-                }
+                callback: addressCallback
             });
         }
         else {
@@ -164,7 +164,7 @@
         /*
          * Initialization
          */
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         searchOffset = 0;
         searchLimit = 20;
         lastVertPos = $(window).scrollTop();

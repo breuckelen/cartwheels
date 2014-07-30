@@ -38,8 +38,16 @@
     /**
      * Function to close the sidebar.
      */
-    var closeSidebar = function(e) {
+    var closeSidebarDefault = function(e) {
         e.preventDefault();
+        sidebar.removeClass('open');
+        sidebar.addClass('closed');
+    }
+
+    /**
+     * Function to close the sidebar.
+     */
+    var closeSidebar = function(e) {
         sidebar.removeClass('open');
         sidebar.addClass('closed');
     }
@@ -65,7 +73,7 @@
         sidebar.find('.attached-btn').on('click', openSidebar);
 
         sidebar.find('.glyphicon.glyphicon-remove-circle').on('click',
-            closeSidebar);
+            closeSidebarDefault);
         content.on('click', closeSidebar);
     }
 
