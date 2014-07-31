@@ -19,6 +19,7 @@
         /*
          * Initialization
          */
+        this.$formEl = this.$el.find('form[data-model=checkin]');
         if(this.$el.parents('.modal').length > 0) {
             this.$el.parents('.modal').on('shown.bs.modal',
                 _.bind(this.initMap, this));
@@ -35,9 +36,8 @@
         /*
          * Event binding
          */
-        this.$el.find('form[data-model=checkin]').unbind('submit');
-        this.$el.find('form[data-model=checkin]').submit(
-            _.bind(this.submit, this));
+        this.$formEl.unbind('submit');
+        this.$formEl.submit(_.bind(this.submit, this));
 
         /*
          * Object binding
@@ -114,7 +114,7 @@
         this.latInput.val(lat);
         this.lonInput.val(lon);
 
-        $(this).ajaxSubmit({
+        this.$formEl.ajaxSubmit({
             contentType: 'application/json'
         });
     }

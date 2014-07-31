@@ -117,97 +117,97 @@
           .form-section
             =render partial: "reviews/form", locals: {cart: cart, review: Review.new}
 
-.modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button.close{"data-dismiss" => "modal", type: "button"}
-          %span{"aria-hidden" => "true"} ×
-          %span.sr-only Close
-        %h3.modal-title="Categories - #{cart.name}"
-      .modal-body
-        .categories
-          -cart.categories.each do |item|
-            .item
-              -if owner_signed_in?
-                =link_to item.name, cart.cart_category_relations.where(category_id: item.id).first, method: :delete, confirm: "Are you sure you want to remove this category?"
-              -else
-                =link_to item.name, "#"
-        -if user_signed_in? or owner_signed_in?
-          =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
-
-.modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button.close{"data-dismiss" => "modal", type: "button"}
-          %span{"aria-hidden" => "true"} ×
-          %span.sr-only Close
-        %h3.modal-title="Directions to #{cart.name}"
-      .modal-body
-        .directions-body
-          .directions-map{id: "directions-map-#{cart.id}", "data-latitude" => cart.lat, "data-longitude" => cart.lon}
-          .directions-panel{id: "directions-panel-#{cart.id}"}
-            .heading Directions
-            .container
-        .wheels-form
-          .form-group
-            %form.search-form
-              .row
-                %input.form-input.location-input#address{name: "lq", placeholder: "Start Address"}
-                %button.hidden{type: "submit"}
-
-.modal.fade.claim-modal{id: "claim-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button.close{"data-dismiss" => "modal", type: "button"}
-          %span{"aria-hidden" => "true"} ×
-          %span.sr-only Close
-        %h3.modal-title="Claim #{cart.name}"
-      .modal-body
-        .wheels-form
-          .form-group
-            %form{action: claim_cart_path(cart)}
-              .row
-                %input.form-input.location-input#address{name: "permit_number", placeholder: "Enter permit number"}
-                %button.btn.btn-primary.form-btn{type: "submit"}
-                  Claim
-
-.modal.fade.checkins-modal{id: "checkins-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button.close{"data-dismiss" => "modal", type: "button"}
-          %span{"aria-hidden" => "true"} ×
-          %span.sr-only Close
-        %h3.modal-title="Checkin at #{cart.name}"
-      .modal-body
-        -if user_signed_in?
-          =render partial: "checkins/form", locals: {cart: cart, checkin: Checkin.new}
-
--if cart.photos.first
-  .modal.fade.photos-modal{id: "photos-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+  .modal.fade.categories-modal{id: "categories-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
     .modal-dialog
       .modal-content
         .modal-header
           %button.close{"data-dismiss" => "modal", type: "button"}
             %span{"aria-hidden" => "true"} ×
             %span.sr-only Close
-          %h3.modal-title="Photos for #{cart.name}"
+          %h3.modal-title="Categories - #{cart.name}"
         .modal-body
-          .photos
-            .carousel.slide.photos-carousel{id: "photos-carousel-#{cart.id}", "data-ride" => "carousel"}
-              .carousel-inner
-                -cart.photos.each do |photo|
-                  -if photo == cart.photos.first
-                    .item.active
-                      =image_tag(photo.image_url)
-                  -else
-                    .item
-                      =image_tag(photo.image_url)
-              %a.left.carousel-control{href: "#photos-carousel-#{cart.id}", "role" => "button", "data-slide" => "prev"}
-                %span.glyphicon.glyphicon-chevron-left
-              %a.right.carousel-control{href: "#photos-carousel-#{cart.id}", "role" => "button", "data-slide" => "next"}
-                %span.glyphicon.glyphicon-chevron-right
+          .categories
+            -cart.categories.each do |item|
+              .item
+                -if owner_signed_in?
+                  =link_to item.name, cart.cart_category_relations.where(category_id: item.id).first, method: :delete, confirm: "Are you sure you want to remove this category?"
+                -else
+                  =link_to item.name, "#"
+          -if user_signed_in? or owner_signed_in?
+            =render partial: "cart_category_relations/form", locals: {ccr: CartCategoryRelation.new, cart: cart}
+
+  .modal.fade.directions-modal{id: "directions-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"data-dismiss" => "modal", type: "button"}
+            %span{"aria-hidden" => "true"} ×
+            %span.sr-only Close
+          %h3.modal-title="Directions to #{cart.name}"
+        .modal-body
+          .directions-body
+            .directions-map{id: "directions-map-#{cart.id}", "data-latitude" => cart.lat, "data-longitude" => cart.lon}
+            .directions-panel{id: "directions-panel-#{cart.id}"}
+              .heading Directions
+              .container
+          .wheels-form
+            .form-group
+              %form.search-form
+                .row
+                  %input.form-input.location-input#address{name: "lq", placeholder: "Start Address"}
+                  %button.hidden{type: "submit"}
+
+  .modal.fade.claim-modal{id: "claim-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"data-dismiss" => "modal", type: "button"}
+            %span{"aria-hidden" => "true"} ×
+            %span.sr-only Close
+          %h3.modal-title="Claim #{cart.name}"
+        .modal-body
+          .wheels-form
+            .form-group
+              %form{action: claim_cart_path(cart)}
+                .row
+                  %input.form-input.location-input#address{name: "permit_number", placeholder: "Enter permit number"}
+                  %button.btn.btn-primary.form-btn{type: "submit"}
+                    Claim
+
+  .modal.fade.checkins-modal{id: "checkins-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"data-dismiss" => "modal", type: "button"}
+            %span{"aria-hidden" => "true"} ×
+            %span.sr-only Close
+          %h3.modal-title="Checkin at #{cart.name}"
+        .modal-body
+          -if user_signed_in?
+            =render partial: "checkins/form", locals: {cart: cart, checkin: Checkin.new}
+
+  -if cart.photos.first
+    .modal.fade.photos-modal{id: "photos-modal-#{cart.id}", "aria-hidden" => "true", "role" => "dialog", "tabindex" => -1}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{"data-dismiss" => "modal", type: "button"}
+              %span{"aria-hidden" => "true"} ×
+              %span.sr-only Close
+            %h3.modal-title="Photos for #{cart.name}"
+          .modal-body
+            .photos
+              .carousel.slide.photos-carousel{id: "photos-carousel-#{cart.id}", "data-ride" => "carousel"}
+                .carousel-inner
+                  -cart.photos.each do |photo|
+                    -if photo == cart.photos.first
+                      .item.active
+                        =image_tag(photo.image_url)
+                    -else
+                      .item
+                        =image_tag(photo.image_url)
+                %a.left.carousel-control{href: "#photos-carousel-#{cart.id}", "role" => "button", "data-slide" => "prev"}
+                  %span.glyphicon.glyphicon-chevron-left
+                %a.right.carousel-control{href: "#photos-carousel-#{cart.id}", "role" => "button", "data-slide" => "next"}
+                  %span.glyphicon.glyphicon-chevron-right
 
