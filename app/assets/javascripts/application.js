@@ -16,5 +16,6 @@
 //= require jquery.raty.js
 //= require turbolinks
 //= require underscore
+//= require imagesloaded.pkgd.min.js
 //= require bootstrap
 //= require_tree .

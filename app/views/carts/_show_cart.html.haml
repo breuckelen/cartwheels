@@ -47,12 +47,11 @@
                 Add a category
           .col-lg-4
             .location
-              .map
-                %a.pop-image.pop-image-top{href: "#", "data-title" => cart.moved ? "MOVED": "Address", "data-content" => cart.moved ? "This cart has moved" : cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
-                  -if Rails.env.production?
-                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}&key=#{SECRETS['google_static']}"
-                  -else
-                    = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}"
+              %a.pop-image.pop-image-top{href: "#", "data-title" => cart.moved ? "MOVED": "Address", "data-content" => cart.moved ? "This cart has moved" : cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
+                -if Rails.env.production?
+                  = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}&key=#{SECRETS['google_static']}", class: "map"
+                -else
+                  = image_tag "http://maps.google.com/maps/api/staticmap?size=210x150&sensor=false&zoom=14&markers=#{cart.lat}%2C#{cart.lon}", class: "map"
         .subsection.hours
           .section-header
             %span.glyphicon.glyphicon-time

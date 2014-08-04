@@ -1,0 +1,21 @@
+-content_for :head do
+  =javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTwOMn3ZRwUcETE8wB2zxTVR-Dznbgv0"
+  =javascript_include_tag "gmaps.js"
+
+.map-form
+  .map
+  .map-search
+    %form.search-form
+      %input.form-input.location-input#address-input{name: "lq", placeholder: placeholder}
+      %button.hidden{type: "submit"}
+
+  .wheels-form
+    .form-header
+      -if action_name == "new"
+        %a{href: "#"}
+          ="Create a #{model_name}"
+      -elsif action_name == "edit"
+        %a{href: "#"}
+          ="Edit #{model_name}"
+
+    =yield :map_form

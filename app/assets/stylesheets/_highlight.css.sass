@@ -2,6 +2,10 @@
     a, span
         color: getColor($color)
 
+@mixin highlight-important($color)
+    a, span
+        color: getColor($color) !important
+
 @mixin highlight-full($color)
     a, span
         display: block
@@ -10,12 +14,24 @@
         margin: 0px
         color: getColor($color)
 
+@mixin highlight-important-full($color)
+    a, span
+        display: block !important
+        width: 100% !important
+        height: 100% !important
+        margin: 0px !important
+        color: getColor($color) !important
+
 @mixin underline($color)
     a, span
         border-bottom: 2px solid getColor($color)
 
+@mixin underline-important($color)
+    a, span
+        border-bottom: 2px solid getColor($color) !important
+
 .bg-highlight:hover
-    background: #333
+    background: #333 !important
 
 @each $color in $colors
     $c: nth($color, 1)
@@ -26,12 +42,22 @@
         &:hover
             @include highlight($c)
 
-    .highlight-full-#{$c}
-        @include highlight-full(white)
+    .highlight-important-#{$c}
+        @include highlight-important(white)
 
         &:hover
-            @include highlight-full($c)
+            @include highlight-important($c)
+
+    .highlight-important-full-#{$c}
+        @include highlight-important-full(white)
+
+        &:hover
+            @include highlight-important-full($c)
 
     .underline-#{$c}
         &:hover
             @include underline($c)
+
+    .underline-important-#{$c}
+        &:hover
+            @include underline-important($c)

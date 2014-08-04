@@ -30,16 +30,16 @@
         padding-top: 2%
         background: getColor(default)
 
-        .form-header
-            width: 60%
-            margin: 0 auto
+        @include scale-property(padding-left, 100px)
+        @include scale-property(padding-bottom, 20px)
 
-        form
+        .form-header
             width: 60%
             margin: 0 auto
 
         .form-group
             text-align: center
 
-        @include scale-property(padding-left, 100px)
-        @include scale-property(padding-bottom, 20px)
+        form
+            width: 60%
+            margin: 0 auto

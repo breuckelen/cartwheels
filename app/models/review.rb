@@ -11,6 +11,7 @@ class Review < ActiveRecord::Base
         :message => "Users may only write one review per cart."}
 
     after_create :update_cart
+    before_destroy :update_cart
 
     def update_cart
         cart.save

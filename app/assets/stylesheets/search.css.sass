@@ -1,111 +1,71 @@
-// Place all the styles related to the Search controller here.
-// They will automatically be included in application.css.
-// You can use Sass here: http://sass-lang.com/
 $sectionWidth: 689px
 
 #search-index, #carts-index, #owners-show
-    width: 100%
-    height: 100%
-
-    #content-wrapper
-        width: 100%
-        height: 100%
-
-    //Carts
     .cart
         width: 100%
         height: 400px
+        margin-bottom: 5%
         overflow: hidden
 
         border: 1px solid #eee
         border-bottom: 2px solid #ddd
 
-        margin-bottom: 5%
         @include vendor(border-radius, 3px)
 
         .container
             padding: 0
 
-        .section
-            width: $sectionWidth
-            height: 400px
-            padding: 0
+    .section
+        width: $sectionWidth
+        height: 400px
+        padding: 0
 
-            .subsection
-                height: 150px
-                padding-top: 10px
-                padding-left: 20px
-                padding-right: 20px
+    .subsection
+        height: 150px
+        padding-top: 10px
+        padding-left: 20px
+        padding-right: 20px
 
-        .info
-            padding: 0
+    .info
+        padding: 0
 
-            .info-header
-                position: relative
-                height: 250px
-                overflow: hidden
+        .info-header
+            position: relative
+            height: 250px
+            overflow: hidden
 
-            .actions
-                position: absolute
-                width: 100%
-                bottom: 0
-                text-align: center
-                bottom: -25px
-                padding-bottom: 0
-                padding-top: 5px
-                background: rgba(255, 255, 255, 0.4)
+        .actions
+            position: absolute
+            width: 100%
+            bottom: 0
+            text-align: center
+            bottom: -25px
+            padding-bottom: 0
+            padding-top: 5px
+            background: rgba(255, 255, 255, 0.4)
 
-                @include vendor(transition, all 0.4s ease 0s)
+            @include vendor(transition, all 0.4s ease 0s)
 
-                &.show
-                    padding-bottom: 10px
-                    bottom: 0px
+            &.show
+                padding-bottom: 10px
+                bottom: 0px
 
-            .photo
-                position: relative
-                width: 100%
-                height: 98%
-                text-align: center
-                overflow: hidden
+        .photo
+            position: relative
+            width: 100%
+            height: 98%
+            text-align: center
+            overflow: hidden
 
-                opacity: 0.9
+            opacity: 0.9
 
-                img
-                    width: $sectionWidth - 20px
-                    margin-top: 10px
+            img
+                width: $sectionWidth - 20px
+                margin-top: 10px
 
-                    -webkit-filter: blur(1px)
-                    @include vendor(border-radius, 2px)
+                -webkit-filter: blur(1px)
 
-            .name
-                font-size: 2em
+                @include vendor(border-radius, 2px)
 
-                div
-                    @include scale-property(margin-left, 10px)
-                    display: inline-block
-
-                .subname-btn
-                    display: none
-
-            .categories
-                .item
-                    color: white
-
-                    display: inline-block
-                    padding: 3px 6px
-
-                    background: #222
-                    @include vendor(border-radius, 2px)
-
-                    a
-                        color: white
-
-            .location
-                .map
-                    img
-                        @include vendor(border-radius, 2px)
-                        border: 1px solid #aaa
-
-                .mark-as-moved
-                    display: none
-
+        .name
+            font-size: 2em

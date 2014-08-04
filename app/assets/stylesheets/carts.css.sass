@@ -1,25 +1,9 @@
 /* Stylesheet for the cart page */
 $sectionWidth: 740px
 
-#carts-index, #carts-show
-    width: 100%
-    height: 100%
-
-    #content-wrapper
-        height: 100%
-        width: 100%
-
 #carts-new, #carts-edit, #carts-create, #carts-update
-    width: 100%
-    height: 100%
-    font-size: 1em
-
-    overflow-x: hidden
-
     #content-wrapper
         position: relative
-        width: 100%
-        height: 100%
 
         .img-preview
             display: none
@@ -28,177 +12,158 @@ $sectionWidth: 740px
             @include scale-property(margin-right, 10px)
 
 #carts-show
-    width: 100%
-    height: 100%
-
     .cart
         width: 100%
         height: 100%
         margin: 0 auto
 
-        .form-header
-            display: none
+    .form-header
+        display: none
 
-        .section
-            padding-left: 2%
-            margin-top: 5%
-            margin-bottom: 2%
+    .section
+        padding-left: 2%
+        margin-top: 5%
+        margin-bottom: 2%
 
-            .section-header
-                font-size: 1.5em
-                text-align: center
+    .section-header
+        font-size: 1.5em
+        text-align: center
 
+        width: 95%
+        margin: 0 auto
+        margin-bottom: 3%
+
+        border-bottom: 2px solid #333
+
+    .subsection
+        padding-left: 2%
+        margin-top: 2%
+        margin-bottom: 2%
+        height: 150px
+
+    .subsection-col
+        padding-left: 2%
+        margin-top: 5%
+        margin-bottom: 10%
+        border-right: 1px solid #aaa
+
+    .info
+        .info-header
+            position: relative
+            height: 350px
+            overflow: hidden
+
+        .actions
+            position: absolute
+            width: 100%
+            bottom: -25px
+            padding-bottom: 0
+            padding-top: 5px
+            text-align: center
+
+            background: rgba(255, 255, 255, 0.4)
+
+            @include vendor(transition, all 0.4s ease 0s)
+
+            &.show
+                padding-bottom: 10px
+                bottom: 0px
+
+        .photo
+            position: relative
+            width: 100%
+            height: 98%
+            text-align: center
+            overflow: hidden
+
+            opacity: 0.9
+
+            img
                 width: 95%
-                margin: 0 auto
-                margin-bottom: 3%
-                border-bottom: 2px solid #333
+                margin-top: 10px
 
+                -webkit-filter: blur(1px)
 
-        .subsection
-            padding-left: 2%
-            margin-top: 2%
-            margin-bottom: 2%
-            height: 150px
+                @include vendor(border-radius, 2px)
 
-        .subsection-col
-            padding-left: 2%
-            margin-top: 5%
-            margin-bottom: 10%
-            border-right: 1px solid #aaa
+        .name
+            font-size: 2em
 
-        .info
-            .info-header
-                position: relative
-                height: 350px
-                overflow: hidden
+        .hours
+            .day
+                font-weight: bold
 
-            .actions
-                position: absolute
-                width: 100%
-                bottom: 0
-                text-align: center
-                bottom: -25px
-                padding-bottom: 0
-                padding-top: 5px
-                background: rgba(255, 255, 255, 0.4)
+            .form-control
+                font-size: 1.1em
+                height: 50%
 
-                @include vendor(transition, all 0.4s ease 0s)
-
-                &.show
-                    padding-bottom: 10px
-                    bottom: 0px
-
-            .photo
-                position: relative
-                width: 100%
-                height: 98%
-                text-align: center
-                overflow: hidden
-
-                opacity: 0.9
-
-                img
-                    width: 95%
-                    margin-top: 10px
-
-                    -webkit-filter: blur(1px)
-                    @include vendor(border-radius, 2px)
-
-            .name
-                font-size: 2em
-
-                div
-                    @include scale-property(margin-left, 10px)
-                    display: inline-block
-
-                .subname-btn
-                    display: none
-
-            .location
-                .map
-                    img
-                        @include vendor(border-radius, 2px)
-                        border: 1px solid #aaa
-
-                .mark-as-moved
-                    display: none
-
-            .hours
-                .day
-                    font-weight: bold
-
-                .wheels-form
-
-                    .form-control
-                        font-size: 1.1em
-                        height: 50%
-
-                    .form-btn
-                        width: 50%
-                        margin-top: 5%
-                        padding: auto
-                        text-align: center
-
-        .form-section
-            margin-top: 15%
-
-        .menu
-            .wheels-form
-                .form-btn
-                    width: 100%
-
-                .form-input
-                    width: 100%
-                    margin: 0
-                    border: 1px solid #bbb
-
-            .item
-                border-bottom: 1px solid #aaa
-                height: 100px
-                padding-top: 5%
-
-                .photo img
-                    height: 70px
-                    @include vendor(border-radius, 2px)
-
-                    @include vendor(transition, all 0.2s ease 0s)
-
-                    &:hover
-                        @include vendor(transform, scale(1.2))
-
-                .name
-                    font-size: 1.2em
-                    font-weight: bold
-
-                .price
-                    margin-top: 5%
-
-
-        .reviews
             .form-btn
-                width: 40%
+                width: 50%
+                margin-top: 5%
+                padding: auto
+                text-align: center
 
-            .item
-                padding-bottom: 20px
+    .form-section
+        margin-top: 15%
 
-                .user
-                    font-family: Roboto
-                    font-size: 1.2em
+    .menu
+        .form-btn
+            width: 100%
 
-                .date
-                    color: #666
+        .form-input
+            width: 100%
+            margin: 0
 
-                .text
-                    width: 80%
-                    margin: 0 auto
-                    margin-top: 10px
-                    padding-top: 10px
-                    padding-left: 20px
-                    padding-bottom: 20px
+            border: 1px solid #bbb
 
-                    border-left: 1px solid getColor(default)
+        .item
+            height: 100px
+            padding-top: 5%
 
-                    @include vendor(transition, all 0.2s ease 0s)
+            border-bottom: 1px solid #aaa
 
-                    &:hover
-                        @include vendor(transform, scale(1.2))
+        .photo img
+            height: 70px
+
+            @include vendor(border-radius, 2px)
+            @include vendor(transition, all 0.2s ease 0s)
+
+            &:hover
+                @include vendor(transform, scale(1.2))
+
+        .name
+            font-size: 1.2em
+            font-weight: bold
+
+        .price
+            margin-top: 5%
+
+
+    .reviews
+        .form-btn
+            width: 40%
+
+        .item
+            padding-bottom: 20px
+
+        .user
+            font-family: Roboto
+            font-size: 1.2em
+
+        .date
+            color: #666
+
+        .text
+            width: 80%
+            margin: 0 auto
+            margin-top: 10px
+            padding-top: 10px
+            padding-left: 20px
+            padding-bottom: 20px
+
+            border-left: 1px solid getColor(default)
+
+            @include vendor(transition, all 0.2s ease 0s)
+
+            &:hover
+                @include vendor(transform, scale(1.2))

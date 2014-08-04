@@ -9,43 +9,43 @@
   = csrf_meta_tags
 
 %body
-  .loading-modal
-  %div{:id => "#{controller.controller_name}-#{action_name}"}
-    .flash-wrapper
+  #loading-modal
+  #sidebar-wrapper.closed
+    .sidebar
+      %ul.sidebar-nav
+        %li.sidebar-brand.highlight-red
+          %a{href: "#"}
+            %span.glyphicon.glyphicon-remove-circle
+        %li.section
+          %form.search-form{action: "/search"}
+            .form-group.search-group
+              %input.search-input.no-scale{type: "text", name: "tq", placeholder: "Food"}
+              %input.search-input.no-scale.location-input{type: "text", name: "lq", placeholder: "Location"}
+              %button.btn.btn-primary.form-btn.search-btn Search
+        - if user_signed_in?
+          %li.section.bg-highlight.highlight-important-full-default
+            = link_to "Logout", logout_path, :method => :delete
+        - elsif owner_signed_in?
+          %li.section.bg-highlight.highlight-important-full-default
+            = link_to "Manage", owner_path(current_owner)
+          %li.section.bg-highlight.highlight-important-full-default
+            = link_to "Logout", destroy_owner_session_path, :method => :delete
+        - else
+          %li.section.bg-highlight.highlight-important-full-default
+            = link_to "Sign Up", register_path
+          %li.section.bg-highlight.highlight-important-full-default
+            = link_to "Sign In", login_path
+        %li.bg-highlight.highlight-important-full-default
+          = link_to "Home", home_path, "data-no-turbolink" => true
+
+    %button.btn.attached-btn
+      %span.glyphicon.glyphicon-th-list
+      %span.label Menu
+
+  .controller{:id => "#{controller.controller_name}-#{action_name}"}
+    #flash-wrapper
       - flash.each do |key, value|
         %div{class: "#{flash_class(key)}"}
           =value
-    #sidebar-wrapper.closed
-      .sidebar
-        %ul.sidebar-nav
-          %li.sidebar-brand.highlight-red
-            %a{href: "#"}
-              %span.glyphicon.glyphicon-remove-circle
-          %li.section
-            %form.search-form{action: "/search"}
-              .form-group.search-group
-                %input.search-input.no-scale{type: "text", name: "tq", placeholder: "Food"}
-                %input.search-input.no-scale.location-input{type: "text", name: "lq", placeholder: "Location"}
-                %button.btn.btn-primary.form-btn.search-btn Search
-          - if user_signed_in?
-            %li.section.bg-highlight.highlight-full-default
-              = link_to "Logout", logout_path, :method => :delete
-          - elsif owner_signed_in?
-            %li.section.bg-highlight.highlight-full-default
-              = link_to "Manage", owner_path(current_owner)
-            %li.section.bg-highlight.highlight-full-default
-              = link_to "Logout", destroy_owner_session_path, :method => :delete
-          - else
-            %li.section.bg-highlight.highlight-full-default
-              = link_to "Sign Up", register_path
-            %li.section.bg-highlight.highlight-full-default
-              = link_to "Sign In", login_path
-          %li.bg-highlight.highlight-full-default
-            = link_to "Home", home_path, "data-no-turbolink" => true
-
-      %button.btn.attached-btn
-        %span.glyphicon.glyphicon-th-list
-        %span.label Menu
-
     #content-wrapper
       =yield

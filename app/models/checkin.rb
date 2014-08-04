@@ -7,6 +7,7 @@ class Checkin < ActiveRecord::Base
 
     before_validation :check_user
     after_create :update_cart
+    before_destroy :update_cart
 
     # For geospatial searches
     acts_as_mappable :lat_column_name => :lat,

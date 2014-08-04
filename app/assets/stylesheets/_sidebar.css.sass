@@ -1,6 +1,5 @@
 #sidebar-wrapper
     font-family: $defaultFont
-    font-weight: bold
     font-size: 11px
 
     z-index: 2
@@ -18,35 +17,36 @@
     &.open
         left: 300px
 
-.sidebar
-    height: 100%
-    background: #222
-    overflow-y: auto
+    .sidebar
+        height: 100%
+        background: #222
+        overflow-y: auto
 
-    border-right: 2px solid white
+        border-right: 2px solid white
 
-.sidebar-nav
-    top: 0
-    width: 100%
-    list-style: none
-    margin: 0
-    padding: 0
-
-    li
-        line-height: 50px
-        text-indent: 20px
+    .sidebar-nav
+        top: 0
         width: 100%
+        list-style: none
+        margin: 0
+        padding: 0
 
-    a
-        font-size: 2em
-        text-decoration: none
+        li
+            line-height: 50px
+            text-indent: 20px
+            width: 100%
 
-        &:hover
-            background: rgba(255, 255, 255, 0.2)
+        a
+            font-size: 2em
+            color: #eee
+
             text-decoration: none
 
-        &:active, &:focus
-            text-decoration: none
+            &:hover
+                text-decoration: none
+
+            &:active, &:focus
+                text-decoration: none
 
     .section
         border-bottom: 2px solid white
@@ -61,57 +61,53 @@
         margin-right: 20px
         line-height: 60px
 
-    a
-        color: #eee
+    .search-group
+        font-family: OpenSans
+        margin-left: 20px
+
+    .search-input
+        margin-left: 0
+
+        @extend .form-input
+
+    .search-btn
+        width: 40%
+        line-height: 20px
+        height: 32px
+
+    .attached-btn
+        font-size: 1.5em
+
+        position: absolute
+        z-index: 3
+        width: 45px
+        height: 50px
+        top: 12%
+        left: 300px
+        text-align: left
+
+        background: #444
+        border: none
+        overflow: hidden
+
+        @include vendor(border-radius, 0 0.2em 0.2em 0)
+        @include vendor(transition, all 0.2s ease 0s)
+
+        .open &
+            width: 100px
 
         &:hover
-            background: none
+            background: #333
+            width: 100px
 
-.search-group
-    font-family: OpenSans
-    margin-left: 20px
+        &:focus
+            outline: 0
 
-.search-input
-    @extend .form-input
-    margin-left: 0
 
-.search-btn
-    width: 40%
-    line-height: 20px
-    height: 32px
+        .label
+            font-weight: normal
+            margin-left: 5px
+            font-size: 1.0em
 
-.attached-btn
-    font-size: 1.5em
-
-    position: absolute
-    z-index: 3
-    width: 45px
-    height: 50px
-    top: 12%
-    left: 300px
-    text-align: left
-
-    background: #444
-    border: none
-    overflow: hidden
-    @include vendor(border-radius, 0 0.2em 0.2em 0)
-
-    @include vendor(transition, all 0.2s ease 0s)
-
-    span
-        color: white
-
-    .label
-        margin-left: 5px
-        font-size: 1.0em
-
-    .open &
-        width: 100px
-
-    &:hover
-        background: #333
-        width: 100px
-
-    &:focus
-        outline: 0
-
+        span
+            color: white

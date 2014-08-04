@@ -23,27 +23,12 @@
 @import categories
 
 html, body
-    -webkit-font-smoothing: antialiased
-
-    width: 100%
-    height: 100%
     @include scale-property(font-size, 12px)
 
-body.loading
-    overflow: hidden
-
-.loading-modal
-    z-index: 100000
-    position: fixed
-    display: none
-    top: 0
-    left: 0
-    height: 100%
     width: 100%
-    background: rgba( 255, 255, 255, .8 ) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat
+    height: 100%
 
-.loading .loading-modal
-    display: block
+    -webkit-font-smoothing: antialiased
 
 #content-wrapper
     width: 100%
@@ -52,7 +37,21 @@ body.loading
     a
         text-decoration: none
 
-.flash-wrapper
+#loading-modal
+    z-index: 100000
+    position: fixed
+    display: none
+    top: 0
+    left: 0
+    height: 100%
+    width: 100%
+
+    background: rgba( 255, 255, 255, .8 ) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat
+
+    .loading &
+        overflow: hidden
+
+#flash-wrapper
     position: absolute
     z-index: 1000
     left: 50%
@@ -60,9 +59,14 @@ body.loading
 
     .alert-abs
         font-family: "Helvetica Neue"
-        text-align: center
-        @include scale-property(font-size, 20px)
 
         position: relative
         left: -50%
         margin: 0 auto
+        text-align: center
+
+        @include scale-property(font-size, 20px)
+
+.controller
+    width: 100%
+    height: 100%

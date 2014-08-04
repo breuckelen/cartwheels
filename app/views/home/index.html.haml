@@ -7,7 +7,7 @@
     .banner
       %span Cartwheels
 
-%nav#navbar-wrapper.navbar.navbar-inverse{role: "navigation"}
+%nav#tab-bar.navbar.navbar-inverse{role: "navigation"}
   .container
     / Collect the nav links, forms, and other content for toggling
     .navbar-collapse.collapse
@@ -17,12 +17,11 @@
             =link_to "Sign Up", register_path
           .login-link
             =link_to "Log In", login_path
-      .nav.navbar-nav
-        %ul.navbar-center.tab-list
-          %li.active{"data-target" => "#main-content"}
-            %a{href: "#about"} Map
-          %li{"data-target" => "#about-content"}
-            %a{href: "#about"} About
+      %ul.nav.navbar-nav.navbar-center.tab-list
+        %li.active{"data-target" => "#main-content"}
+          %a{href: "#about"} Map
+        %li{"data-target" => "#about-content"}
+          %a{href: "#about"} About
       %ul.nav.navbar-nav.navbar-right
         %a.navbar-brand{href: "https://www.facebook.com/cartwheelsUS"}
           =image_tag("fb-icon.png")
@@ -31,7 +30,7 @@
         %a.navbar-brand{href: "http://plus.google.com"}
           =image_tag("gp-icon.png")
 
-#main-content.container
+#main-content.content-section
   #map-header.row
     .col-lg-1.col-md-1.col-sm-1.col-xs-1
     .col-lg-4.col-md-4.col-sm-4.col-xs-4
@@ -61,11 +60,13 @@
                 =cat.name
     #map-div
 
-  %footer.row
-    .row
-      .col-lg-12
-        %p Copyright © Cartwheels 2014
-#about-content
+    %footer.row
+      .row
+        .col-lg-12
+          %p Copyright © Cartwheels 2014
+
+
+#about-content.content-section
   .poster.other.poster-top-middle.carousel.slide{speed: "0.2"}
     .fill
 
@@ -143,47 +144,45 @@
             Endorsed by NYC Venture Capitalist Fred Wilson and staff at CBS Local.
           %li
             Featured in YahooNews, MarketWatch, NBC, and Fox.  
-        .photo
+        .bio
           =image_tag(asset_path("ben.jpg"))
           .text
             .name
               Benjamin Attal
             .title
               Co-Founder and Chief Executive Officer
-        .photo
+        .bio
           =image_tag(asset_path("jack.jpg"))
           .text
             .name
               Jack Cahn
             .title
               Co-Founder and President
-        .photo
+        .bio
           =image_tag(asset_path("david.jpg"))
           .text
             .name
               David Cahn
             .title
               Chief Financial Officer
-        .photo
+        .bio
           =image_tag(asset_path("will.jpg"))
           .text
             .name
               Will Field-Thompson
             .title
               iOS Lead
-        .photo
+        .bio
           =image_tag(asset_path("eric.jpg"))
           .text
             .name
               Eric Chen
             .title
               Android Lead
-        .photo
+        .bio
           =image_tag(asset_path("reda.jpg"))
           .text
             .name
               Reda Lamniji
             .title
               Content Expert
-#help-content
-

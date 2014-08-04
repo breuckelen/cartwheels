@@ -16,7 +16,6 @@
             starOn: "<%= asset_path("star-on.png") %>",
             starHalf: "<%= asset_path("star-half.png") %>",
             readOnly: true,
-            size: 8,
             score: function() {
                 return $(this).attr('data-score');
             }
@@ -27,6 +26,15 @@
          * Initialization
          */
         this.$el.raty(this.options);
+
+        if(this.options.size !== undefined) {
+            imagesLoaded(this.$el.get(0), _.bind(this.calculateSize, this));
+        }
+    }
+
+    Rating.prototype.calculateSize = function() {
+        this.$el.find('img').addClass('star-' + this.options.size)
+            .css({display: 'inline'});
     }
 
     $.fn.wheels_rating = function(options) {
