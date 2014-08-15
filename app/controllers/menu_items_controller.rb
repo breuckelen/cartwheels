@@ -1,7 +1,6 @@
 class MenuItemsController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_menu_item, only: [:show, :edit, :update, :destroy]
+    include Fetchable
+    include Imageable
 
     def index
         @menu_items = MenuItem.all
@@ -24,13 +23,8 @@ class MenuItemsController < ApplicationController
         cart = Cart.find(params[:id])
         @menu_item = cart.menu.menu_items.build(menu_item_params)
 
-        if (image = params[:menu_item][:image]) != ''
-            @menu_item.build_photo(author: user, image: image)
-        end
-
-        if data = params[:menu_item][:encoded_image]
-            @photo = @menu_item.build_photo(author: user)
-            @photo.decode_from_data(data)
+        if @photo
+            @menu_item.photo = @photo
         end
 
         if request.xhr? || remotipart_submitted?
@@ -50,7 +44,7 @@ class MenuItemsController < ApplicationController
                 if @menu_item.save
                     format.json { render status: :created,
                         location: @menu_item,
-                        :json => { :success => true }}
+                        json: { success: true }}
                     format.js { render "shared/concerns/form_multiple",
                             locals: {cart: @menu_item.menu.cart, errors: nil,
                                 model: "menu_item"},
@@ -59,7 +53,7 @@ class MenuItemsController < ApplicationController
                 else
                     format.json { render json: @menu_item.errors,
                         status: :unprocessable_entity,
-                        :json => { :success => false }}
+                        json: { success: true }}
                     format.js { render "shared/concerns/form_multiple",
                             locals: {cart: @menu_item.menu.cart,
                                 errors: @menu_item.errors, model: "menu_item"},
@@ -71,8 +65,8 @@ class MenuItemsController < ApplicationController
     end
 
     def update
-        if image = params[:menu_item][:image]
-            @menu_item.photos.build(user: current_user, image: image)
+        if @photo
+            @menu_item.photo = @photo
         end
 
         cart = @menu_item.menu.cart
@@ -83,12 +77,12 @@ class MenuItemsController < ApplicationController
                     notice: 'Menu item was succesfully updated.' }
                 format.json { render :show, status: :ok,
                     location: @menu_item,
-                    :json => { :success => true }}
+                    json: { success: true }}
             else
                 format.html { render :edit }
                 format.json { render json: @menu_item.errors,
                     status: :unprocessable_entity,
-                    :json => { :success => false }}
+                    json: { success: true }}
             end
         end
     end
@@ -103,14 +97,12 @@ class MenuItemsController < ApplicationController
 
                 format.html { redirect_to cart,
                     notice: 'Menu item was successfully destroyed.' }
-                format.json { render json: {
-                    success: true } }
+                format.json { render json: { success: true } }
             else
                 format.html { redirect_to cart,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
     end
@@ -160,12 +152,7 @@ class MenuItemsController < ApplicationController
         params.require(:menu_item).permit(:description, :price, :name)
     end
 
-    def set_menu_item
-        @menu_item = MenuItem.find(params[:id])
-    end
-
     private :data_params
     private :search_params
     private :menu_item_params
-    private :set_menu_item
 end

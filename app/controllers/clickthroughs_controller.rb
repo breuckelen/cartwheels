@@ -1,7 +1,5 @@
 class ClickthroughsController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_clickthrough, only: [:show, :edit, :update, :destroy]
+    include Fetchable
 
     def index
         @clickthroughs = Clickthrough.all
@@ -26,11 +24,11 @@ class ClickthroughsController < ApplicationController
             if @clickthrough.save
                 format.json { render :show, status: :created,
                     location: @clickthrough,
-                    :json => { :success => true }}
+                    json: { success: true }}
             else
                 format.json { render json: @clickthrough.errors,
                     status: :unprocessable_entity,
-                    :json => { :success => false }}
+                    json: { success: false }}
             end
         end
     end
@@ -45,31 +43,14 @@ class ClickthroughsController < ApplicationController
 
                 format.html { redirect_to clickthroughs_path,
                     notice: 'Clickthrough was successfully destroyed.' }
-                format.json { render json: {
-                    success: true } }
+                format.json { render json: { success: true } }
             else
                 format.html { redirect_to clickthroughs_path,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
-    end
-
-    respond_to :json
-    def data
-        if params[:clickthrough].empty?
-            @clickthroughs = Clickthrough.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @clickthroughs = Clickthrough.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200, :json => { :success => true,
-            :data => @clickthroughs }
     end
 
     def data_params
@@ -86,12 +67,7 @@ class ClickthroughsController < ApplicationController
         params.require(:clickthrough).permit(:cart_id)
     end
 
-    def set_clickthrough
-        @clickthrough = Clickthrough.find(params[:id])
-    end
-
     private :data_params
     private :search_params
     private :clickthrough_params
-    private :set_clickthrough
 end

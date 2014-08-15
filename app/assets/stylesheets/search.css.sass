@@ -16,9 +16,10 @@ $sectionWidth: 689px
             padding: 0
 
     .section
-        width: $sectionWidth
         height: 400px
         padding: 0
+
+        @include scale-property(width, $sectionWidth)
 
     .subsection
         height: 150px

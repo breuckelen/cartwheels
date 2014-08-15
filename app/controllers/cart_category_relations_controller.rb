@@ -1,42 +1,40 @@
 class CartCategoryRelationsController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_ccr, only: [:show, :destroy]
+    include Fetchable
 
     def index
     end
 
-    # show a review
     def show
     end
 
-    # form for creating a new review for a cart
     def new
-        @ccr = CartCategoryRelation.new
+        @cart_category_relation = CartCategoryRelation.new
     end
 
-    # create a new review for a cart
     def create
         respond_to do |format|
             if Category.find(ccr_params[:category_id])
-                @ccr = CartCategoryRelation.new(ccr_params)
-                @ccr.cart_id = params[:cart_id]
+                @cart_category_relation = CartCategoryRelation.new(ccr_params)
+                @cart_category_relation.cart_id = params[:cart_id]
 
-                if @ccr.save
-                    format.html { redirect_to @ccr.cart,
-                        notice: 'You successfully added a category to this cart.' }
+                if @cart_category_relation.save
+                    format.html { redirect_to @cart_category_relation.cart,
+                        notice: 'You successfully added a category to this cart.'
+                    }
                     format.json { render status: :created,
                         location: last_path(current_user),
-                        :json => { :success => true }}
+                        json: { success: true }}
                     format.js { render "shared/concerns/form_modal",
-                        locals: {cart: @ccr.cart, errors: nil,
+                        locals: {cart: @cart_category_relation.cart, errors: nil,
                             modal: "categories"}}
                 else
                     format.html { render :new }
                     format.json { render status: :unprocessable_entity,
-                        :json => { :success => false, :errors => @ccr.errors }}
+                        json: { success: false,
+                            errors: @cart_category_relation.errors }}
                     format.js { render "shared/concerns/form_modal",
-                        locals: {cart: @ccr.cart, errors: @ccr.errors,
+                        locals: {cart: @cart_category_relation.cart,
+                            errors: @cart_category_relation.errors,
                             modal: "categories"}}
                 end
             else
@@ -44,7 +42,7 @@ class CartCategoryRelationsController < ApplicationController
                 errors = { category_id: "This category does not exist."}
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
-                    :json => { :success => false, errors: errors}}
+                    json: { success: false, errors: errors}}
                 format.js { render "shared/concerns/form_modal",
                     locals: {cart: cart, errors: errors, modal: "categories"}}
 
@@ -53,12 +51,12 @@ class CartCategoryRelationsController < ApplicationController
     end
 
     def destroy
-        cart = @ccr.cart
+        cart = @cart_category_relation.cart
 
         respond_to do |format|
             if (current_owner and cart.in? current_owner.carts) or\
                     (current_user and current_user.has_role? :admin)
-                @ccr.destroy
+                @cart_category_relation.destroy
 
                 format.html { redirect_to cart,
                     notice: 'You removed a category from this cart.' }
@@ -66,31 +64,16 @@ class CartCategoryRelationsController < ApplicationController
                     success: true } }
             else
                 format.html { redirect_to cart,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
     end
 
-    respond_to :json
-    def data
-        if params[:cart_category_relation].empty?
-            @ccrs = CartCategoryRelation.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @ccrs = CartCategoryRelation.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200,
-            :json => { :success => true, :data => @ccrs }
-    end
-
     def data_params
-        params.require(:cart_category_relation).permit(:id, :cart_id, :category_id)
+        params.require(:cart_category_relation).permit(:id, :cart_id,
+            :category_id)
     end
 
     def search_params
@@ -103,12 +86,11 @@ class CartCategoryRelationsController < ApplicationController
         params.require(:cart_category_relation).permit(:category_id)
     end
 
-    def set_ccr
-        @ccr = CartCategoryRelation.find(params[:id])
+    def set_cart_category_relation
+        @cart_category_relation = CartCategoryRelation.find(params[:id])
     end
 
     private :data_params
     private :search_params
     private :ccr_params
-    private :set_ccr
 end

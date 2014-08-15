@@ -73,6 +73,14 @@ $sectionWidth: 740px
 
         @extend .highlight-black
 
+    .blank-message
+        font-family: OpenSans
+        font-size: 3em
+        color: #ddd
+
+        width: 100%
+        text-align: center
+
     .more-link
         @include scale-property(font-size, 15px)
         @include scale-property(margin-top, 5px)
@@ -118,9 +126,10 @@ $sectionWidth: 740px
 
     .location
         .map
-            border: 1px solid #aaa
-
             @include vendor(border-radius, 2px)
+
+            img
+                @include scale-property(width, 210px)
 
         .mark-as-moved
             display: none

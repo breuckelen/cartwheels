@@ -1,7 +1,5 @@
 class ReviewsController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_review, only: [:show, :edit, :update, :destroy]
+    include Fetchable
 
     def index
     end
@@ -29,7 +27,7 @@ class ReviewsController < ApplicationController
                 format.html { redirect_to @review }
                 format.json { render status: :created,
                     location: @review,
-                    :json => { :success => true }}
+                    json: { success: true }}
                 format.js { render "shared/concerns/form_multiple",
                         locals: {cart: @review.cart, errors: nil,
                             model: "review"},
@@ -38,7 +36,7 @@ class ReviewsController < ApplicationController
             else
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
-                    :json => { :success => false, :errors => @review.errors}}
+                    json: { success: false, errors: @review.errors}}
                 format.js { render "shared/concerns/form_multiple",
                         locals: {cart: @review.cart,
                             errors: @review.errors, model: "review"},
@@ -55,11 +53,11 @@ class ReviewsController < ApplicationController
                     notice: 'Review was succesfully updated.' }
                 format.json { render :show, status: :ok,
                     location: @review,
-                    :json => { :success => true }}
+                    json: { success: true }}
             else
                 format.html { render :edit }
                 format.json { render status: :unprocessable_entity,
-                    :json => { :success => false, :errors => @review.errors}}
+                    json: { success: false, errors: @review.errors}}
             end
         end
     end
@@ -76,25 +74,11 @@ class ReviewsController < ApplicationController
                 format.json { render json: { success: true } }
             else
                 format.html { redirect_to cart,
-                    notice: 'You do not have permission to perform this action.' }
+                    notice: 'You do not have permission to perform this action.'
+                }
                 format.json { render json: { success: false } }
             end
         end
-    end
-
-    respond_to :json
-    def data
-        if params[:review].empty?
-            @reviews = Review.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @reviews = Review.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200,
-            :json => { :success => true, :data => @reviews }
     end
 
     def search
@@ -120,12 +104,7 @@ class ReviewsController < ApplicationController
         params.require(:review).permit(:text, :rating, :cart_id)
     end
 
-    def set_review
-        @review = Review.find(params[:id])
-    end
-
     private :data_params
     private :search_params
     private :review_params
-    private :set_review
 end

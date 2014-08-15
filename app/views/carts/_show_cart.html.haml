@@ -30,11 +30,11 @@
               %span.glyphicon.glyphicon-leaf
       .info-content
         .subsection
-          .col-lg-4
+          .col-lg-4.col-md-4.col-sm-4.col-xs-4
             .rating{"data-score" => cart.rating }
             .reviews="#{cart.reviews.count} reviews"
             .name=cart.name
-          .col-lg-4
+          .col-lg-4.col-md-4.col-sm-4.col-xs-4
             .categories
               -if cart.categories.first
                 -cart.categories[0..2].each do |item|
@@ -45,7 +45,7 @@
             -else
               %a{href: "#", "data-toggle" => "modal", "data-target" => "#categories-modal-#{cart.id}", :class => "more-link"}
                 Add a category
-          .col-lg-4
+          .col-lg-4.col-md-4.col-sm-4.col-xs-4
             .location
               %a.pop-image.pop-image-top{href: "#", "data-title" => cart.moved ? "MOVED": "Address", "data-content" => cart.moved ? "This cart has moved" : cart.address, "data-toggle" => "modal", "data-target" => "#directions-modal-#{cart.id}"}
                 -if Rails.env.production?
@@ -56,7 +56,7 @@
           .section-header
             %span.glyphicon.glyphicon-time
             Hours
-          .col-lg-6
+          .col-lg-6.col-md-6.col-sm-6.col-xs-6
             -if cart.hours.first
               -cart.hours.order(:day).each do |item|
                 .item.row
@@ -70,11 +70,11 @@
               .not-available.warning No hours available
           -if cart.hours.count < 7
             -if user_signed_in? or owner_signed_in?
-              .col-lg-5
+              .col-lg-5.col-md-5.col-sm-5.col-xs-5
                 .add-hours.wheels-form
                   =render partial: "hours/form", locals: {cart: cart, hour: Hour.new}
     .section
-      .col-lg-4.subsection-col.menu
+      .col-lg-4.col-md-4.col-sm-4.col-xs-4.subsection-col.menu
         .section-header
           %span.glyphicon.glyphicon-th-list
           Menu
@@ -83,13 +83,13 @@
           .row
             -cart.menu.menu_items.each do |item|
               .item{id: "#{item.id}"}
-                .col-lg-6
+                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                   .photo
                     -if item.photo
                       =image_tag(item.photo.image_url_thumb)
                     -else
                       =image_tag("/system/images/default.png")
-                .col-lg-6
+                .col-lg-6.col-md-6.col-sm-6.col-xs-6
                   .name=item.name
                   .price="$#{item.price}"
                   .destroy
@@ -99,7 +99,7 @@
           .form-section
             =render partial: "menu_items/form", locals: {cart: cart, menu_item: MenuItem.new}
 
-      .col-lg-8.subsection-col.reviews
+      .col-lg-8.col-md-8.col-sm-8.col-xs-8.subsection-col.reviews
         .section-header
           %span.glyphicon.glyphicon-edit
           Reviews

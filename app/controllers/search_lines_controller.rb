@@ -1,7 +1,5 @@
 class SearchLinesController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_search_line, only: [:show, :edit, :update, :destroy]
+    include Fetchable
 
     def index
         @search_lines = SearchLine.all
@@ -33,12 +31,12 @@ class SearchLinesController < ApplicationController
                     notice: 'Search line was succesfully created.' }
                 format.json { render :show, status: :created,
                     location: @search_line,
-                    :json => { :success => true }}
+                    json: { success: true }}
             else
                 format.html { render :new }
                 format.json { render json: @search_line.errors,
                     status: :unprocessable_entity,
-                    :json => { :success => false }}
+                    json: { success: false }}
             end
         end
     end
@@ -53,31 +51,14 @@ class SearchLinesController < ApplicationController
 
                 format.html { redirect_to search_lines_path,
                     notice: 'Search line was successfully destroyed.' }
-                format.json { render json: {
-                    success: true } }
+                format.json { render json: { success: true } }
             else
                 format.html { redirect_to @search_line,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
-    end
-
-    respond_to :json
-    def data
-        if params[:search_line].empty?
-            @search_lines = SearchLine.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @search_lines = SearchLine.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200, :json => { :success => true,
-            :data => @search_lines }
     end
 
     def data_params
@@ -94,12 +75,7 @@ class SearchLinesController < ApplicationController
         params.require(:search_line).permit(:terms)
     end
 
-    def set_search_line
-        @search_line = SearchLine.find(params[:id])
-    end
-
     private :data_params
     private :search_params
     private :search_line_params
-    private :set_search_line
 end

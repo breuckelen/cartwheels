@@ -1,28 +1,28 @@
 class AdTypesController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_ad_type, only: [:show, :edit, :update, :destroy]
+    include Fetchable
 
-    # Show all of the ad types available
     def index
     end
 
-    # Show an ad type
     def show
-        # html:
-        # allow editing capabilities if user is an admin
     end
 
-    # Form for a new ad type
     def new
-        @ad_type = AdType.new
+        if current_user.has_role? :admin
+            @ad_type = AdType.new
+        else
+            return redirect_to home_path,
+                notice: "You do not have access to this page."
+        end
     end
 
-    # Edit an ad type
     def edit
+        unless current_user.has_role? :admin
+            return redirect_to home_path,
+                notice: "You do not have access to this page."
+        end
     end
 
-    # Create a new ad type
     def create
         @ad_type = AdType.new(ad_type_params)
 
@@ -33,11 +33,11 @@ class AdTypesController < ApplicationController
                     format.html { redirect_to @ad_type }
                     format.json { render :show, status: :created,
                         location: @ad_type,
-                        :json => { :success => true }}
+                        json: { success: true }}
                 else
                     format.html { render :new }
                     format.json { render status: :unprocessable_entity,
-                        :json => { :success => false, :errors => @ad_type.errors}}
+                        json: { success: false, errors: @ad_type.errors}}
                 end
             else
                 no_permission
@@ -45,7 +45,6 @@ class AdTypesController < ApplicationController
         end
     end
 
-    # Update an ad type
     def update
         respond_to do |format|
             if current_user.has_role? :admin
@@ -54,11 +53,11 @@ class AdTypesController < ApplicationController
                     format.html { redirect_to @ad_type }
                     format.json { render :show, status: :created,
                         location: @ad_type,
-                        :json => { :success => true }}
+                        json: { success: true }}
                 else
                     format.html { render :new }
                     format.json { render status: :unprocessable_entity,
-                        :json => { :success => false, :errors => @ad_type.errors}}
+                        json: { success: false, errors: @ad_type.errors}}
                 end
             else
                 no_permission
@@ -66,7 +65,6 @@ class AdTypesController < ApplicationController
         end
     end
 
-    # Destroy an ad type
     def destroy
         respond_to do |format|
             if current_user.has_role? :admin
@@ -79,21 +77,6 @@ class AdTypesController < ApplicationController
                 no_permission
             end
         end
-    end
-
-    respond_to :json
-    def data
-        if params[:ad_type].empty?
-            @ad_types = AdType.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @ad_types = AdType.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200,
-            :json => { :success => true, :data => @ad_types }
     end
 
     def search_params
@@ -111,12 +94,7 @@ class AdTypesController < ApplicationController
             :price)
     end
 
-    def set_ad_type
-        @ad_type = AdType.find(params[:id])
-    end
-
     private :data_params
     private :search_params
     private :ad_type_params
-    private :set_ad_type
 end

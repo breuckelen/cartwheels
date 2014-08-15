@@ -1,4 +1,4 @@
-=render partial: "layouts/carts", locals: {carts: @carts, small: true, tq: @tq, lq: @lq}
+=render partial: "layouts/carts", locals: {carts: @carts, small: true, tq: @tq, lq: @lq, blank_message: "No results to display"}
 -content_for :pagination do
   -if @total > 20
     .page-numbers

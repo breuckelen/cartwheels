@@ -175,6 +175,18 @@ class Cart < ActiveRecord::Base
         end
     end
 
+    def self.skip_updates
+        skip_callback(:validation, :before, :update_popularity)
+        skip_callback(:validation, :before, :update_rating)
+        skip_callback(:validation, :before, :update_location)
+    end
+
+    def self.set_updates
+        set_callback(:validation, :before, :update_popularity)
+        set_callback(:validation, :before, :update_rating)
+        set_callback(:validation, :before, :update_location)
+    end
+
     # Get most popular carts (highest ratings, most clickthroughs)
     def self.trending
     end

@@ -22,6 +22,7 @@ class PhotosController < ApplicationController
     def create
         user = current_user
         user ||= current_owner
+
         if photo_params[:encoded_image].nil?
             @photo = user.photos.build(photo_params)
         else

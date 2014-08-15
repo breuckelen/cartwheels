@@ -1,55 +1,52 @@
 class CartsController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_filter :authenticate_user!, only: [:new, :mark_as_moved]
-    before_filter :authenticate_owner!, only: [:edit]
-    before_action :set_cart, only: [:show, :edit, :update, :destroy, :claim,
-        :mark_as_moved]
+    include Fetchable
+    include Imageable
 
-    # show cart owners
+    skip_before_filter :authenticate_user!
+    skip_before_filter :authenticate_owner!
+
+    before_filter :authenticate_user!, only: [:new, :create, :update, :destroy,
+        :mark_as_moved]
+    skip_before_filter :authenticate_user!,
+        :if => Proc.new { |c| current_owner != nil }
+
+    before_filter :authenticate_owner!, only: [:new, :edit, :create, :update,
+        :destroy, :claim]
+    skip_before_filter :authenticate_owner!,
+        :if => Proc.new { |c| current_user != nil }
+
+    skip_before_action :set_instance
+    before_action :set_instance, only: [:show, :edit, :update, :destroy,
+        :claim, :mark_as_moved]
+
     def index
-        # html:
-        # map display with interactive popups
-        # statistics about cart owners
         @carts = Cart.where(created_at: (Time.now - 1.day)..Time.now)
     end
 
     def show
-        # html:
-        # show page statistics if owner, manager, or admin
-        # allow deletion of reviews if manager or admin
-        # show menu ghosts for this cart
     end
 
-    # form for creating a new cart
     def new
-        # redirect unless cart owner
-        # html:
-        # validation process for owning a cart
-        #   - permit number or other information from DOHMH
-        # required fields
         @cart = Cart.new
     end
 
     def edit
     end
 
-    # create a new cart
     def create
-        # redirect unless cart owner
         user = current_user
         user ||= current_owner
 
         @cart = Cart.new(cart_params)
-        @cart.user_cart_relations.build(user: current_user, relation_type: 0)
 
-        if image = params[:cart][:image]
-            @cart.photos.build(author: user, image: image)
+        if @photo
+            @cart.photos << @photo
         end
 
-        if data = params[:cart][:encoded_image]
-            @photo = @cart.photos.build(author: user)
-            @photo.decode_from_data(data)
+        if user_signed_in?
+            @cart.user_cart_relations.build(user: user, relation_type: 0)
+        else
+            @cart.cart_owner_relations.build(owner: user)
         end
 
         if request.xhr? || remotipart_submitted?
@@ -90,30 +87,24 @@ class CartsController < ApplicationController
             user = current_user
             user ||= current_owner
 
-            if image = params[:cart][:image]
-                @cart.photos.build(author: user, image: image)
+            if @photo
+                @cart.photos << @photo
             end
 
             @cart.moved = false
 
             if request.xhr? || remotipart_submitted?
-                Cart.skip_callback(:validation, :before, :update_popularity)
-                Cart.skip_callback(:validation, :before, :update_rating)
-                Cart.skip_callback(:validation, :before, :update_location)
+                Cart.skip_updates
 
                 if @cart.update(cart_params)
-                    Cart.set_callback(:validation, :before, :update_popularity)
-                    Cart.set_callback(:validation, :before, :update_rating)
-                    Cart.set_callback(:validation, :before, :update_location)
+                    Cart.set_updates
 
                     flash[:notice] = "Cart was successfully updated."
                     render "shared/concerns/form_default",
                         locals: {errors: nil, redirect_path: cart_path(@cart)},
                         status: :created
                 else
-                    Cart.set_callback(:validation, :before, :update_popularity)
-                    Cart.set_callback(:validation, :before, :update_rating)
-                    Cart.set_callback(:validation, :before, :update_location)
+                    Cart.set_updates
 
                     render "shared/concerns/form_default",
                         locals: {errors: @cart.errors},
@@ -121,14 +112,10 @@ class CartsController < ApplicationController
                 end
             else
                 respond_to do |format|
-                    Cart.skip_callback(:validation, :before, :update_popularity)
-                    Cart.skip_callback(:validation, :before, :update_rating)
-                    Cart.skip_callback(:validation, :before, :update_location)
+                    Cart.skip_updates
 
                     if @cart.update(cart_params)
-                        Cart.set_callback(:validation, :before, :update_popularity)
-                        Cart.set_callback(:validation, :before, :update_rating)
-                        Cart.set_callback(:validation, :before, :update_location)
+                        Cart.set_updates
 
                         format.html { redirect_to carts_path,
                             notice: 'Cart was succesfully updated.' }
@@ -139,13 +126,12 @@ class CartsController < ApplicationController
                             locals: {errors: nil,
                             redirect_path: last_path(current_owner)}}
                     else
-                        Cart.set_callback(:validation, :before, :update_popularity)
-                        Cart.set_callback(:validation, :before, :update_rating)
-                        Cart.set_callback(:validation, :before, :update_location)
+                        Cart.set_updates
 
                         format.html { render :edit }
                         format.json { render status: :unprocessable_entity,
-                            :json => { :errors => @cart.errors, :success => false }}
+                            json: { :errors => @cart.errors,
+                                :success => false }}
                         format.js {render "shared/concerns/form_default",
                             locals: {errors: @cart.errors}}
                     end
@@ -154,10 +140,9 @@ class CartsController < ApplicationController
         else
             respond_to do |format|
                 format.html { redirect_to @cart,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
     end
@@ -173,38 +158,21 @@ class CartsController < ApplicationController
                     success: true } }
             else
                 format.html { redirect_to @cart,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
     end
 
-    respond_to :json
-    def data
-        if params[:cart].empty?
-            @carts = Cart.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @carts = Cart.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200, :json => { :success => true,
-            :data => @carts }
-    end
-
     def search
-        @carts = Cart.search("popularity", search_params["tq"],
+        @carts = Cart.search(search_params["sort_by"], search_params["tq"],
                 search_params["lq"], search_params["categories"],
                 search_params["box"])
             .limit(search_params["limit"])
             .offset(search_params["offset"])
 
-        render :status => 200, :json => { :success => true,
-            :data => @carts }
+        render :status => 200, :json => { :success => true, :data => @carts }
     end
 
     def claim
@@ -215,14 +183,12 @@ class CartsController < ApplicationController
 
                 format.html { redirect_to @cart,
                     notice: 'Cart successfully claimed.' }
-                format.json { render json: {
-                    success: true } }
+                format.json { render json: { success: true } }
             else
                 format.html { redirect_to last_path(current_owner),
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
     end
@@ -232,26 +198,24 @@ class CartsController < ApplicationController
             if @cart.update_attributes(moved: params[:moved])
                 format.html { redirect_to @cart,
                     notice: 'Cart marked as moved' }
-                format.json { render json: {
-                    success: true } }
+                format.json { render json: { success: true } }
             else
-                format.html { redirect_to @cart,
-                    notice: 'Failed to mark cart' }
-                format.json { render json: {
-                    success: false }
-                }
+                format.html { redirect_to @cart, notice: 'Failed to mark cart' }
+                format.json { render json: { success: false } }
             end
         end
     end
 
     def data_params
-        params.require(:cart).permit(:id, :name, :city, :permit_number, :zip_code)
+        params.require(:cart).permit(:id, :name, :city, :permit_number,
+            :zip_code)
     end
 
     def search_params
-        ps = params.permit(:offset, :limit, :sort_by, :tq, :lq,
-            categories: [], box: [])
-        defaults = {"offset" => 0, "limit" => 20, "categories" => [], "box" => []}
+        ps = params.permit(:offset, :limit, :sort_by, :tq, :lq, categories: [],
+            box: [])
+        defaults = {"offset" => 0, "limit" => 20, "sort_by" => "popularity",
+            "categories" => [], "box" => []}
         defaults.merge(ps)
     end
 
@@ -260,12 +224,7 @@ class CartsController < ApplicationController
             :green, :rating, :description, :twitter_handle)
     end
 
-    def set_cart
-        @cart = Cart.find(params[:id])
-    end
-
     private :data_params
     private :search_params
     private :cart_params
-    private :set_cart
 end

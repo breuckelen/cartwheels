@@ -1,4 +1,9 @@
 class OwnersController < ApplicationController
+    include Fetchable
+
+    skip_before_filter :authenticate_user!
+    skip_before_filter :authenticate_owner!
+
     before_filter :authenticate_owner!, only: [:show, :edit, :update]
 
     def show
@@ -20,21 +25,6 @@ class OwnersController < ApplicationController
 
     def destroy
         # redirect unless owner of the cart, admin, or manager
-    end
-
-    respond_to :json
-    def data
-        if params[:owner].empty?
-            @owners = Owner.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @owners = Owner.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200,
-            :json => { :success => true, :data => @owners }
     end
 
     def data_params

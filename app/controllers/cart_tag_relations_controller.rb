@@ -1,46 +1,62 @@
 class CartTagRelationsController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_ctr, only: [:show, :destroy]
+    include Fetchable
 
     def index
     end
 
-    # show a review
     def show
     end
 
-    # form for creating a new review for a cart
     def new
-        @ctr = CartTagRelation.new
+        @cart_tag_relation = CartTagRelation.new
     end
 
-    # create a new review for a cart
     def create
-        @ctr = CartTagRelation.new(ctr_params)
-        @ctr.cart_id = params[:cart_id]
-
         respond_to do |format|
-            if @ctr.save
-                format.html { redirect_to @ctr.cart,
-                    notice: 'You successfully added a tag to this cart.' }
-                format.json { render :show, status: :created,
-                    location: @ctr,
-                    :json => { :success => true }}
+            if Tag.find(ctr_params[:tag_id])
+                @cart_tag_relation = CartTagRelation.new(ctr_params)
+                @cart_tag_relation.cart_id = params[:cart_id]
+
+                if @cart_tag_relation.save
+                    format.html { redirect_to @cart_tag_relation.cart,
+                        notice: 'You successfully added a tag to this cart.'
+                    }
+                    format.json { render status: :created,
+                        location: last_path(current_user),
+                        json: { success: true }}
+                    format.js { render "shared/concerns/form_modal",
+                        locals: {cart: @cart_tag_relation.cart, errors: nil,
+                            modal: "tags"}}
+                else
+                    format.html { render :new }
+                    format.json { render status: :unprocessable_entity,
+                        json: { success: false,
+                            errors: @cart_tag_relation.errors }}
+                    format.js { render "shared/concerns/form_modal",
+                        locals: {cart: @cart_tag_relation.cart,
+                            errors: @cart_tag_relation.errors,
+                            modal: "tags"}}
+                end
             else
+                cart = Cart.find(params[:cart_id])
+                errors = { tag_id: "This tag does not exist."}
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
-                    :json => { :success => false, :errors => @ctr.errors}}
+                    json: { success: false, errors: errors}}
+                format.js { render "shared/concerns/form_modal",
+                    locals: {cart: cart, errors: errors, modal: "tags"}}
+
             end
         end
     end
 
     def destroy
-        cart = @ctr.cart
+        cart = @cart_tag_relation.cart
 
         respond_to do |format|
-            if current_user.has_role? :admin
-                @ctr.destroy
+            if (current_owner and cart.in? current_owner.carts) or\
+                    (current_user and current_user.has_role? :admin)
+                @cart_tag_relation.destroy
 
                 format.html { redirect_to cart,
                     notice: 'You removed a tag from this cart.' }
@@ -48,31 +64,16 @@ class CartTagRelationsController < ApplicationController
                     success: true } }
             else
                 format.html { redirect_to cart,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
     end
 
-    respond_to :json
-    def data
-        if params[:cart_tag_relation].empty?
-            @ctrs = CartTagRelation.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @ctrs = CartTagRelation.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200,
-            :json => { :success => true, :data => @ctrs }
-    end
-
     def data_params
-        params.require(:cart_tag_relation).permit(:id, :cart_id, :tag_id)
+        params.require(:cart_tag_relation).permit(:id, :cart_id,
+            :tag_id)
     end
 
     def search_params
@@ -85,12 +86,11 @@ class CartTagRelationsController < ApplicationController
         params.require(:cart_tag_relation).permit(:tag_id)
     end
 
-    def set_ctr
-        @ctr = CartTagRelation.find(params[:id])
+    def set_cart_tag_relation
+        @cart_tag_relation = CartTagRelation.find(params[:id])
     end
 
     private :data_params
     private :search_params
     private :ctr_params
-    private :set_ctr
 end

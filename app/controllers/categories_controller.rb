@@ -1,21 +1,16 @@
 class CategoriesController < ApplicationController
-    skip_before_filter :verify_authenticity_token,
-        :if => Proc.new { |c| c.request.format == 'application/json' }
-    before_action :set_category, only: [:show, :destroy]
+    include Fetchable
 
     def index
     end
 
-    # show a review
     def show
     end
 
-    # form for creating a new review for a cart
     def new
         @category = Category.new
     end
 
-    # create a new review for a cart
     def create
         user = current_user
         user ||= current_owner
@@ -28,14 +23,14 @@ class CategoriesController < ApplicationController
                 format.html { redirect_to @category,
                     notice: 'You successfully created a category.' }
                 format.json { render :show, status: :created,
-                    location: @ucr,
-                    :json => { :success => true }}
+                    location: @category,
+                    json: { success: true }}
                 format.js {render "shared/concerns/login",
                     locals: {errors: nil, redirect_path: last_path(user)}}
             else
                 format.html { render :new }
                 format.json { render status: :unprocessable_entity,
-                    :json => { :success => false, :errors => @category.errors}}
+                    json: { success: false, errors: @category.errors}}
                 format.js {render "shared/concerns/login",
                     locals: {errors: @category.errors}}
             end
@@ -49,31 +44,13 @@ class CategoriesController < ApplicationController
 
                 format.html { redirect_to :back,
                     notice: 'You successfully destroyed this category.' }
-                format.json { render json: {
-                    success: true } }
-            else
+                format.json { render json: { success: true } } else
                 format.html { redirect_to :back,
-                    notice: 'You do not have permission to perform this action.' }
-                format.json { render json: {
-                    success: false }
+                    notice: 'You do not have permission to perform this action.'
                 }
+                format.json { render json: { success: false } }
             end
         end
-    end
-
-    respond_to :json
-    def data
-        if params[:category].empty?
-            @categories = Category.limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        else
-            @categories = Category.where(data_params)
-                .limit(search_params["limit"].to_i)
-                .offset(search_params["offset"].to_i)
-        end
-
-        render :status => 200,
-            :json => { :success => true, :data => @categories }
     end
 
     def data_params
@@ -90,12 +67,7 @@ class CategoriesController < ApplicationController
         params.require(:category).permit(:name)
     end
 
-    def set_category
-        @category = Category.find(params[:id])
-    end
-
     private :data_params
     private :search_params
     private :category_params
-    private :set_category
 end

@@ -29,6 +29,7 @@ class Checkin < ActiveRecord::Base
 
     def as_json(options={})
         options[:only] ||= [:id, :lat, :lon, :user_id, :user_type, :cart_id]
+        super(options)
     end
 
     def self.search(text_query, location_query)

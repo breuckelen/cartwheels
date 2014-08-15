@@ -19,32 +19,34 @@
 
   #main-content
     #title-bar.row
-      -if small
-        .col-lg-3.col-md-3.col-sm-2.col-xs-2
-          .column-header
-            =link_to "Featured Carts", "#"
-        .col-lg-6.col-md-6.col-sm-6.col-xs-6
-          .column-header
-            -if small
-              =link_to "Search Results", "#"
-            -else
-              =link_to "Current Cart", "#"
-        .col-lg-3.col-md-3.col-sm-3.col-xs-3
-          .column-header
-            -if small
-              =link_to "Reviews", "#"
-            -else
-              =link_to "Similar Carts", "#"
+      .col-lg-3.col-md-3.col-sm-2.col-xs-2
+        .column-header
+          =link_to "Featured Carts", "#"
+      .col-lg-6.col-md-6.col-sm-6.col-xs-6
+        .column-header
+          -if small
+            =link_to "Search Results", "#"
+          -else
+            =link_to "Current Cart", "#"
+      .col-lg-3.col-md-3.col-sm-3.col-xs-3
+        .column-header
+          -if small
+            =link_to "Reviews", "#"
+          -else
+            =link_to "Similar Carts", "#"
 
     #featured-bar.col-lg-3.col-md-3.col-sm-3.col-xs-3.column.column-left
 
     #search-results.col-lg-6.col-md-6.col-sm-6.col-xs-6.column.column-center
       .column-content
-        -if small
-          -carts.each do |cart|
-            =render partial: "carts/search_cart", locals: {cart: cart}
-          =yield :pagination
+        -if carts.count > 0
+          -if small
+            -carts.each do |cart|
+              =render partial: "carts/search_cart", locals: {cart: cart}
+            =yield :pagination
+          -else
+            =render partial: "carts/show_cart", locals: {cart: carts[0]}
         -else
-          =render partial: "carts/show_cart", locals: {cart: carts[0]}
+          .blank-message=blank_message
 
     #other-results.col-lg-3.col-md-3.col-sm-3.col-xs-3.column.column-right
