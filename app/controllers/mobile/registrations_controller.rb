@@ -17,7 +17,10 @@ class Mobile::RegistrationsController < Devise::RegistrationsController
                     :json => { :success => true,
                         :info => "Registered",
                         :data => { :user => resource,
-                            :auth_token => current_user.authentication_token } }
+                            :auth_token => current_user.authentication_token }}
+            else
+                render :status => :unprocessable_entity,
+                    :json => { :success => false, :errors => resource.errors}
             end
         rescue
             build_resource(owner_sign_up_params)
@@ -29,12 +32,10 @@ class Mobile::RegistrationsController < Devise::RegistrationsController
                     :json => { :success => true,
                         :info => "Registered",
                         :data => { :user => resource,
-                            :auth_token => current_owner.authentication_token } }
+                            :auth_token => current_owner.authentication_token }}
             else
                 render :status => :unprocessable_entity,
-                    :json => { :success => false,
-                        :info => resource.errors,
-                        :data => {} }
+                    :json => { :success => false, :errors => resource.errors }
             end
         end
     end
